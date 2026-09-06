@@ -8,8 +8,9 @@ kèm số liệu chốt phiên hôm trước. Chạy hoàn toàn trên hạ tầ
 ```
 GitHub Actions (23:00 UTC, T2–T6)
         │
-        ├─ 11 nguồn RSS  ──►  khử trùng lặp  ──►  chấm điểm ảnh hưởng  ──►  phân nhóm
-        ├─ CNBC quote API ─►  giá chốt phiên 10 chỉ số / hàng hoá
+        ├─ 24 nguồn RSS  ──►  khử trùng lặp  ──►  chấm điểm ảnh hưởng  ──►  phân nhóm
+        ├─ CNBC quote API ─►  34 mã: chỉ số, lợi suất, hàng hoá, cổ phiếu lớn,
+        │                     nhóm ngành, thị trường thế giới
         └─ LLM (tuỳ chọn) ─►  tóm tắt tiếng Việt + loại tin không liên quan
         │
         └─► public/data/YYYY-MM-DD.json  ──►  GitHub Pages
@@ -73,6 +74,26 @@ npm run serve     # xem tại http://localhost:4321
 
 Muốn thử nhánh tóm tắt tiếng Việt: `LLM_API_KEY=... npm run build`
 
+## Lưu ý khi sửa code
+
+Workflow tự commit bản tin vào `public/data/` mỗi ngày, nên máy cá nhân sẽ luôn
+đi sau GitHub. Trước khi push:
+
+```bash
+git pull --rebase && git push
+```
+
+Nếu `git pull --rebase` báo xung đột ở `public/data/*.json` thì đó là file do máy
+sinh ra, không phải code — cứ lấy bản trên GitHub rồi đi tiếp:
+
+```bash
+git checkout --ours public/data && git add public/data && git rebase --continue
+```
+
+Muốn tránh hẳn: sau khi chạy `npm run build` ở máy, đừng commit thư mục
+`public/data` (chạy `git checkout -- public/data` trước khi commit) — để duy nhất
+workflow ghi vào đó.
+
 ## Điều chỉnh
 
 Gần như mọi thứ đáng chỉnh nằm trong `scripts/sources.mjs`:
@@ -80,7 +101,8 @@ Gần như mọi thứ đáng chỉnh nằm trong `scripts/sources.mjs`:
 | Muốn đổi | Sửa ở |
 |---|---|
 | Thêm/bớt nguồn tin | `FEEDS` (`weight` = độ ưu tiên của nguồn) |
-| Thêm/bớt mã theo dõi | `TICKERS` |
+| Thêm/bớt mã theo dõi | `TICKERS` (`g` = khối hiển thị) |
+| Khối bảng thị trường | `TICKER_GROUPS` |
 | Tin nào được coi là quan trọng | `KEYWORDS` (số đầu dòng = trọng số) |
 | Nhóm hiển thị | `CATEGORIES` |
 | Chặn rác | `BLOCK_TITLE`, `BLOCK_URL` |

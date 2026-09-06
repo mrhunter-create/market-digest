@@ -22,10 +22,13 @@ async function fromCnbc() {
     // previous_day_closing đôi khi lệch (vd .RUT) -> tin vào last - change khi hai bên mâu thuẫn.
     let prev = num(q.previous_day_closing);
     if (change != null && (prev == null || Math.abs(prev + change - price) > Math.abs(price) * 1e-6)) prev = price - change;
+    if (prev == null) continue;
+    // Không dùng change_pct của CNBC: với mã lợi suất nó sai dấu (US2Y báo +0.04 điểm
+    // nhưng change_pct là -0.0781%). Tự tính từ price/prev cho nhất quán.
     map.set(q.symbol, {
       price, prev,
-      change: change ?? (prev != null ? price - prev : null),
-      changePct: num(q.change_pct) ?? (prev ? ((price - prev) / prev) * 100 : null),
+      change: price - prev,
+      changePct: prev ? ((price - prev) / prev) * 100 : null,
       asOf: q.last_time || null,
       src: "cnbc",
     });
@@ -68,7 +71,7 @@ export async function getMarket() {
       await sleep(800);
     }
     if (!q) console.warn(`  ! không lấy được giá: ${t.label}`);
-    rows.push({ label: t.label, kind: t.kind, symbol: t.cnbc, ...(q || {}), ok: !!q });
+    rows.push({ g: t.g, label: t.label, kind: t.kind, symbol: t.cnbc, ...(q || {}), ok: !!q });
   }
   return rows;
 }

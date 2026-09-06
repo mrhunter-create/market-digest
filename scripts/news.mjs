@@ -2,8 +2,8 @@ import { fetchText, parseFeed, tokens, jaccard, cleanGoogleTitle } from "./lib.m
 import { FEEDS, KEYWORDS, CATEGORIES, BLOCK_TITLE, BLOCK_URL } from "./sources.mjs";
 
 const WINDOW_HOURS = 30;   // đủ phủ trọn một phiên Mỹ kể cả tin sau giờ đóng cửa
-const MAX_STORIES  = 18;   // giữ digest gọn — đây là bản tin, không phải kho tin
-const MAX_PER_CATEGORY = 5;
+const MAX_STORIES  = 28;   // giữ digest gọn — đây là bản tin, không phải kho tin
+const MAX_PER_CATEGORY = 7;
 
 async function pullFeed(feed) {
   try {
@@ -131,7 +131,7 @@ export async function getNews(now = new Date()) {
   // HOẶC đến từ nguồn gốc (Fed, Treasury). Cắt sạch tin đời sống lọt vào feed tổng hợp.
   const relevant = clusters.filter(c =>
     c.leadWeight >= 8 ||                             // Fed / Treasury: luôn giữ
-    c.kwScore >= 5 ||                                // tự thân đã đủ trọng số vĩ mô
+    c.kwScore >= 4 ||                                // tự thân đã đủ trọng số vĩ mô
     (c.kwScore >= 3 && c.sources.length >= 2)        // yếu hơn nhưng nhiều báo cùng đưa
   );
 

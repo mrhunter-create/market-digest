@@ -136,6 +136,27 @@ article.story.high h3{font-size:22px}
 .badge.low{color:var(--ink-3)}
 .corr{font-family:var(--mono); font-size:11px}
 
+/* ---------- Bảng thị trường chi tiết ---------- */
+.board{padding-top:38px}
+.board > h2{color:var(--ink-3)}
+.board-grid{
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:0 34px; margin-top:6px;
+}
+.blk{padding:16px 0 4px}
+.blk h4{
+  margin:0 0 8px; font-size:10.5px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:600;
+}
+.row{
+  display:flex; align-items:baseline; gap:10px;
+  padding:6px 0; border-bottom:1px solid var(--rule-2); font-size:13.5px;
+}
+.row:last-child{border-bottom:0}
+.row .nm{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink-2)}
+.row .pv{font-family:var(--mono); font-size:13px; color:var(--ink); letter-spacing:-.02em}
+.row .pc{font-family:var(--mono); font-size:12.5px; font-weight:500; min-width:62px; text-align:right}
+
 /* ---------- Chân trang / trạng thái ---------- */
 footer{border-top:1px solid var(--rule); padding:22px 0 40px; font-size:12px; color:var(--ink-3); line-height:1.7}
 footer code{font-family:var(--mono); font-size:11px}
@@ -161,6 +182,7 @@ footer code{font-family:var(--mono); font-size:11px}
   .tick:last-child{padding-right:18px; border-right:0}
   .tick .val{font-size:15px}
   .overview p{font-size:18px}
+  .board-grid{grid-template-columns:1fr; gap:0}
   .story h3{font-size:17.5px}
   article.story.high h3{font-size:19px}
   article.story.high{margin-left:-12px; padding-left:10px}
@@ -196,6 +218,7 @@ footer code{font-family:var(--mono); font-size:11px}
 <div class="wrap">
   <div id="overview"></div>
   <main id="main"><div class="state">Đang tải bản tin…</div></main>
+  <div id="board"></div>
   <footer>
     <div id="stats"></div>
     <div>Nguồn: Federal Reserve, Reuters, CNBC, MarketWatch, WSJ, Yahoo Finance, Investing.com · Giá: CNBC / Yahoo Finance.</div>
@@ -227,14 +250,19 @@ function fmtPrice(kind, v) {
   return nf(2, 2).format(v);
 }
 function fmtChange(kind, chg, pct) {
-  if (chg == null && pct == null) return { text: "—", cls: "flat" };
-  const cls = (pct ?? chg) > 0.0001 ? "up" : (pct ?? chg) < -0.0001 ? "down" : "flat";
-  const sign = (pct ?? chg) > 0 ? "+" : "";
-  // Lợi suất đọc theo điểm cơ bản mới đúng nghĩa, không phải % thay đổi.
-  const text = kind === "yield"
-    ? `${sign}${Math.round(chg * 100)} bp`
-    : `${sign}${nf(2, 2).format(pct)}%`;
-  return { text, cls };
+  // Lợi suất đọc theo điểm cơ bản mới đúng nghĩa, và phải lấy dấu từ chg —
+  // % tương đối của lợi suất vừa khó hiểu vừa có nguồn trả sai dấu.
+  if (kind === "yield") {
+    if (chg == null) return { text: "—", cls: "flat" };
+    const bp = Math.round(chg * 100);
+    return { text: `${bp > 0 ? "+" : ""}${bp} bp`, cls: bp > 0 ? "up" : bp < 0 ? "down" : "flat" };
+  }
+  const v = pct ?? chg;
+  if (v == null) return { text: "—", cls: "flat" };
+  return {
+    text: `${v > 0 ? "+" : ""}${nf(2, 2).format(v)}%`,
+    cls: v > 0.0001 ? "up" : v < -0.0001 ? "down" : "flat",
+  };
 }
 const dtf = (o) => new Intl.DateTimeFormat("vi-VN", { timeZone: TAIPEI, ...o });
 function fmtSession(id) {
@@ -291,6 +319,33 @@ function renderStory(s) {
   </article>`;
 }
 
+function renderBoard(d) {
+  const groups = d.tickerGroups || [];
+  const rows = (d.market || []).filter(m => m.ok);
+  if (!groups.length || !rows.length) return "";
+
+  const blocks = groups.map(g => {
+    const ids = [g.id, ...(g.merge || [])];
+    let list = rows.filter(m => ids.includes(m.g));
+    if (!list.length) return "";
+    // Sắp theo mức tăng giảm để mã biến động mạnh nhất nằm trên cùng.
+    if (g.sortByChange) list = [...list].sort((a, b) => (b.changePct ?? 0) - (a.changePct ?? 0));
+    return `<div class="blk"><h4>${esc(g.label)}</h4>` + list.map(m => {
+      const c = fmtChange(m.kind, m.change, m.changePct);
+      return `<div class="row">
+        <span class="nm">${esc(m.label)}</span>
+        <span class="pv">${fmtPrice(m.kind, m.price)}</span>
+        <span class="pc ${c.cls}">${c.text}</span>
+      </div>`;
+    }).join("") + `</div>`;
+  }).filter(Boolean);
+
+  return blocks.length
+    ? `<section class="board"><h2>Bảng thị trường<span class="n">${rows.length} mã</span></h2>
+       <div class="board-grid">${blocks.join("")}</div></section>`
+    : "";
+}
+
 function render(d) {
   $("#session").textContent = fmtSession(d.sessionDate);
   const g = new Date(d.generatedAt);
@@ -298,7 +353,7 @@ function render(d) {
   const ddmm = dtf({ day: "2-digit", month: "2-digit", year: "numeric" }).format(g);
   $("#generated").textContent = `Tổng hợp ${hhmm} · ${ddmm} giờ Đài Bắc`;
 
-  renderTape(d.market);
+  renderTape((d.market || []).filter(m => !m.g || m.g === "core"));
 
   $("#overview").innerHTML = d.overview
     ? `<div class="overview"><div class="eyebrow">Tổng quan phiên</div><p>${esc(d.overview)}</p></div>`
@@ -318,6 +373,8 @@ function render(d) {
         `<section class="cat"><h2>${esc(label[cat] || cat)}<span class="n">${list.length}</span></h2>${list.map(renderStory).join("")}</section>`
       ).join("")
     : `<div class="state">Không có tin đáng chú ý trong phiên này.</div>`;
+
+  $("#board").innerHTML = renderBoard(d);
 
   const m = d.meta || {};
   $("#stats").innerHTML =

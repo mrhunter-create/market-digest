@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { getMarket } from "./market.mjs";
 import { getNews } from "./news.mjs";
 import { editorialize, llmEnabled } from "./llm.mjs";
-import { CATEGORIES, FEEDS } from "./sources.mjs";
+import { CATEGORIES, FEEDS, TICKER_GROUPS } from "./sources.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DATA = join(ROOT, "public", "data");
@@ -42,6 +42,7 @@ async function main() {
     generatedAt: now.toISOString(),
     overview: edited.overview,
     market,
+    tickerGroups: TICKER_GROUPS,
     categories: CATEGORIES.map(({ id, label }) => ({ id, label })),
     stories: edited.stories,
     meta: {

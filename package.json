@@ -1,0 +1,11 @@
+{
+  "name": "market-digest",
+  "private": true,
+  "type": "module",
+  "description": "Bản tin tự động mỗi sáng về những gì có thể ảnh hưởng tới thị trường chứng khoán Mỹ.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "python3 -m http.server 4321 --directory public"
+  },
+  "engines": { "node": ">=20" }
+}

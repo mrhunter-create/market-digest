@@ -1,0 +1,418 @@
+{
+  "id": "2026-09-06",
+  "sessionDate": "2026-09-06",
+  "generatedAt": "2026-09-06T12:35:38.467Z",
+  "overview": null,
+  "market": [
+    {
+      "label": "S&P 500",
+      "kind": "index",
+      "symbol": ".SPX",
+      "price": 7718.6,
+      "prev": 7747.71,
+      "change": -29.11,
+      "changePct": -0.38,
+      "asOf": "2026-09-04",
+      "src": "cnbc",
+      "ok": true
+    },
+    {
+      "label": "Nasdaq",
+      "kind": "index",
+      "symbol": ".IXIC",
+      "price": 26506.99,
+      "prev": 26584.06,
+      "change": -77.07,
+      "changePct": -0.29,
+      "asOf": "2026-09-04",
+      "src": "cnbc",
+      "ok": true
+    },
+    {
+      "label": "Dow Jones",
+      "kind": "index",
+      "symbol": ".DJI",
+      "price": 53414.25,
+      "prev": 53686.11,
+      "change": -271.86,
+      "changePct": -0.51,
+      "asOf": "2026-09-04",
+      "src": "cnbc",
+      "ok": true
+    },
+    {
+      "label": "Russell 2000",
+      "kind": "index",
+      "symbol": ".RUT",
+      "price": 2975.648,
+      "prev": 2968.271,
+      "change": 7.377,
+      "changePct": 0.25,
+      "asOf": "2026-09-04",
+      "src": "cnbc",
+      "ok": true
+    },
+    {
+      "label": "VIX",
+      "kind": "level",
+      "symbol": ".VIX",
+      "price": 14.53,
+      "prev": 14.32,
+      "change": 0.21,
+      "changePct": 1.47,
+      "asOf": "2026-09-04",
+      "src": "cnbc",
+      "ok": true
+    },
+    {
+      "label": "Lợi suất 10 năm",
+      "kind": "yield",
+      "symbol": "US10Y",
+      "price": 4.784,
+      "prev": 4.762,
+      "change": 0.022,
+      "changePct": 0.462,
+      "asOf": "2026-09-04T17:05:00.000-0400",
+      "src": "cnbc",
+      "ok": true
+    },
+    {
+      "label": "Chỉ số USD",
+      "kind": "level",
+      "symbol": ".DXY",
+      "price": 99.157,
+      "prev": 98.908,
+      "change": 0.249,
+      "changePct": 0.25,
+      "asOf": "2026-09-04",
+      "src": "cnbc",
+      "ok": true
+    },
+    {
+      "label": "Dầu WTI",
+      "kind": "usd",
+      "symbol": "@CL.1",
+      "price": 91.22,
+      "prev": 91.3,
+      "change": -0.08,
+      "changePct": -0.09,
+      "asOf": "2026-09-05",
+      "src": "cnbc",
+      "ok": true
+    },
+    {
+      "label": "Vàng",
+      "kind": "usd",
+      "symbol": "@GC.1",
+      "price": 4477.2,
+      "prev": 4539.9,
+      "change": -62.7,
+      "changePct": -1.38,
+      "asOf": "2026-09-05",
+      "src": "cnbc",
+      "ok": true
+    },
+    {
+      "label": "Bitcoin",
+      "kind": "usd",
+      "symbol": "BTC.CM=",
+      "price": 79997.76,
+      "prev": 79837.16,
+      "change": 160.6,
+      "changePct": 0.2,
+      "asOf": "2026-09-06T08:35:36.000-0400",
+      "src": "cnbc",
+      "ok": true
+    }
+  ],
+  "categories": [
+    {
+      "id": "fed",
+      "label": "Fed & Vĩ mô"
+    },
+    {
+      "id": "policy",
+      "label": "Chính sách & Địa chính trị"
+    },
+    {
+      "id": "earnings",
+      "label": "Doanh nghiệp & Earnings"
+    },
+    {
+      "id": "tech",
+      "label": "Big Tech & AI"
+    },
+    {
+      "id": "commod",
+      "label": "Hàng hoá & Tiền tệ"
+    },
+    {
+      "id": "markets",
+      "label": "Thị trường chung"
+    }
+  ],
+  "stories": [
+    {
+      "title": "Trump turns up the heat on Warsh as Fed rate hike looms",
+      "link": "https://www.cnbc.com/2026/09/05/trump-warsh-fed-september-rate-hike.html",
+      "summary": "Ten days ahead of the next Federal Reserve meeting, the Trump administration looks to be in a full-court press to halt a rate hike in its tracks.",
+      "date": "2026-09-05T19:12:53.000Z",
+      "source": "CNBC Economy",
+      "sources": [
+        "CNBC",
+        "CNBC Economy"
+      ],
+      "category": "fed",
+      "keywords": [
+        "federal reserve",
+        "fed"
+      ],
+      "score": 27,
+      "impact": "high"
+    },
+    {
+      "title": "Treasury Yields Extend Decline as Odds of Fed Hike Fall",
+      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxOeDdVdDUwWVFObHJ0OVRIUlZqQmVKVmdSQkpyeUZWTlozWDI3Wk8wSGpycnJLNmFLeDhQd2xjenNDQlYwZnBQV055Rk16dWVxMWMzMGxUT0xSNTJxelhWcEQ0VWNEUy10bkRHTG5sOWJIUGJsR0xtdzdvRFIzTVBzMXp6YVFaWHY5SmZZODFWTjdjR3FXUEJVSUFzNDFEZw?oc=5",
+      "summary": "",
+      "date": "2026-09-06T09:39:19.000Z",
+      "source": "WSJ",
+      "sources": [
+        "WSJ"
+      ],
+      "category": "fed",
+      "keywords": [
+        "treasury yield",
+        "fed",
+        "yields"
+      ],
+      "score": 24,
+      "impact": "high"
+    },
+    {
+      "title": "We got more defensive last week as Wall Street raised the bar for AI stocks",
+      "link": "https://www.cnbc.com/2026/09/05/we-got-more-defensive-last-week-as-wall-street-raised-the-bar-for-ai-stocks.html",
+      "summary": "We initiated positions in defensive stocks to balance our AI exposure amid higher oil prices and Treasury yields.",
+      "date": "2026-09-05T16:45:14.000Z",
+      "source": "CNBC",
+      "sources": [
+        "CNBC"
+      ],
+      "category": "fed",
+      "keywords": [
+        "treasury yield",
+        "oil price",
+        "wall street"
+      ],
+      "score": 23,
+      "impact": "high"
+    },
+    {
+      "title": "Many truckers don't feel like the rest of America about AI data centers as business booms",
+      "link": "https://www.cnbc.com/2026/09/05/ai-data-centers-cost-economy.html",
+      "summary": "Sprawling data center components from HVAC systems to tubing, wiring and semiconductors arrive primarily by truck, a boon for a business hit hard by trade wars.",
+      "date": "2026-09-06T12:05:25.000Z",
+      "source": "CNBC",
+      "sources": [
+        "CNBC"
+      ],
+      "category": "policy",
+      "keywords": [
+        "trade war",
+        "semiconductor"
+      ],
+      "score": 22,
+      "impact": "high"
+    },
+    {
+      "title": "OPEC+ keeps oil output policy unchanged for October",
+      "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPWEdjS0pVMy1JLXZFN0V6ZFhjdjNOOXpjRnUtYXdYZEdjbzNaR2R6TGU4UTRDVEdLazJuMS12eHp6d0hWQjI0ZzdhRTUtbVBqR3NhSGRES0UxbG1TZ29QX1hjaWZFNWs1RWNWV1E0azdPVDNIR2x4TGJYMzdDZ3YtVUN1VzZEam5Tb3pXYy1TejN0VFMxYjI1U3ByeFZDZmZ1UnFYX053R3N3YzhST3dSWGdB?oc=5",
+      "summary": "",
+      "date": "2026-09-06T12:03:29.000Z",
+      "source": "Reuters",
+      "sources": [
+        "Reuters",
+        "WSJ"
+      ],
+      "category": "commod",
+      "keywords": [
+        "opec"
+      ],
+      "score": 19,
+      "impact": "medium"
+    },
+    {
+      "title": "Why the jobs report will actually be good for bonds",
+      "link": "https://www.marketwatch.com/story/why-the-jobs-report-will-actually-be-good-for-bonds-eb062fda?mod=mw_rss_topstories",
+      "summary": "Based on the chatter on Wall Street, you’d think labor has never had it so good. Sadly for working Americans, this isn’t actually the case.",
+      "date": "2026-09-05T18:26:00.000Z",
+      "source": "MarketWatch",
+      "sources": [
+        "MarketWatch"
+      ],
+      "category": "fed",
+      "keywords": [
+        "jobs report",
+        "wall street"
+      ],
+      "score": 18,
+      "impact": "medium"
+    },
+    {
+      "title": "Long-Term Treasury Yields Rise as Iran War Revives Inflation Worries",
+      "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPZjJ0dVZ0ZzNyQXlWNXFBOHlSQjdhdEVEbnFmdTMwZVRlR3hwWkdzUVZESEF5VjZfMU1MZ25hYmFoNHNlVnNTazZZTW5tN1A4c3ZYZlRESHNvUzdGbkhyWVZRMW9FSi1sbC1NZlRTcVBFbGM2d3JNTEt6Z0xHQ0dXeTRuYmtDcndnN2w3cElBakc?oc=5",
+      "summary": "",
+      "date": "2026-09-05T20:54:58.000Z",
+      "source": "WSJ",
+      "sources": [
+        "WSJ"
+      ],
+      "category": "fed",
+      "keywords": [
+        "treasury yield",
+        "yields"
+      ],
+      "score": 18,
+      "impact": "medium"
+    },
+    {
+      "title": "U.S. Stocks Climb as Bond Yields Stay in Spotlight",
+      "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOUDdYMmM3M0MxMkYxV25aRU11U1lwVEtvcFRtUmRFc2FNVC1EZ1VQZW5zY2w4b1lkQjNfMHFoMk1GSnc4Sm9YajFoeS1MTDZwOW0yeGN0WUFlcm9BREl0a1JNdjVQc3haTDVLTVpsOXRWbWQwRThKbFZ5bUJGMXRlNTgwb1pKdy1fNjUwTFl3N0RYMVM2MlB5RmhTaFhnQUYxYzZiLWxzUzdhbTBlVDE1ZE5zd2RpWWp6?oc=5",
+      "summary": "",
+      "date": "2026-09-06T06:23:22.000Z",
+      "source": "WSJ",
+      "sources": [
+        "WSJ"
+      ],
+      "category": "markets",
+      "keywords": [
+        "bond yield",
+        "stocks"
+      ],
+      "score": 15,
+      "impact": "medium"
+    },
+    {
+      "title": "U.S. Stocks Fall as Oil Surges After New Middle East Strikes",
+      "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOSFU4SHdnZDYyX3lJNzFVWXpkZlRFQkM4MlBOX21NY3BCM3g5QXVOZ0RfNFNzVFlZLThoYTVtWW83bXNuVWk3NnYxS3JGZjBISVBtZF9kVE5SSk5KRWtFYXF3SldSXy1SU2RyM0xNdnFQcFAtYVJha3Ruc1JWN0VwT0ZjRzN1R0xLY0pSdXZOX2o?oc=5",
+      "summary": "",
+      "date": "2026-09-05T17:12:44.000Z",
+      "source": "WSJ",
+      "sources": [
+        "WSJ"
+      ],
+      "category": "policy",
+      "keywords": [
+        "middle east",
+        "stocks"
+      ],
+      "score": 15,
+      "impact": "medium"
+    },
+    {
+      "title": "‘Model fatigue’ sets in as AI labs race to roll out new versions at frenetic pace",
+      "link": "https://www.cnbc.com/2026/09/06/meta-google-openai-anthropic-ai-model-fatigue.html",
+      "summary": "Anthropic, OpenAI, Meta and Google all released model updates this week, while Nvidia said it's acquiring open-source AI platform Hugging Face.",
+      "date": "2026-09-06T12:13:49.000Z",
+      "source": "CNBC",
+      "sources": [
+        "CNBC"
+      ],
+      "category": "tech",
+      "keywords": [
+        "nvidia"
+      ],
+      "score": 13,
+      "impact": "medium"
+    },
+    {
+      "title": "OpenAI acknowledges 'wiki incident' and need for more transparency around unintended AI behavior",
+      "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPU0FtQktXNWY5eEpHaUxBVGI2YWpHWE9SUGUtb1BhUkxLQmJvODRPX01WMnFqeEI2RThKMi1IT0E1eDBSUngtQkIwTUtiQWFjSHpFbXY0Q1BFcjZuUnBkVEZFMnFtOWpLUHVOZ1lZZzIwT3NxSnJnNG5DdHBvWi1STnFWSk1reWZRVkpEQjlCT05fdm8tV3ItQU5kSThCSjZON3ZvNXJhNXB2dWV0Zmt6NlJ1UUxoUDY4ZjZERk1qWmNUNkIxaW01anhRSURSaGlPZkE?oc=5",
+      "summary": "",
+      "date": "2026-09-05T21:23:43.000Z",
+      "source": "Reuters",
+      "sources": [
+        "Reuters"
+      ],
+      "category": "tech",
+      "keywords": [
+        "openai"
+      ],
+      "score": 12,
+      "impact": "low"
+    },
+    {
+      "title": "US military strikes three Iranian crude oil carriers, Central Command says",
+      "link": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOYnduS0xfeWF0NWZJUEpneWJOWTU3ZXNmUEZrVUY2a0U2b0FPejBkR21SMGxfRjVhWENDdUJOMTJKVm9MbjBBTkVTeHRGZmRfVkhKNnlyR1dySzBPUXBEUm1CVlVsQkhCTnlhMXBPMFM0NEJ5QTE0aDNxLU5SbzRVX09fZ3NpbnIycXVzZG9XM0dnb1JaS3pvbnI3UDUxNG1VUVhTWWFfbGQ5T2NQR0N6WnRzbzhINGlVRmRPUHhKT0xGVmhWc1E?oc=5",
+      "summary": "",
+      "date": "2026-09-05T14:16:10.000Z",
+      "source": "Reuters",
+      "sources": [
+        "Reuters"
+      ],
+      "category": "commod",
+      "keywords": [
+        "crude"
+      ],
+      "score": 12,
+      "impact": "low"
+    },
+    {
+      "title": "5 big analyst AI moves: iPhone launch to be negative for Apple stock",
+      "link": "https://www.investing.com/news/stock-market-news/5-big-analyst-ai-moves-iphone-launch-to-be-negative-for-apple-stock-4890227",
+      "summary": "",
+      "date": "2026-09-05T23:38:50.000Z",
+      "source": "Investing.com",
+      "sources": [
+        "Investing.com"
+      ],
+      "category": "tech",
+      "keywords": [
+        "apple"
+      ],
+      "score": 9,
+      "impact": "low"
+    },
+    {
+      "title": "A Judge Spared Alphabet From an Ad-Tech Breakup but Ordered Changes. Does That Protect Its AI War Chest?",
+      "link": "https://finance.yahoo.com/media-advertising/articles/judge-spared-alphabet-ad-tech-090718689.html",
+      "summary": "",
+      "date": "2026-09-05T09:07:18.000Z",
+      "source": "Yahoo Finance",
+      "sources": [
+        "Yahoo Finance"
+      ],
+      "category": "policy",
+      "keywords": [
+        "alphabet"
+      ],
+      "score": 8,
+      "impact": "low"
+    },
+    {
+      "title": "OpenAI’s $1 Billion Cyber Push Backs Cloudflare and SentinelOne. Which Has the Better AI Security Model?",
+      "link": "https://finance.yahoo.com/technology/ai/articles/openai-1-billion-cyber-push-122609472.html",
+      "summary": "",
+      "date": "2026-09-05T12:26:09.000Z",
+      "source": "Yahoo Finance",
+      "sources": [
+        "Yahoo Finance"
+      ],
+      "category": "tech",
+      "keywords": [
+        "openai"
+      ],
+      "score": 8,
+      "impact": "low"
+    }
+  ],
+  "meta": {
+    "feeds": 11,
+    "scanned": 389,
+    "inWindow": 252,
+    "clusters": 222,
+    "relevant": 15,
+    "published": 15,
+    "llm": null,
+    "marketOk": 10
+  }
+}

@@ -1,0 +1,61 @@
+name: Bản tin thị trường
+
+on:
+  schedule:
+    # 23:00 UTC các ngày T2–T6 = 07:00 sáng giờ Đài Bắc T3–T7,
+    # tức khoảng 1–2 tiếng sau khi phiên Mỹ đóng cửa (16:00 ET).
+    - cron: "0 23 * * 1-5"
+  workflow_dispatch:        # chạy tay từ tab Actions
+
+permissions:
+  contents: write           # commit file data
+  pages: write              # deploy GitHub Pages
+  id-token: write
+
+concurrency:
+  group: digest
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Tổng hợp bản tin
+        env:
+          LLM_API_KEY:  ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}
+          LLM_MODEL:    ${{ vars.LLM_MODEL }}
+        run: node scripts/build.mjs
+
+      - name: Lưu bản tin vào repo
+        run: |
+          git config user.name  "market-digest bot"
+          git config user.email "actions@github.com"
+          git add public/data
+          if git diff --staged --quiet; then
+            echo "Không có thay đổi."
+          else
+            git commit -m "bản tin $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

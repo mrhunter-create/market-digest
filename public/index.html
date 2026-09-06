@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bản tin Thị trường Mỹ</title>
+<meta name="description" content="Tổng hợp mỗi sáng những tin có thể ảnh hưởng tới thị trường chứng khoán Mỹ.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#fbfaf8; --surface:#ffffff; --ink:#16181d; --ink-2:#4a5058; --ink-3:#868d97;
+  --rule:#e4e0d9; --rule-2:#efece6; --accent:#8a5a2b;
+  --up:#0b7a4b; --down:#b3352c; --flat:#868d97;
+  --hi-bg:#fdf6ec; --hi-line:#d9a441;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0e1013; --surface:#15181d; --ink:#e9e7e3; --ink-2:#a8aeb8; --ink-3:#767d88;
+    --rule:#262a31; --rule-2:#1d2127; --accent:#d0a068;
+    --up:#3ecf8e; --down:#f0665c; --flat:#767d88;
+    --hi-bg:#1c1a15; --hi-line:#8a6a2a;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0e1013; --surface:#15181d; --ink:#e9e7e3; --ink-2:#a8aeb8; --ink-3:#767d88;
+  --rule:#262a31; --rule-2:#1d2127; --accent:#d0a068;
+  --up:#3ecf8e; --down:#f0665c; --flat:#767d88;
+  --hi-bg:#1c1a15; --hi-line:#8a6a2a;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+.wrap{max-width:820px; margin:0 auto; padding:0 24px}
+
+/* ---------- Masthead ---------- */
+header.mast{border-bottom:1px solid var(--rule); background:var(--surface)}
+.mast-in{display:flex; align-items:flex-end; justify-content:space-between; gap:20px; padding:26px 0 18px}
+.brand{display:block}
+.kicker{
+  font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--accent); font-weight:600; margin-bottom:6px;
+}
+h1{
+  font-family:var(--serif); font-weight:500; font-size:34px; line-height:1.1;
+  margin:0; letter-spacing:-.01em;
+}
+.mast-meta{text-align:right; font-size:12.5px; color:var(--ink-3); line-height:1.5; white-space:nowrap}
+.mast-meta b{display:block; color:var(--ink-2); font-weight:600; font-size:13px}
+.controls{display:flex; gap:8px; align-items:center; margin-top:8px; justify-content:flex-end}
+select,button.ghost{
+  font-family:var(--sans); font-size:12.5px; color:var(--ink-2);
+  background:var(--paper); border:1px solid var(--rule); border-radius:6px;
+  padding:5px 9px; cursor:pointer; line-height:1.3;
+}
+select:hover,button.ghost:hover{border-color:var(--ink-3); color:var(--ink)}
+
+/* ---------- Dải số liệu ---------- */
+.tape{border-bottom:1px solid var(--rule); background:var(--surface)}
+.tape-grid{
+  display:grid; grid-template-columns:repeat(5,1fr);
+  border-left:1px solid var(--rule-2);
+}
+.tick{
+  padding:13px 14px; border-right:1px solid var(--rule-2); border-top:1px solid var(--rule-2);
+  min-width:0;
+}
+.tick .lbl{
+  font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3);
+  font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.tick .val{font-family:var(--mono); font-size:16px; font-weight:500; margin-top:4px; letter-spacing:-.02em}
+.tick .chg{font-family:var(--mono); font-size:12px; margin-top:2px; font-weight:500}
+.up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--flat)}
+
+/* ---------- Tổng quan ---------- */
+.overview{padding:34px 0 30px; border-bottom:1px solid var(--rule)}
+.overview .eyebrow{
+  font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:600; margin-bottom:12px;
+}
+.overview p{
+  font-family:var(--serif); font-size:21px; line-height:1.55; margin:0; color:var(--ink);
+  letter-spacing:-.005em;
+}
+
+/* ---------- Tin ---------- */
+main{padding-bottom:64px}
+section.cat{padding-top:34px}
+h2{
+  font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+  color:var(--accent); margin:0 0 4px; padding-bottom:10px; border-bottom:1px solid var(--rule);
+  display:flex; justify-content:space-between; align-items:baseline;
+}
+h2 .n{font-family:var(--mono); color:var(--ink-3); letter-spacing:0; font-weight:400}
+
+article.story{padding:20px 0; border-bottom:1px solid var(--rule-2); position:relative}
+article.story.high{
+  padding-left:16px; margin-left:-18px;
+  border-left:2px solid var(--hi-line);
+}
+article.story.high h3{font-size:22px}
+.story h3{
+  font-family:var(--serif); font-size:20px; line-height:1.32; font-weight:600;
+  margin:0 0 7px; letter-spacing:-.01em;
+}
+.story h3 a{text-decoration:none}
+.story h3 a:hover{text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:3px}
+.story p.sum{margin:0 0 9px; font-size:14.5px; line-height:1.62; color:var(--ink-2)}
+.story .orig{
+  margin:0 0 9px; font-size:12.5px; line-height:1.5; color:var(--ink-3);
+  font-style:italic;
+}
+.story .foot{display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-size:11.5px; color:var(--ink-3)}
+.src{
+  font-weight:600; color:var(--ink-2); letter-spacing:.02em;
+}
+.dot{color:var(--rule)}
+.badge{
+  font-size:10px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
+  padding:2.5px 7px; border-radius:3px; border:1px solid currentColor;
+}
+.badge.high{color:var(--paper); background:var(--accent); border-color:var(--accent)}
+.badge.medium{color:var(--ink-2)}
+.badge.low{color:var(--ink-3)}
+.corr{font-family:var(--mono); font-size:11px}
+
+/* ---------- Chân trang / trạng thái ---------- */
+footer{border-top:1px solid var(--rule); padding:22px 0 40px; font-size:12px; color:var(--ink-3); line-height:1.7}
+footer code{font-family:var(--mono); font-size:11px}
+.state{padding:70px 0; text-align:center; color:var(--ink-3); font-size:14px}
+.state.err{color:var(--down)}
+
+@media (max-width:720px){
+  .wrap{padding:0 18px}
+  h1{font-size:26px}
+  .mast-in{flex-direction:column; align-items:flex-start; gap:14px; padding:22px 0 16px}
+  .mast-meta{text-align:left; white-space:normal}
+  .controls{justify-content:flex-start}
+  /* Trên mobile 10 ô xếp lưới sẽ chiếm trọn màn hình -> chuyển thành dải ngang vuốt được. */
+  .tape .wrap{padding:0}
+  .tape-grid{
+    display:flex; overflow-x:auto; border-left:0;
+    scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch;
+  }
+  .tape-grid::-webkit-scrollbar{display:none}
+  .tape-grid{scrollbar-width:none}
+  .tick{flex:0 0 auto; min-width:126px; scroll-snap-align:start; padding:11px 14px; border-top:0}
+  .tick:first-child{padding-left:18px}
+  .tick:last-child{padding-right:18px; border-right:0}
+  .tick .val{font-size:15px}
+  .overview p{font-size:18px}
+  .story h3{font-size:17.5px}
+  article.story.high h3{font-size:19px}
+  article.story.high{margin-left:-12px; padding-left:10px}
+}
+@media print{
+  body{background:#fff}
+  .controls,footer{display:none}
+  article.story.high{border-left-color:#999}
+}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap mast-in">
+    <div class="brand">
+      <div class="kicker">Tổng hợp hằng ngày</div>
+      <h1>Bản tin Thị trường Mỹ</h1>
+    </div>
+    <div class="mast-meta">
+      <b id="session">—</b>
+      <span id="generated">Đang tải…</span>
+      <div class="controls">
+        <select id="archive" aria-label="Chọn ngày"><option>—</option></select>
+        <button class="ghost" id="theme" aria-label="Đổi giao diện sáng tối">◐</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="tape"><div class="wrap"><div class="tape-grid" id="tape"></div></div></div>
+
+<div class="wrap">
+  <div id="overview"></div>
+  <main id="main"><div class="state">Đang tải bản tin…</div></main>
+  <footer>
+    <div id="stats"></div>
+    <div>Nguồn: Federal Reserve, Reuters, CNBC, MarketWatch, WSJ, Yahoo Finance, Investing.com · Giá: CNBC / Yahoo Finance.</div>
+    <div>Bản tin tự động, chỉ mang tính tham khảo — không phải khuyến nghị đầu tư.</div>
+  </footer>
+</div>
+
+<script>
+const TAIPEI = "Asia/Taipei";
+const $ = s => document.querySelector(s);
+
+/* ---- theme ---- */
+const themeBtn = $("#theme");
+try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+themeBtn.onclick = () => {
+  const cur = document.documentElement.dataset.theme
+    || (matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light");
+  const next = cur === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("theme", next); } catch {}
+};
+
+/* ---- format ---- */
+const nf = (min, max) => new Intl.NumberFormat("vi-VN", { minimumFractionDigits: min, maximumFractionDigits: max });
+function fmtPrice(kind, v) {
+  if (v == null) return "—";
+  if (kind === "yield") return nf(3, 3).format(v) + "%";
+  if (kind === "usd")   return "$" + nf(2, 2).format(v);
+  return nf(2, 2).format(v);
+}
+function fmtChange(kind, chg, pct) {
+  if (chg == null && pct == null) return { text: "—", cls: "flat" };
+  const cls = (pct ?? chg) > 0.0001 ? "up" : (pct ?? chg) < -0.0001 ? "down" : "flat";
+  const sign = (pct ?? chg) > 0 ? "+" : "";
+  // Lợi suất đọc theo điểm cơ bản mới đúng nghĩa, không phải % thay đổi.
+  const text = kind === "yield"
+    ? `${sign}${Math.round(chg * 100)} bp`
+    : `${sign}${nf(2, 2).format(pct)}%`;
+  return { text, cls };
+}
+const dtf = (o) => new Intl.DateTimeFormat("vi-VN", { timeZone: TAIPEI, ...o });
+function fmtSession(id) {
+  const [y, m, d] = id.split("-").map(Number);
+  const wd = ["Chủ nhật","Thứ hai","Thứ ba","Thứ tư","Thứ năm","Thứ sáu","Thứ bảy"][new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
+  return `Phiên ${wd}, ${String(d).padStart(2,"0")}/${String(m).padStart(2,"0")}/${y}`;
+}
+function relTime(iso) {
+  if (!iso) return "";
+  const h = (Date.now() - Date.parse(iso)) / 3600e3;
+  if (!isFinite(h)) return "";
+  if (h < 1) return "vừa xong";
+  if (h < 24) return `${Math.round(h)} giờ trước`;
+  return dtf({ day: "2-digit", month: "2-digit" }).format(new Date(iso));
+}
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+/* ---- render ---- */
+const IMPACT = { high: "Tác động cao", medium: "Đáng chú ý", low: "Tham khảo" };
+
+// Cắt ở ranh giới từ và chỉ thêm một dấu … (nguồn thường đã có sẵn dấu lược).
+function trunc(text, max) {
+  const t = text.trim().replace(/[.…\s]+$/, "");
+  if (t.length <= max) return t + "…";
+  return t.slice(0, t.lastIndexOf(" ", max) > max * 0.6 ? t.lastIndexOf(" ", max) : max).replace(/[.,;:\s]+$/, "") + "…";
+}
+
+function renderTape(market) {
+  $("#tape").innerHTML = (market || []).map(m => {
+    const c = fmtChange(m.kind, m.change, m.changePct);
+    return `<div class="tick">
+      <div class="lbl">${esc(m.label)}</div>
+      <div class="val">${m.ok ? fmtPrice(m.kind, m.price) : "—"}</div>
+      <div class="chg ${c.cls}">${m.ok ? c.text : ""}</div>
+    </div>`;
+  }).join("");
+}
+
+function renderStory(s) {
+  const title = s.titleVi || s.title;
+  const showOrig = s.titleVi && s.titleVi !== s.title;
+  const impact = s.impact || "medium";
+  return `<article class="story ${impact === "high" ? "high" : ""}">
+    <h3><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(title)}</a></h3>
+    ${s.summaryVi ? `<p class="sum">${esc(s.summaryVi)}</p>` : (s.summary ? `<p class="sum">${esc(trunc(s.summary, 220))}</p>` : "")}
+    ${showOrig ? `<p class="orig">${esc(s.title)}</p>` : ""}
+    <div class="foot">
+      <span class="badge ${impact}">${IMPACT[impact] || IMPACT.medium}</span>
+      <span class="dot">·</span>
+      <span class="src">${esc(s.sources.join(" · "))}</span>
+      ${s.sources.length > 1 ? `<span class="dot">·</span><span class="corr">${s.sources.length} nguồn</span>` : ""}
+      ${s.date ? `<span class="dot">·</span><span>${esc(relTime(s.date))}</span>` : ""}
+    </div>
+  </article>`;
+}
+
+function render(d) {
+  $("#session").textContent = fmtSession(d.sessionDate);
+  const g = new Date(d.generatedAt);
+  const hhmm = dtf({ hour: "2-digit", minute: "2-digit", hour12: false }).format(g);
+  const ddmm = dtf({ day: "2-digit", month: "2-digit", year: "numeric" }).format(g);
+  $("#generated").textContent = `Tổng hợp ${hhmm} · ${ddmm} giờ Đài Bắc`;
+
+  renderTape(d.market);
+
+  $("#overview").innerHTML = d.overview
+    ? `<div class="overview"><div class="eyebrow">Tổng quan phiên</div><p>${esc(d.overview)}</p></div>`
+    : "";
+
+  const order = (d.categories || []).map(c => c.id);
+  const label = Object.fromEntries((d.categories || []).map(c => [c.id, c.label]));
+  const groups = new Map();
+  for (const s of d.stories || []) {
+    if (!groups.has(s.category)) groups.set(s.category, []);
+    groups.get(s.category).push(s);
+  }
+  const sorted = [...groups.entries()].sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]));
+
+  $("#main").innerHTML = sorted.length
+    ? sorted.map(([cat, list]) =>
+        `<section class="cat"><h2>${esc(label[cat] || cat)}<span class="n">${list.length}</span></h2>${list.map(renderStory).join("")}</section>`
+      ).join("")
+    : `<div class="state">Không có tin đáng chú ý trong phiên này.</div>`;
+
+  const m = d.meta || {};
+  $("#stats").innerHTML =
+    `Quét <code>${m.scanned ?? "?"}</code> bài từ <code>${m.feeds ?? "?"}</code> nguồn · `
+    + `giữ lại <code>${m.published ?? (d.stories || []).length}</code> tin`
+    + (m.llm ? ` · biên tập bằng <code>${esc(m.llm)}</code>` : ` · chưa bật tóm tắt tiếng Việt`);
+}
+
+/* ---- load ---- */
+async function loadDigest(id) {
+  const url = id ? `data/${id}.json` : "data/latest.json";
+  const r = await fetch(url + "?t=" + Date.now());
+  if (!r.ok) throw new Error(`Không tải được ${url} (HTTP ${r.status})`);
+  render(await r.json());
+}
+
+async function loadArchive(currentId) {
+  try {
+    const r = await fetch("data/index.json?t=" + Date.now());
+    if (!r.ok) return;
+    const list = await r.json();
+    const sel = $("#archive");
+    sel.innerHTML = list.map(e =>
+      `<option value="${esc(e.id)}"${e.id === currentId ? " selected" : ""}>${esc(fmtSession(e.id))}</option>`
+    ).join("");
+    sel.onchange = () => loadDigest(sel.value).catch(showError);
+  } catch {}
+}
+
+function showError(e) {
+  $("#main").innerHTML = `<div class="state err">${esc(e.message)}</div>`;
+  $("#generated").textContent = "Lỗi tải dữ liệu";
+}
+
+(async () => {
+  try {
+    const r = await fetch("data/latest.json?t=" + Date.now());
+    if (!r.ok) throw new Error("Chưa có bản tin nào. Chạy `npm run build` hoặc đợi workflow chạy lần đầu.");
+    const d = await r.json();
+    render(d);
+    loadArchive(d.id);
+  } catch (e) { showError(e); }
+})();
+</script>
+</body>
+</html>

@@ -21,20 +21,52 @@ kể cả tin công bố sau giờ.
 
 ## Cài đặt
 
-1. Tạo repo trên GitHub rồi push thư mục này lên.
-2. **Settings → Pages → Source: GitHub Actions**.
-3. **Settings → Actions → General → Workflow permissions: Read and write**.
-4. (Tuỳ chọn, để có tóm tắt tiếng Việt) **Settings → Secrets and variables → Actions**:
-   - Secret `LLM_API_KEY` — khoá Groq miễn phí lấy tại <https://console.groq.com/keys>
-   - Variable `LLM_MODEL` — mặc định `llama-3.3-70b-versatile`
-   - Variable `LLM_BASE_URL` — mặc định `https://api.groq.com/openai/v1`
-5. Vào tab **Actions → Bản tin thị trường → Run workflow** để chạy thử ngay.
+Repo để **private**, GitHub Actions chạy job mỗi sáng, Cloudflare Pages host trang.
+Miễn phí toàn bộ, máy cá nhân không cần bật.
 
-Không có `LLM_API_KEY` thì trang vẫn chạy bình thường, chỉ là giữ tiêu đề tiếng Anh gốc
-thay vì tóm tắt tiếng Việt.
+### 1. Đưa code lên GitHub (repo private)
+
+```bash
+git remote add origin git@github.com:<tài-khoản>/market-digest.git
+git push -u origin main
+```
+
+Trong **Settings → Actions → General → Workflow permissions**, chọn
+**Read and write permissions** — workflow cần quyền này để commit file bản tin.
+
+### 2. Nối Cloudflare Pages
+
+Trên dash.cloudflare.com → **Workers & Pages → Create → Pages → Connect to Git**:
+
+| Mục | Điền |
+|---|---|
+| Repository | `market-digest` (cấp quyền cho repo private khi Cloudflare hỏi) |
+| Production branch | `main` |
+| Framework preset | None |
+| Build command | *(để trống)* |
+| Build output directory | `public` |
+
+Không cần build command vì trang là HTML tĩnh thuần. Mỗi lần workflow commit bản tin
+mới, Cloudflare tự nhận push và deploy lại trong khoảng 30 giây.
+
+### 3. Bật tóm tắt tiếng Việt (tuỳ chọn)
+
+Lấy khoá miễn phí tại <https://console.groq.com/keys>, rồi vào GitHub
+**Settings → Secrets and variables → Actions**:
+
+- Secret `LLM_API_KEY` — khoá Groq
+- Variable `LLM_MODEL` — mặc định `llama-3.3-70b-versatile`
+- Variable `LLM_BASE_URL` — mặc định `https://api.groq.com/openai/v1`
+
+Không có `LLM_API_KEY` thì trang vẫn chạy bình thường, chỉ là giữ tiêu đề tiếng Anh
+gốc và tự phân tầng mức tác động theo điểm, thay vì tóm tắt tiếng Việt.
 
 Vì dùng giao thức OpenAI-compatible nên đổi `LLM_BASE_URL` là chạy được với Cerebras,
 Together, hoặc vLLM tự host — không khoá vào nhà cung cấp nào.
+
+### 4. Chạy thử
+
+Tab **Actions → Bản tin thị trường → Run workflow**. Không cần đợi tới sáng mai.
 
 ## Chạy tại máy
 

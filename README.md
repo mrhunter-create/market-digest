@@ -30,7 +30,7 @@ Tạo repo mới (để **Public** — gói Free chỉ cho GitHub Pages chạy t
 rồi:
 
 ```bash
-git remote add origin git@github.com:<tài-khoản>/market-digest.git
+git remote add origin https://github.com/<tài-khoản>/market-digest.git
 git push -u origin main
 ```
 

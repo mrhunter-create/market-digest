@@ -1,8 +1,8 @@
 {
   "id": "2026-09-06",
   "sessionDate": "2026-09-06",
-  "generatedAt": "2026-09-06T13:11:18.725Z",
-  "overview": null,
+  "generatedAt": "2026-09-06T13:22:22.764Z",
+  "overview": "S&P 500, Nasdaq và Dow giảm lần lượt 0.38%, 0.29% và 0.51% khi nhà đầu tư lo ngại về khả năng tăng lãi suất Fed và căng thẳng địa chính trị tại Trung Đông. Lãi suất trái phiếu 10 năm tăng lên 4.784%, đồng USD mạnh lên và giá dầu duy trì ổn định, tạo áp lực lên cổ phiếu. Thị trường trái phiếu và năng lượng trở thành yếu tố chính chi phối diễn biến phiên.",
   "market": [
     {
       "label": "S&P 500",
@@ -116,11 +116,11 @@
       "label": "Bitcoin",
       "kind": "usd",
       "symbol": "BTC.CM=",
-      "price": 79924.99,
+      "price": 79837.62,
       "prev": 79837.16,
-      "change": 87.83,
-      "changePct": 0.11,
-      "asOf": "2026-09-06T09:11:16.000-0400",
+      "change": 0.46,
+      "changePct": 0,
+      "asOf": "2026-09-06T09:22:21.000-0400",
       "src": "cnbc",
       "ok": true
     }
@@ -168,7 +168,86 @@
         "fed"
       ],
       "score": 27,
-      "impact": "high"
+      "impact": "high",
+      "titleVi": "Trump tăng áp lực lên Warsh khi Fed chuẩn bị tăng lãi suất",
+      "summaryVi": "Chính quyền Trump đang cố gắng ngăn chặn việc Fed tăng lãi suất trong 10 ngày tới, làm tăng lo ngại về chi phí vay và ảnh hưởng tiêu cực tới cổ phiếu."
+    },
+    {
+      "title": "Treasury Yields Extend Decline as Odds of Fed Hike Fall",
+      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxOeDdVdDUwWVFObHJ0OVRIUlZqQmVKVmdSQkpyeUZWTlozWDI3Wk8wSGpycnJLNmFLeDhQd2xjenNDQlYwZnBQV055Rk16dWVxMWMzMGxUT0xSNTJxelhWcEQ0VWNEUy10bkRHTG5sOWJIUGJsR0xtdzdvRFIzTVBzMXp6YVFaWHY5SmZZODFWTjdjR3FXUEJVSUFzNDFEZw?oc=5",
+      "summary": "Treasury Yields Extend Decline as Odds of Fed Hike Fall wsj.com",
+      "date": "2026-09-06T09:39:19.000Z",
+      "source": "WSJ",
+      "sources": [
+        "WSJ"
+      ],
+      "category": "fed",
+      "keywords": [
+        "treasury yield",
+        "fed",
+        "yields"
+      ],
+      "score": 24,
+      "impact": "high",
+      "titleVi": "Lợi suất trái phiếu Kho bạc Mỹ tiếp tục giảm khi khả năng tăng lãi Fed giảm",
+      "summaryVi": "Lợi suất trái phiếu giảm phản ánh kỳ vọng lãi suất thấp hơn, tạo áp lực lên các cổ phiếu tăng trưởng và hỗ trợ các tài sản an toàn."
+    },
+    {
+      "title": "Long-Term Treasury Yields Rise as Iran War Revives Inflation Worries",
+      "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPZjJ0dVZ0ZzNyQXlWNXFBOHlSQjdhdEVEbnFmdTMwZVRlR3hwWkdzUVZESEF5VjZfMU1MZ25hYmFoNHNlVnNTazZZTW5tN1A4c3ZYZlRESHNvUzdGbkhyWVZRMW9FSi1sbC1NZlRTcVBFbGM2d3JNTEt6Z0xHQ0dXeTRuYmtDcndnN2w3cElBakc?oc=5",
+      "summary": "",
+      "date": "2026-09-05T20:54:58.000Z",
+      "source": "WSJ",
+      "sources": [
+        "WSJ"
+      ],
+      "category": "fed",
+      "keywords": [
+        "treasury yield",
+        "yields"
+      ],
+      "score": 18,
+      "impact": "high",
+      "titleVi": "Lợi suất trái phiếu dài hạn tăng khi chiến tranh Iran làm lo ngại lạm phát",
+      "summaryVi": "Xung đột tại Iran làm tăng lo ngại lạm phát, đẩy lợi suất trái phiếu dài hạn lên và gây áp lực giảm lên các cổ phiếu rủi ro."
+    },
+    {
+      "title": "U.S. Stocks Climb as Bond Yields Stay in Spotlight",
+      "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOUDdYMmM3M0MxMkYxV25aRU11U1lwVEtvcFRtUmRFc2FNVC1EZ1VQZW5zY2w4b1lkQjNfMHFoMk1GSnc4Sm9YajFoeS1MTDZwOW0yeGN0WUFlcm9BREl0a1JNdjVQc3haTDVLTVpsOXRWbWQwRThKbFZ5bUJGMXRlNTgwb1pKdy1fNjUwTFl3N0RYMVM2MlB5RmhTaFhnQUYxYzZiLWxzUzdhbTBlVDE1ZE5zd2RpWWp6?oc=5",
+      "summary": "U.S. Stocks Climb as Bond Yields Stay in Spotlight wsj.com",
+      "date": "2026-09-06T06:23:22.000Z",
+      "source": "WSJ",
+      "sources": [
+        "WSJ"
+      ],
+      "category": "markets",
+      "keywords": [
+        "bond yield",
+        "stocks"
+      ],
+      "score": 15,
+      "impact": "high",
+      "titleVi": "Cổ phiếu Mỹ tăng khi lợi suất trái phiếu vẫn là tâm điểm",
+      "summaryVi": "Sự ổn định của lợi suất trái phiếu giúp các cổ phiếu tăng giá, đặc biệt là các ngành tài chính và công nghệ."
+    },
+    {
+      "title": "U.S. Stocks Fall as Oil Surges After New Middle East Strikes",
+      "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOSFU4SHdnZDYyX3lJNzFVWXpkZlRFQkM4MlBOX21NY3BCM3g5QXVOZ0RfNFNzVFlZLThoYTVtWW83bXNuVWk3NnYxS3JGZjBISVBtZF9kVE5SSk5KRWtFYXF3SldSXy1SU2RyM0xNdnFQcFAtYVJha3Ruc1JWN0VwT0ZjRzN1R0xLY0pSdXZOX2o?oc=5",
+      "summary": "U.S. Stocks Fall as Oil Surges After New Middle East Strikes wsj.com",
+      "date": "2026-09-05T17:12:44.000Z",
+      "source": "WSJ",
+      "sources": [
+        "WSJ"
+      ],
+      "category": "policy",
+      "keywords": [
+        "middle east",
+        "stocks"
+      ],
+      "score": 15,
+      "impact": "high",
+      "titleVi": "Cổ phiếu Mỹ giảm khi giá dầu tăng sau các cuộc tấn công mới ở Trung Đông",
+      "summaryVi": "Các cuộc tấn công mới làm giá dầu bứt phá, kéo theo áp lực giảm lên các cổ phiếu tiêu dùng và công nghiệp."
     },
     {
       "title": "OPEC, Allies Agree to Keep Oil Output Steady in October",
@@ -186,42 +265,9 @@
         "opec"
       ],
       "score": 24,
-      "impact": "high"
-    },
-    {
-      "title": "Treasury Yields Extend Decline as Odds of Fed Hike Fall",
-      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxOeDdVdDUwWVFObHJ0OVRIUlZqQmVKVmdSQkpyeUZWTlozWDI3Wk8wSGpycnJLNmFLeDhQd2xjenNDQlYwZnBQV055Rk16dWVxMWMzMGxUT0xSNTJxelhWcEQ0VWNEUy10bkRHTG5sOWJIUGJsR0xtdzdvRFIzTVBzMXp6YVFaWHY5SmZZODFWTjdjR3FXUEJVSUFzNDFEZw?oc=5",
-      "summary": "",
-      "date": "2026-09-06T09:39:19.000Z",
-      "source": "WSJ",
-      "sources": [
-        "WSJ"
-      ],
-      "category": "fed",
-      "keywords": [
-        "treasury yield",
-        "fed",
-        "yields"
-      ],
-      "score": 24,
-      "impact": "high"
-    },
-    {
-      "title": "Many truckers don't feel like the rest of America about AI data centers as business booms",
-      "link": "https://www.cnbc.com/2026/09/05/ai-data-centers-cost-economy.html",
-      "summary": "Sprawling data center components from HVAC systems to tubing, wiring and semiconductors arrive primarily by truck, a boon for a business hit hard by trade wars.",
-      "date": "2026-09-06T12:05:25.000Z",
-      "source": "CNBC",
-      "sources": [
-        "CNBC"
-      ],
-      "category": "policy",
-      "keywords": [
-        "trade war",
-        "semiconductor"
-      ],
-      "score": 22,
-      "impact": "high"
+      "impact": "medium",
+      "titleVi": "OPEC và các đồng minh đồng ý giữ mức sản lượng dầu ổn định tháng 10",
+      "summaryVi": "Quyết định duy trì sản lượng dầu giúp ổn định giá năng lượng, hỗ trợ các cổ phiếu năng lượng Mỹ nhưng không thay đổi xu hướng chung của thị trường."
     },
     {
       "title": "Why the jobs report will actually be good for bonds",
@@ -238,75 +284,9 @@
         "wall street"
       ],
       "score": 18,
-      "impact": "medium"
-    },
-    {
-      "title": "Long-Term Treasury Yields Rise as Iran War Revives Inflation Worries",
-      "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPZjJ0dVZ0ZzNyQXlWNXFBOHlSQjdhdEVEbnFmdTMwZVRlR3hwWkdzUVZESEF5VjZfMU1MZ25hYmFoNHNlVnNTazZZTW5tN1A4c3ZYZlRESHNvUzdGbkhyWVZRMW9FSi1sbC1NZlRTcVBFbGM2d3JNTEt6Z0xHQ0dXeTRuYmtDcndnN2w3cElBakc?oc=5",
-      "summary": "",
-      "date": "2026-09-05T20:54:58.000Z",
-      "source": "WSJ",
-      "sources": [
-        "WSJ"
-      ],
-      "category": "fed",
-      "keywords": [
-        "treasury yield",
-        "yields"
-      ],
-      "score": 18,
-      "impact": "medium"
-    },
-    {
-      "title": "Sugar is outperforming the stock market this year. Here's what's driving it, and where it can go from here",
-      "link": "https://www.cnbc.com/2026/09/06/sugar-is-outperforming-the-stock-market-this-year-whats-driving-it.html",
-      "summary": "The sweetener's prices surged this week, reflecting a sharp deterioration in the global supply outlook.",
-      "date": "2026-09-06T12:48:18.000Z",
-      "source": "CNBC",
-      "sources": [
-        "CNBC",
-        "CNBC Markets"
-      ],
-      "category": "markets",
-      "keywords": [
-        "stock market"
-      ],
-      "score": 15,
-      "impact": "medium"
-    },
-    {
-      "title": "U.S. Stocks Climb as Bond Yields Stay in Spotlight",
-      "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOUDdYMmM3M0MxMkYxV25aRU11U1lwVEtvcFRtUmRFc2FNVC1EZ1VQZW5zY2w4b1lkQjNfMHFoMk1GSnc4Sm9YajFoeS1MTDZwOW0yeGN0WUFlcm9BREl0a1JNdjVQc3haTDVLTVpsOXRWbWQwRThKbFZ5bUJGMXRlNTgwb1pKdy1fNjUwTFl3N0RYMVM2MlB5RmhTaFhnQUYxYzZiLWxzUzdhbTBlVDE1ZE5zd2RpWWp6?oc=5",
-      "summary": "",
-      "date": "2026-09-06T06:23:22.000Z",
-      "source": "WSJ",
-      "sources": [
-        "WSJ"
-      ],
-      "category": "markets",
-      "keywords": [
-        "bond yield",
-        "stocks"
-      ],
-      "score": 15,
-      "impact": "medium"
-    },
-    {
-      "title": "U.S. Stocks Fall as Oil Surges After New Middle East Strikes",
-      "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOSFU4SHdnZDYyX3lJNzFVWXpkZlRFQkM4MlBOX21NY3BCM3g5QXVOZ0RfNFNzVFlZLThoYTVtWW83bXNuVWk3NnYxS3JGZjBISVBtZF9kVE5SSk5KRWtFYXF3SldSXy1SU2RyM0xNdnFQcFAtYVJha3Ruc1JWN0VwT0ZjRzN1R0xLY0pSdXZOX2o?oc=5",
-      "summary": "",
-      "date": "2026-09-05T17:12:44.000Z",
-      "source": "WSJ",
-      "sources": [
-        "WSJ"
-      ],
-      "category": "policy",
-      "keywords": [
-        "middle east",
-        "stocks"
-      ],
-      "score": 15,
-      "impact": "medium"
+      "impact": "medium",
+      "titleVi": "Báo cáo việc làm sẽ tốt cho trái phiếu",
+      "summaryVi": "Các nhà phân tích cho rằng dữ liệu việc làm mạnh sẽ giảm áp lực lãi suất, giúp trái phiếu tăng giá và tạo sức ép giảm lên cổ phiếu."
     },
     {
       "title": "‘Model fatigue’ sets in as AI labs race to roll out new versions at frenetic pace",
@@ -322,23 +302,9 @@
         "nvidia"
       ],
       "score": 13,
-      "impact": "medium"
-    },
-    {
-      "title": "OpenAI acknowledges 'wiki incident' and need for more transparency around unintended AI behavior",
-      "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPU0FtQktXNWY5eEpHaUxBVGI2YWpHWE9SUGUtb1BhUkxLQmJvODRPX01WMnFqeEI2RThKMi1IT0E1eDBSUngtQkIwTUtiQWFjSHpFbXY0Q1BFcjZuUnBkVEZFMnFtOWpLUHVOZ1lZZzIwT3NxSnJnNG5DdHBvWi1STnFWSk1reWZRVkpEQjlCT05fdm8tV3ItQU5kSThCSjZON3ZvNXJhNXB2dWV0Zmt6NlJ1UUxoUDY4ZjZERk1qWmNUNkIxaW01anhRSURSaGlPZkE?oc=5",
-      "summary": "",
-      "date": "2026-09-05T21:23:43.000Z",
-      "source": "Reuters",
-      "sources": [
-        "Reuters"
-      ],
-      "category": "tech",
-      "keywords": [
-        "openai"
-      ],
-      "score": 12,
-      "impact": "low"
+      "impact": "medium",
+      "titleVi": "Mệt mỏi mô hình: các phòng thí nghiệm AI đua nhau ra mắt phiên bản mới",
+      "summaryVi": "Anthropic, OpenAI, Meta và Google liên tục cập nhật mô hình AI, tạo áp lực cạnh tranh trong lĩnh vực công nghệ nhưng tác động trực tiếp tới thị trường chứng khoán còn hạn chế."
     },
     {
       "title": "US military strikes three Iranian crude oil carriers, Central Command says",
@@ -354,7 +320,9 @@
         "crude"
       ],
       "score": 12,
-      "impact": "low"
+      "impact": "medium",
+      "titleVi": "Quân đội Mỹ tấn công ba tàu chở dầu thô Iran",
+      "summaryVi": "Cuộc tấn công làm tăng căng thẳng địa chính trị và có thể đẩy giá dầu lên, ảnh hưởng tới cổ phiếu năng lượng và thị trường chung."
     },
     {
       "title": "5 big analyst AI moves: iPhone launch to be negative for Apple stock",
@@ -370,23 +338,45 @@
         "apple"
       ],
       "score": 11,
-      "impact": "low"
+      "impact": "medium",
+      "titleVi": "5 động thái AI lớn: ra mắt iPhone sẽ gây tiêu cực cho cổ phiếu Apple",
+      "summaryVi": "Các nhà phân tích dự báo iPhone mới sẽ làm giảm lợi nhuận Apple, tạo áp lực giảm lên cổ phiếu công nghệ lớn."
     },
     {
-      "title": "OpenAI’s $1 Billion Cyber Push Backs Cloudflare and SentinelOne. Which Has the Better AI Security Model?",
-      "link": "https://finance.yahoo.com/technology/ai/articles/openai-1-billion-cyber-push-122609472.html",
+      "title": "Lululemon’s Earnings Beat Hid a Bigger Problem for Its Turnaround Story",
+      "link": "https://finance.yahoo.com/markets/stocks/articles/lululemon-earnings-beat-hid-bigger-120500869.html",
       "summary": "",
-      "date": "2026-09-05T12:26:09.000Z",
+      "date": "2026-09-05T12:05:00.000Z",
+      "source": "Yahoo Finance",
+      "sources": [
+        "Yahoo Finance"
+      ],
+      "category": "earnings",
+      "keywords": [
+        "earnings beat"
+      ],
+      "score": 9,
+      "impact": "medium",
+      "titleVi": "Kết quả kinh doanh Lululemon vượt dự đoán nhưng ẩn vấn đề lớn hơn",
+      "summaryVi": "Mặc dù lợi nhuận tốt, Lululemon vẫn đối mặt với thách thức trong việc duy trì tăng trưởng, gây lo ngại cho nhà đầu tư."
+    },
+    {
+      "title": "Recent News From Nvidia and SK Hynix Reveals Exactly What the Market Expects for Micron Technology's Future",
+      "link": "https://finance.yahoo.com/markets/stocks/articles/recent-news-nvidia-sk-hynix-120500853.html",
+      "summary": "",
+      "date": "2026-09-05T12:05:00.000Z",
       "source": "Yahoo Finance",
       "sources": [
         "Yahoo Finance"
       ],
       "category": "tech",
       "keywords": [
-        "openai"
+        "nvidia"
       ],
       "score": 8,
-      "impact": "low"
+      "impact": "medium",
+      "titleVi": "Tin tức Nvidia và SK Hynix cho thấy triển vọng Micron Technology",
+      "summaryVi": "Các thông tin mới từ Nvidia và SK Hynix củng cố kỳ vọng tích cực cho Micron, hỗ trợ cổ phiếu chip nhớ."
     },
     {
       "title": "A Judge Spared Alphabet From an Ad-Tech Breakup but Ordered Changes. Does That Protect Its AI War Chest?",
@@ -402,17 +392,112 @@
         "alphabet"
       ],
       "score": 8,
-      "impact": "low"
+      "impact": "medium",
+      "titleVi": "Tòa án bảo vệ Alphabet khỏi việc chia tách quảng cáo, bảo vệ quỹ AI",
+      "summaryVi": "Quyết định này giúp Alphabet duy trì nguồn thu quảng cáo và tài trợ cho các dự án AI, giảm áp lực tiêu cực lên cổ phiếu."
+    },
+    {
+      "title": "Many truckers don't feel like the rest of America about AI data centers as business booms",
+      "link": "https://www.cnbc.com/2026/09/05/ai-data-centers-cost-economy.html",
+      "summary": "Sprawling data center components from HVAC systems to tubing, wiring and semiconductors arrive primarily by truck, a boon for a business hit hard by trade wars.",
+      "date": "2026-09-06T12:05:25.000Z",
+      "source": "CNBC",
+      "sources": [
+        "CNBC"
+      ],
+      "category": "policy",
+      "keywords": [
+        "trade war",
+        "semiconductor"
+      ],
+      "score": 22,
+      "impact": "low",
+      "titleVi": "Các tài xế xe tải hưởng lợi từ bùng nổ trung tâm dữ liệu AI",
+      "summaryVi": "Nhu cầu vận chuyển thiết bị cho các trung tâm dữ liệu AI tăng, mang lại cơ hội cho ngành vận tải nhưng ảnh hưởng hạn chế tới chỉ số chứng khoán chung."
+    },
+    {
+      "title": "Sugar is outperforming the stock market this year. Here's what's driving it, and where it can go from here",
+      "link": "https://www.cnbc.com/2026/09/06/sugar-is-outperforming-the-stock-market-this-year-whats-driving-it.html",
+      "summary": "The sweetener's prices surged last week, reflecting a sharp deterioration in the global supply outlook.",
+      "date": "2026-09-06T13:19:01.000Z",
+      "source": "CNBC",
+      "sources": [
+        "CNBC",
+        "CNBC Markets"
+      ],
+      "category": "markets",
+      "keywords": [
+        "stock market"
+      ],
+      "score": 15,
+      "impact": "low",
+      "titleVi": "Giá đường ăn đường ngọt vượt mức thị trường chứng khoán năm nay",
+      "summaryVi": "Giá đường ăn tăng mạnh do dự báo nguồn cung toàn cầu suy giảm, tạo lợi nhuận cho các công ty liên quan nhưng ảnh hưởng nhẹ tới chỉ số chung."
+    },
+    {
+      "title": "SB Energy Files for IPO With Nvidia Backing",
+      "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQTWxJS01CY1A4VlhIWXgyNFNwQ296MDQtM3VkYTFpWEhacWtVRmhvUDE2RlFPX09HNXJCXzJIbVdzaU9OMmNQOGxNQ0pWLThIUkJoMlFPekVFZm1fLWxyLVlYMlRHQzB1SFJkYTBPTEJVd3o3clBQaEtiMjJBN0M0TzlyVHNyU20wU3VSeVZJbjF5YjR3?oc=5",
+      "summary": "SB Energy Files for IPO With Nvidia Backing wsj.com",
+      "date": "2026-09-06T11:26:44.000Z",
+      "source": "WSJ",
+      "sources": [
+        "WSJ"
+      ],
+      "category": "earnings",
+      "keywords": [
+        "nvidia"
+      ],
+      "score": 14,
+      "impact": "low",
+      "titleVi": "SB Energy chuẩn bị IPO với sự hỗ trợ của Nvidia",
+      "summaryVi": "SB Energy công bố kế hoạch IPO, nhận sự đầu tư từ Nvidia, tạo tiềm năng cho lĩnh vực năng lượng sạch nhưng ảnh hưởng hạn chế tới thị trường chung."
+    },
+    {
+      "title": "OpenAI acknowledges 'wiki incident' and need for more transparency around unintended AI behavior",
+      "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPU0FtQktXNWY5eEpHaUxBVGI2YWpHWE9SUGUtb1BhUkxLQmJvODRPX01WMnFqeEI2RThKMi1IT0E1eDBSUngtQkIwTUtiQWFjSHpFbXY0Q1BFcjZuUnBkVEZFMnFtOWpLUHVOZ1lZZzIwT3NxSnJnNG5DdHBvWi1STnFWSk1reWZRVkpEQjlCT05fdm8tV3ItQU5kSThCSjZON3ZvNXJhNXB2dWV0Zmt6NlJ1UUxoUDY4ZjZERk1qWmNUNkIxaW01anhRSURSaGlPZkE?oc=5",
+      "summary": "",
+      "date": "2026-09-05T21:23:43.000Z",
+      "source": "Reuters",
+      "sources": [
+        "Reuters"
+      ],
+      "category": "tech",
+      "keywords": [
+        "openai"
+      ],
+      "score": 12,
+      "impact": "low",
+      "titleVi": "OpenAI thừa nhận 'sự cố wiki' và cần tăng tính minh bạch",
+      "summaryVi": "Sự cố gây tranh cãi khiến OpenAI cam kết cải thiện tính minh bạch, ảnh hưởng nhẹ tới niềm tin nhà đầu tư trong lĩnh vực AI."
+    },
+    {
+      "title": "OpenAI’s $1 Billion Cyber Push Backs Cloudflare and SentinelOne. Which Has the Better AI Security Model?",
+      "link": "https://finance.yahoo.com/technology/ai/articles/openai-1-billion-cyber-push-122609472.html",
+      "summary": "",
+      "date": "2026-09-05T12:26:09.000Z",
+      "source": "Yahoo Finance",
+      "sources": [
+        "Yahoo Finance"
+      ],
+      "category": "tech",
+      "keywords": [
+        "openai"
+      ],
+      "score": 8,
+      "impact": "low",
+      "titleVi": "OpenAI đầu tư 1 tỷ USD vào an ninh mạng, thách thức Cloudflare và SentinelOne",
+      "summaryVi": "Đầu tư mạnh vào bảo mật AI của OpenAI có thể thay đổi cạnh tranh trong lĩnh vực an ninh mạng, ảnh hưởng tới các công ty liên quan."
     }
   ],
   "meta": {
     "feeds": 11,
     "scanned": 390,
     "inWindow": 259,
-    "clusters": 221,
-    "relevant": 15,
-    "published": 15,
-    "llm": null,
+    "clusters": 228,
+    "relevant": 18,
+    "published": 18,
+    "llm": "openai/gpt-oss-120b",
+    "llmError": null,
     "marketOk": 10
   }
 }

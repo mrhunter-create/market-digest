@@ -8,7 +8,9 @@ on:
   workflow_dispatch:        # chạy tay từ tab Actions
 
 permissions:
-  contents: write           # chỉ cần quyền commit file data
+  contents: write           # commit file data
+  pages: write              # deploy GitHub Pages
+  id-token: write
 
 concurrency:
   group: digest
@@ -31,7 +33,6 @@ jobs:
           LLM_MODEL:    ${{ vars.LLM_MODEL }}
         run: node scripts/build.mjs
 
-      # Cú push này cũng chính là tín hiệu để Cloudflare Pages build lại trang.
       - name: Lưu bản tin vào repo
         run: |
           git config user.name  "market-digest bot"
@@ -43,3 +44,18 @@ jobs:
             git commit -m "bản tin $(date -u +%Y-%m-%d)"
             git push
           fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

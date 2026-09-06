@@ -21,42 +21,38 @@ kể cả tin công bố sau giờ.
 
 ## Cài đặt
 
-Repo để **private**, GitHub Actions chạy job mỗi sáng, Cloudflare Pages host trang.
+Repo **công khai**, GitHub Actions chạy job mỗi sáng, GitHub Pages host trang.
 Miễn phí toàn bộ, máy cá nhân không cần bật.
 
-### 1. Đưa code lên GitHub (repo private)
+### 1. Đưa code lên GitHub
+
+Tạo repo mới (để **Public** — gói Free chỉ cho GitHub Pages chạy từ repo công khai),
+rồi:
 
 ```bash
 git remote add origin git@github.com:<tài-khoản>/market-digest.git
 git push -u origin main
 ```
 
-Trong **Settings → Actions → General → Workflow permissions**, chọn
-**Read and write permissions** — workflow cần quyền này để commit file bản tin.
+### 2. Bật Pages và quyền ghi
 
-### 2. Nối Cloudflare Pages
+- **Settings → Pages → Source: GitHub Actions**
+- **Settings → Actions → General → Workflow permissions: Read and write permissions**
+  (workflow cần quyền này để commit file bản tin)
 
-Trên dash.cloudflare.com → **Workers & Pages → Create → Pages → Connect to Git**:
-
-| Mục | Điền |
-|---|---|
-| Repository | `market-digest` (cấp quyền cho repo private khi Cloudflare hỏi) |
-| Production branch | `main` |
-| Framework preset | None |
-| Build command | *(để trống)* |
-| Build output directory | `public` |
-
-Không cần build command vì trang là HTML tĩnh thuần. Mỗi lần workflow commit bản tin
-mới, Cloudflare tự nhận push và deploy lại trong khoảng 30 giây.
+Sau lần chạy đầu, trang nằm ở `https://<tài-khoản>.github.io/market-digest/`.
 
 ### 3. Bật tóm tắt tiếng Việt (tuỳ chọn)
 
-Lấy khoá miễn phí tại <https://console.groq.com/keys>, rồi vào GitHub
+Lấy khoá miễn phí tại <https://console.groq.com/keys>, rồi vào
 **Settings → Secrets and variables → Actions**:
 
 - Secret `LLM_API_KEY` — khoá Groq
 - Variable `LLM_MODEL` — mặc định `llama-3.3-70b-versatile`
 - Variable `LLM_BASE_URL` — mặc định `https://api.groq.com/openai/v1`
+
+Đặt khoá ở **Secrets**, không bao giờ viết thẳng vào code — repo công khai nên
+bất kỳ ai cũng đọc được file trong đó, còn Secrets thì không.
 
 Không có `LLM_API_KEY` thì trang vẫn chạy bình thường, chỉ là giữ tiêu đề tiếng Anh
 gốc và tự phân tầng mức tác động theo điểm, thay vì tóm tắt tiếng Việt.

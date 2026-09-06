@@ -2,9 +2,14 @@
 // Groq / Cerebras / Together / vLLM tự host — chỉ cần đổi LLM_BASE_URL.
 // Không có khoá thì bỏ qua hoàn toàn, digest vẫn ra bình thường (tiếng Anh).
 
-const BASE  = process.env.LLM_BASE_URL || "https://api.groq.com/openai/v1";
-const MODEL = process.env.LLM_MODEL    || "llama-3.3-70b-versatile";
-const KEY   = process.env.LLM_API_KEY  || process.env.GROQ_API_KEY || "";
+const BASE = process.env.LLM_BASE_URL || "https://api.groq.com/openai/v1";
+const KEY  = process.env.LLM_API_KEY  || process.env.GROQ_API_KEY || "";
+
+// Nhà cung cấp hay khai tử model (llama-3.3-70b-versatile bị Groq gỡ 16/08/2026),
+// nên thử lần lượt vài model thay vì chết cứng vào một cái.
+const MODELS = process.env.LLM_MODEL
+  ? [process.env.LLM_MODEL]
+  : ["openai/gpt-oss-120b", "qwen/qwen3.6-27b", "openai/gpt-oss-20b", "llama-3.1-8b-instant"];
 
 export const llmEnabled = () => !!KEY;
 
@@ -53,12 +58,12 @@ function extractJson(text) {
   return JSON.parse(raw.slice(start, end + 1));
 }
 
-async function call(messages) {
+async function call(model, messages) {
   const r = await fetch(`${BASE}/chat/completions`, {
     method: "POST",
     headers: { "content-type": "application/json", authorization: `Bearer ${KEY}` },
     body: JSON.stringify({
-      model: MODEL,
+      model,
       messages,
       temperature: 0.2,
       max_tokens: 4000,
@@ -77,12 +82,17 @@ const RANK = { high: 0, medium: 1, low: 2 };
 
 /** Trả về { overview, stories } đã biên tập; lỗi thì trả nguyên bản để digest không bao giờ hỏng. */
 export async function editorialize(market, stories) {
-  if (!KEY) return { overview: null, stories, llm: null };
+  if (!KEY) return { overview: null, stories, llm: null, llmError: null };
+
+  const messages = [
+    { role: "system", content: SYSTEM },
+    { role: "user", content: buildPrompt(market, stories) },
+  ];
+
+  const errors = [];
+  for (const MODEL of MODELS) {
   try {
-    const out = await call([
-      { role: "system", content: SYSTEM },
-      { role: "user", content: buildPrompt(market, stories) },
-    ]);
+    const out = await call(MODEL, messages);
 
     const byId = new Map((out.stories || []).map(s => [Number(s.id), s]));
     const merged = stories
@@ -101,13 +111,20 @@ export async function editorialize(market, stories) {
     if (!merged.length) throw new Error("LLM loại hết tin");
 
     merged.sort((a, b) => (RANK[a.impact] - RANK[b.impact]) || (b.score - a.score));
+    console.log(`  ${MODEL}: ok`);
     return {
       overview: typeof out.overview === "string" ? out.overview.trim() : null,
       stories: merged,
       llm: MODEL,
+      llmError: null,
     };
   } catch (e) {
-    console.warn(`  ! LLM bỏ qua (${e.message}) — dùng tiêu đề gốc`);
-    return { overview: null, stories, llm: null };
+    console.warn(`  ! ${MODEL}: ${e.message}`);
+    errors.push(`${MODEL}: ${e.message}`);
   }
+  }
+
+  // Ghi lỗi vào output luôn — để chẩn đoán được mà không cần mở log Actions.
+  console.warn("  ! Không model nào chạy được — giữ tiêu đề gốc");
+  return { overview: null, stories, llm: null, llmError: errors.join(" | ").slice(0, 400) };
 }

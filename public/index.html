@@ -323,7 +323,8 @@ function render(d) {
   $("#stats").innerHTML =
     `Quét <code>${m.scanned ?? "?"}</code> bài từ <code>${m.feeds ?? "?"}</code> nguồn · `
     + `giữ lại <code>${m.published ?? (d.stories || []).length}</code> tin`
-    + (m.llm ? ` · biên tập bằng <code>${esc(m.llm)}</code>` : ` · chưa bật tóm tắt tiếng Việt`);
+    + (m.llm ? ` · biên tập bằng <code>${esc(m.llm)}</code>` : ` · chưa bật tóm tắt tiếng Việt`)
+    + (m.llmError ? `<br>LLM lỗi: <code>${esc(m.llmError)}</code>` : "");
 }
 
 /* ---- load ---- */

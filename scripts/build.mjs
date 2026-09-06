@@ -52,6 +52,7 @@ async function main() {
       relevant: news.relevant,
       published: edited.stories.length,
       llm: edited.llm,
+      llmError: edited.llmError || null,
       marketOk: okCount,
     },
   };

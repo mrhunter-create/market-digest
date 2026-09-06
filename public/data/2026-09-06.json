@@ -1,7 +1,7 @@
 {
   "id": "2026-09-06",
   "sessionDate": "2026-09-06",
-  "generatedAt": "2026-09-06T12:35:38.467Z",
+  "generatedAt": "2026-09-06T13:11:18.725Z",
   "overview": null,
   "market": [
     {
@@ -116,11 +116,11 @@
       "label": "Bitcoin",
       "kind": "usd",
       "symbol": "BTC.CM=",
-      "price": 79997.76,
+      "price": 79924.99,
       "prev": 79837.16,
-      "change": 160.6,
-      "changePct": 0.2,
-      "asOf": "2026-09-06T08:35:36.000-0400",
+      "change": 87.83,
+      "changePct": 0.11,
+      "asOf": "2026-09-06T09:11:16.000-0400",
       "src": "cnbc",
       "ok": true
     }
@@ -171,6 +171,24 @@
       "impact": "high"
     },
     {
+      "title": "OPEC, Allies Agree to Keep Oil Output Steady in October",
+      "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQd2d4emgzSU5TQ0VraEI4TGh1blNYTFhvTFBLUlFTajZZWUhSOUt6QUs3amE2c1E3U2UydUcyYVRDd2JvYnpRdjhpa2pGcmU2N1pxdHlhbkg5MXhhazNWeDRqYVZkdlNQdlpvcndXQzlHQXVGaWpEZlkzd0xNOXJaaWVZc05sQkVrSjQ3VUNHUHYzV3RiM05hQVkyZEVvZ2RkbVlwWURn?oc=5",
+      "summary": "",
+      "date": "2026-09-06T11:38:00.000Z",
+      "source": "WSJ",
+      "sources": [
+        "CNBC",
+        "Reuters",
+        "WSJ"
+      ],
+      "category": "commod",
+      "keywords": [
+        "opec"
+      ],
+      "score": 24,
+      "impact": "high"
+    },
+    {
       "title": "Treasury Yields Extend Decline as Odds of Fed Hike Fall",
       "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxOeDdVdDUwWVFObHJ0OVRIUlZqQmVKVmdSQkpyeUZWTlozWDI3Wk8wSGpycnJLNmFLeDhQd2xjenNDQlYwZnBQV055Rk16dWVxMWMzMGxUT0xSNTJxelhWcEQ0VWNEUy10bkRHTG5sOWJIUGJsR0xtdzdvRFIzTVBzMXp6YVFaWHY5SmZZODFWTjdjR3FXUEJVSUFzNDFEZw?oc=5",
       "summary": "",
@@ -189,24 +207,6 @@
       "impact": "high"
     },
     {
-      "title": "We got more defensive last week as Wall Street raised the bar for AI stocks",
-      "link": "https://www.cnbc.com/2026/09/05/we-got-more-defensive-last-week-as-wall-street-raised-the-bar-for-ai-stocks.html",
-      "summary": "We initiated positions in defensive stocks to balance our AI exposure amid higher oil prices and Treasury yields.",
-      "date": "2026-09-05T16:45:14.000Z",
-      "source": "CNBC",
-      "sources": [
-        "CNBC"
-      ],
-      "category": "fed",
-      "keywords": [
-        "treasury yield",
-        "oil price",
-        "wall street"
-      ],
-      "score": 23,
-      "impact": "high"
-    },
-    {
       "title": "Many truckers don't feel like the rest of America about AI data centers as business booms",
       "link": "https://www.cnbc.com/2026/09/05/ai-data-centers-cost-economy.html",
       "summary": "Sprawling data center components from HVAC systems to tubing, wiring and semiconductors arrive primarily by truck, a boon for a business hit hard by trade wars.",
@@ -222,23 +222,6 @@
       ],
       "score": 22,
       "impact": "high"
-    },
-    {
-      "title": "OPEC+ keeps oil output policy unchanged for October",
-      "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPWEdjS0pVMy1JLXZFN0V6ZFhjdjNOOXpjRnUtYXdYZEdjbzNaR2R6TGU4UTRDVEdLazJuMS12eHp6d0hWQjI0ZzdhRTUtbVBqR3NhSGRES0UxbG1TZ29QX1hjaWZFNWs1RWNWV1E0azdPVDNIR2x4TGJYMzdDZ3YtVUN1VzZEam5Tb3pXYy1TejN0VFMxYjI1U3ByeFZDZmZ1UnFYX053R3N3YzhST3dSWGdB?oc=5",
-      "summary": "",
-      "date": "2026-09-06T12:03:29.000Z",
-      "source": "Reuters",
-      "sources": [
-        "Reuters",
-        "WSJ"
-      ],
-      "category": "commod",
-      "keywords": [
-        "opec"
-      ],
-      "score": 19,
-      "impact": "medium"
     },
     {
       "title": "Why the jobs report will actually be good for bonds",
@@ -272,6 +255,23 @@
         "yields"
       ],
       "score": 18,
+      "impact": "medium"
+    },
+    {
+      "title": "Sugar is outperforming the stock market this year. Here's what's driving it, and where it can go from here",
+      "link": "https://www.cnbc.com/2026/09/06/sugar-is-outperforming-the-stock-market-this-year-whats-driving-it.html",
+      "summary": "The sweetener's prices surged this week, reflecting a sharp deterioration in the global supply outlook.",
+      "date": "2026-09-06T12:48:18.000Z",
+      "source": "CNBC",
+      "sources": [
+        "CNBC",
+        "CNBC Markets"
+      ],
+      "category": "markets",
+      "keywords": [
+        "stock market"
+      ],
+      "score": 15,
       "impact": "medium"
     },
     {
@@ -360,7 +360,7 @@
       "title": "5 big analyst AI moves: iPhone launch to be negative for Apple stock",
       "link": "https://www.investing.com/news/stock-market-news/5-big-analyst-ai-moves-iphone-launch-to-be-negative-for-apple-stock-4890227",
       "summary": "",
-      "date": "2026-09-05T23:38:50.000Z",
+      "date": "2026-09-06T07:38:50.000Z",
       "source": "Investing.com",
       "sources": [
         "Investing.com"
@@ -369,23 +369,7 @@
       "keywords": [
         "apple"
       ],
-      "score": 9,
-      "impact": "low"
-    },
-    {
-      "title": "A Judge Spared Alphabet From an Ad-Tech Breakup but Ordered Changes. Does That Protect Its AI War Chest?",
-      "link": "https://finance.yahoo.com/media-advertising/articles/judge-spared-alphabet-ad-tech-090718689.html",
-      "summary": "",
-      "date": "2026-09-05T09:07:18.000Z",
-      "source": "Yahoo Finance",
-      "sources": [
-        "Yahoo Finance"
-      ],
-      "category": "policy",
-      "keywords": [
-        "alphabet"
-      ],
-      "score": 8,
+      "score": 11,
       "impact": "low"
     },
     {
@@ -403,13 +387,29 @@
       ],
       "score": 8,
       "impact": "low"
+    },
+    {
+      "title": "A Judge Spared Alphabet From an Ad-Tech Breakup but Ordered Changes. Does That Protect Its AI War Chest?",
+      "link": "https://finance.yahoo.com/media-advertising/articles/judge-spared-alphabet-ad-tech-090718689.html",
+      "summary": "",
+      "date": "2026-09-05T09:07:18.000Z",
+      "source": "Yahoo Finance",
+      "sources": [
+        "Yahoo Finance"
+      ],
+      "category": "policy",
+      "keywords": [
+        "alphabet"
+      ],
+      "score": 8,
+      "impact": "low"
     }
   ],
   "meta": {
     "feeds": 11,
-    "scanned": 389,
-    "inWindow": 252,
-    "clusters": 222,
+    "scanned": 390,
+    "inWindow": 259,
+    "clusters": 221,
     "relevant": 15,
     "published": 15,
     "llm": null,

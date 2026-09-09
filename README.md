@@ -12,7 +12,9 @@ GitHub Actions (23:00 UTC, T2–T6)
         ├─ Nasdaq calendar ─►  lịch số liệu vĩ mô + báo cáo lợi nhuận phiên tới
         ├─ CNBC quote API ─►  34 mã: chỉ số, lợi suất, hàng hoá, cổ phiếu lớn,
         │                     nhóm ngành, thị trường thế giới
-        └─ LLM (tuỳ chọn) ─►  tóm tắt tiếng Việt + loại tin không liên quan
+        └─ LLM (tuỳ chọn) ─►  2 lượt gọi độc lập:
+             • phân tích: nhận định phiên, động lực chính, việc cần theo dõi
+             • tin: dịch tiêu đề, tóm tắt, ý nghĩa với xu hướng
         │
         └─► public/data/YYYY-MM-DD.json  ──►  GitHub Pages
 ```
@@ -57,7 +59,10 @@ Lấy khoá miễn phí tại <https://console.groq.com/keys>, rồi vào
 bất kỳ ai cũng đọc được file trong đó, còn Secrets thì không.
 
 Không có `LLM_API_KEY` thì trang vẫn chạy bình thường, chỉ là giữ tiêu đề tiếng Anh
-gốc và tự phân tầng mức tác động theo điểm, thay vì tóm tắt tiếng Việt.
+gốc và tự phân tầng mức tác động theo điểm — mất phần tiếng Việt và phần phân tích.
+
+Hai lượt gọi LLM độc lập nhau: lượt phân tích lỗi thì vẫn còn tin đã dịch, và ngược
+lại. Lỗi của từng lượt được ghi vào `meta.llmError` và hiện ở chân trang.
 
 Vì dùng giao thức OpenAI-compatible nên đổi `LLM_BASE_URL` là chạy được với Cerebras,
 Together, hoặc vLLM tự host — không khoá vào nhà cung cấp nào.

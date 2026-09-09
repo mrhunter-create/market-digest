@@ -95,6 +95,29 @@ select:hover,button.ghost:hover{border-color:var(--ink-3); color:var(--ink)}
   letter-spacing:-.005em;
 }
 
+/* ---------- Phân tích ---------- */
+.analysis{padding-top:30px}
+.an-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 34px}
+.pt{padding:11px 0; border-bottom:1px solid var(--rule-2)}
+.pt:last-child{border-bottom:0}
+.pt .h{
+  display:block; font-size:13px; font-weight:600; color:var(--ink);
+  letter-spacing:-.005em; margin-bottom:3px;
+}
+.pt .h::before{content:""; display:inline-block; width:5px; height:5px; border-radius:50%;
+  background:var(--accent); margin-right:8px; vertical-align:2px}
+.pt.w .h::before{background:var(--ink-3)}
+.pt .x{display:block; font-size:13px; line-height:1.6; color:var(--ink-2)}
+
+.story .imp{
+  margin:9px 0 10px; padding:9px 0 0; border-top:1px dashed var(--rule);
+  font-size:13.5px; line-height:1.6; color:var(--ink-2);
+}
+.story .imp b{
+  display:block; font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--accent); font-weight:600; margin-bottom:3px;
+}
+
 /* ---------- Lịch phiên tới ---------- */
 .cal{padding-top:32px}
 .cal-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 34px}
@@ -198,7 +221,7 @@ footer code{font-family:var(--mono); font-size:11px}
   .tick:last-child{padding-right:18px; border-right:0}
   .tick .val{font-size:15px}
   .overview p{font-size:18px}
-  .board-grid,.cal-grid{grid-template-columns:1fr; gap:0}
+  .board-grid,.cal-grid,.an-grid{grid-template-columns:1fr; gap:0}
   .story h3{font-size:17.5px}
   article.story.high h3{font-size:19px}
   article.story.high{margin-left:-12px; padding-left:10px}
@@ -233,6 +256,7 @@ footer code{font-family:var(--mono); font-size:11px}
 
 <div class="wrap">
   <div id="overview"></div>
+  <div id="analysis"></div>
   <div id="calendar"></div>
   <main id="main"><div class="state">Đang tải bản tin…</div></main>
   <div id="board"></div>
@@ -325,6 +349,7 @@ function renderStory(s) {
   return `<article class="story ${impact === "high" ? "high" : ""}">
     <h3><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(title)}</a></h3>
     ${s.summaryVi ? `<p class="sum">${esc(s.summaryVi)}</p>` : (s.summary ? `<p class="sum">${esc(trunc(s.summary, 220))}</p>` : "")}
+    ${s.implicationVi ? `<div class="imp"><b>Ý nghĩa với xu hướng</b>${esc(s.implicationVi)}</div>` : ""}
     ${showOrig ? `<p class="orig">${esc(s.title)}</p>` : ""}
     <div class="foot">
       <span class="badge ${impact}">${IMPACT[impact] || IMPACT.medium}</span>
@@ -334,6 +359,21 @@ function renderStory(s) {
       ${s.date ? `<span class="dot">·</span><span>${esc(relTime(s.date))}</span>` : ""}
     </div>
   </article>`;
+}
+
+function renderAnalysis(d) {
+  const pts = (list, cls) => list.map(p =>
+    `<div class="pt ${cls}"><span class="h">${esc(p.title)}</span><span class="x">${esc(p.text)}</span></div>`
+  ).join("");
+
+  const drivers = d.drivers || [];
+  const watch = d.watch || [];
+  if (!drivers.length && !watch.length) return "";
+
+  return `<section class="analysis"><h2>Phân tích phiên</h2><div class="an-grid">
+    ${drivers.length ? `<div class="blk"><h4>Động lực chính</h4>${pts(drivers, "")}</div>` : ""}
+    ${watch.length ? `<div class="blk"><h4>Cần theo dõi</h4>${pts(watch, "w")}</div>` : ""}
+  </div></section>`;
 }
 
 function renderCalendar(d) {
@@ -411,6 +451,7 @@ function render(d) {
     ? `<div class="overview"><div class="eyebrow">Tổng quan phiên</div><p>${esc(d.overview)}</p></div>`
     : "";
 
+  $("#analysis").innerHTML = renderAnalysis(d);
   $("#calendar").innerHTML = renderCalendar(d);
 
   const order = (d.categories || []).map(c => c.id);

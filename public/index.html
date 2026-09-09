@@ -4,248 +4,270 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bản tin Thị trường Mỹ</title>
-<meta name="description" content="Tổng hợp mỗi sáng những tin có thể ảnh hưởng tới thị trường chứng khoán Mỹ.">
-<meta name="color-scheme" content="light dark">
+<meta name="description" content="Tổng hợp và phân tích mỗi sáng những gì có thể ảnh hưởng tới thị trường chứng khoán Mỹ.">
+<meta name="color-scheme" content="dark light">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+/* ══ Bảng màu: nền tối là mặc định, sáng là biến thể ══ */
 :root{
-  --paper:#fbfaf8; --surface:#ffffff; --ink:#16181d; --ink-2:#4a5058; --ink-3:#868d97;
-  --rule:#e4e0d9; --rule-2:#efece6; --accent:#8a5a2b;
-  --up:#0b7a4b; --down:#b3352c; --flat:#868d97;
-  --hi-bg:#fdf6ec; --hi-line:#d9a441;
-  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --bg:#0a0c0f; --bg-2:#101318; --bg-3:#151920; --card:#0e1116;
+  --ink:#eceae6; --ink-2:#9aa3af; --ink-3:#5f6874;
+  --rule:#1e232b; --rule-2:#171b21; --grid:#141821;
+  --accent:#d9a34a; --accent-dim:#7a5f2c;
+  --up:#3ecf8e; --down:#f2695e; --flat:#6b7280;
+  --alert:#f2695e; --watch:#d9a34a; --calm:#3ecf8e;
+  --serif:"Newsreader",Georgia,serif;
   --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
 }
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --paper:#0e1013; --surface:#15181d; --ink:#e9e7e3; --ink-2:#a8aeb8; --ink-3:#767d88;
-    --rule:#262a31; --rule-2:#1d2127; --accent:#d0a068;
-    --up:#3ecf8e; --down:#f0665c; --flat:#767d88;
-    --hi-bg:#1c1a15; --hi-line:#8a6a2a;
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    --bg:#fbfaf8; --bg-2:#ffffff; --bg-3:#f4f2ee; --card:#ffffff;
+    --ink:#14171c; --ink-2:#4d545e; --ink-3:#8b929c;
+    --rule:#e2ded6; --rule-2:#ece9e2; --grid:#efece5;
+    --accent:#96662a; --accent-dim:#c8ad82;
+    --up:#0b7a4b; --down:#b3352c; --flat:#8b929c;
+    --alert:#b3352c; --watch:#96662a; --calm:#0b7a4b;
   }
 }
-:root[data-theme="dark"]{
-  --paper:#0e1013; --surface:#15181d; --ink:#e9e7e3; --ink-2:#a8aeb8; --ink-3:#767d88;
-  --rule:#262a31; --rule-2:#1d2127; --accent:#d0a068;
-  --up:#3ecf8e; --down:#f0665c; --flat:#767d88;
-  --hi-bg:#1c1a15; --hi-line:#8a6a2a;
+:root[data-theme="light"]{
+  --bg:#fbfaf8; --bg-2:#ffffff; --bg-3:#f4f2ee; --card:#ffffff;
+  --ink:#14171c; --ink-2:#4d545e; --ink-3:#8b929c;
+  --rule:#e2ded6; --rule-2:#ece9e2; --grid:#efece5;
+  --accent:#96662a; --accent-dim:#c8ad82;
+  --up:#0b7a4b; --down:#b3352c; --flat:#8b929c;
+  --alert:#b3352c; --watch:#96662a; --calm:#0b7a4b;
 }
 
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{
-  margin:0; background:var(--paper); color:var(--ink);
+  margin:0; background:var(--bg); color:var(--ink);
   font-family:var(--sans); font-size:16px; line-height:1.6;
-  -webkit-font-smoothing:antialiased;
+  -webkit-font-smoothing:antialiased; font-variant-numeric:tabular-nums;
 }
 a{color:inherit}
-.wrap{max-width:820px; margin:0 auto; padding:0 24px}
-
-/* ---------- Masthead ---------- */
-header.mast{border-bottom:1px solid var(--rule); background:var(--surface)}
-.mast-in{display:flex; align-items:flex-end; justify-content:space-between; gap:20px; padding:26px 0 18px}
-.brand{display:block}
-.kicker{
-  font-size:11px; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--accent); font-weight:600; margin-bottom:6px;
-}
-h1{
-  font-family:var(--serif); font-weight:500; font-size:34px; line-height:1.1;
-  margin:0; letter-spacing:-.01em;
-}
-.mast-meta{text-align:right; font-size:12.5px; color:var(--ink-3); line-height:1.5; white-space:nowrap}
-.mast-meta b{display:block; color:var(--ink-2); font-weight:600; font-size:13px}
-.controls{display:flex; gap:8px; align-items:center; margin-top:8px; justify-content:flex-end}
-select,button.ghost{
-  font-family:var(--sans); font-size:12.5px; color:var(--ink-2);
-  background:var(--paper); border:1px solid var(--rule); border-radius:6px;
-  padding:5px 9px; cursor:pointer; line-height:1.3;
-}
-select:hover,button.ghost:hover{border-color:var(--ink-3); color:var(--ink)}
-
-/* ---------- Dải số liệu ---------- */
-.tape{border-bottom:1px solid var(--rule); background:var(--surface)}
-.tape-grid{
-  display:grid; grid-template-columns:repeat(5,1fr);
-  border-left:1px solid var(--rule-2);
-}
-.tick{
-  padding:13px 14px; border-right:1px solid var(--rule-2); border-top:1px solid var(--rule-2);
-  min-width:0;
-}
-.tick .lbl{
-  font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3);
-  font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-}
-.tick .val{font-family:var(--mono); font-size:16px; font-weight:500; margin-top:4px; letter-spacing:-.02em}
-.tick .chg{font-family:var(--mono); font-size:12px; margin-top:2px; font-weight:500}
+.wrap{max-width:1080px; margin:0 auto; padding:0 28px}
+.mono{font-family:var(--mono); letter-spacing:-.02em}
 .up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--flat)}
 
-/* ---------- Tổng quan ---------- */
-.overview{padding:34px 0 30px; border-bottom:1px solid var(--rule)}
-.overview .eyebrow{
-  font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-  color:var(--ink-3); font-weight:600; margin-bottom:12px;
+/* ══ Nhãn mục ══ */
+.eyebrow{
+  font-size:10.5px; letter-spacing:.16em; text-transform:uppercase;
+  font-weight:600; color:var(--ink-3);
 }
-.overview p{
-  font-family:var(--serif); font-size:21px; line-height:1.55; margin:0; color:var(--ink);
-  letter-spacing:-.005em;
+h2.sec{
+  font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:700;
+  color:var(--accent); margin:0 0 14px; padding-bottom:11px;
+  border-bottom:1px solid var(--rule);
+  display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+}
+h2.sec .n{font-family:var(--mono); color:var(--ink-3); letter-spacing:0; font-weight:400; font-size:11px}
+h4.blk-h{
+  margin:0 0 10px; font-size:10px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:600;
 }
 
-/* ---------- Phân tích ---------- */
-.analysis{padding-top:30px}
-.an-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 34px}
-.pt{padding:11px 0; border-bottom:1px solid var(--rule-2)}
-.pt:last-child{border-bottom:0}
-.pt .h{
-  display:block; font-size:13px; font-weight:600; color:var(--ink);
-  letter-spacing:-.005em; margin-bottom:3px;
+/* ══ Masthead ══ */
+header.mast{background:var(--bg-2); border-bottom:1px solid var(--rule)}
+.mast-in{display:flex; align-items:flex-end; justify-content:space-between; gap:24px; padding:30px 0 20px}
+h1{
+  font-family:var(--serif); font-weight:600; font-size:40px; line-height:1;
+  margin:6px 0 0; letter-spacing:-.022em;
 }
-.pt .h::before{content:""; display:inline-block; width:5px; height:5px; border-radius:50%;
-  background:var(--accent); margin-right:8px; vertical-align:2px}
-.pt.w .h::before{background:var(--ink-3)}
-.pt .x{display:block; font-size:13px; line-height:1.6; color:var(--ink-2)}
+h1 span{color:var(--accent)}
+.mast-meta{text-align:right; flex:0 0 auto}
+.mast-meta .s{font-family:var(--mono); font-size:13px; font-weight:500; color:var(--ink); white-space:nowrap}
+.mast-meta .g{font-size:11.5px; color:var(--ink-3); margin-top:3px; white-space:nowrap}
+.controls{display:flex; gap:7px; justify-content:flex-end; margin-top:11px}
+select,button.ghost{
+  font-family:var(--sans); font-size:12px; color:var(--ink-2);
+  background:var(--bg-3); border:1px solid var(--rule); border-radius:5px;
+  padding:5px 9px; cursor:pointer; line-height:1.3;
+}
+select:hover,button.ghost:hover{border-color:var(--accent-dim); color:var(--ink)}
 
+/* ══ Dải chỉ số ══ */
+.tape{background:var(--bg-2); border-bottom:1px solid var(--rule)}
+.tape-grid{display:grid; grid-template-columns:repeat(5,1fr)}
+.tick{padding:14px 16px; border-right:1px solid var(--grid); border-top:1px solid var(--grid); min-width:0}
+.tick:nth-child(5n){border-right:0}
+.tick .lbl{font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-3); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.tick .val{font-family:var(--mono); font-size:19px; font-weight:500; margin-top:5px; letter-spacing:-.035em}
+.tick .chg{font-family:var(--mono); font-size:12px; margin-top:2px; font-weight:500}
+
+/* ══ Kết luận ══ */
+.verdict{padding:36px 0 30px; border-bottom:1px solid var(--rule)}
+.verdict .q{
+  font-family:var(--serif); font-size:27px; line-height:1.4; margin:12px 0 0;
+  letter-spacing:-.012em; border-left:3px solid var(--accent); padding-left:22px;
+}
+
+/* ══ Tín hiệu ══ */
+.signals{padding:32px 0 4px}
+.sig-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
+.sig{background:var(--card); border:1px solid var(--rule); border-radius:7px; padding:14px 15px}
+.sig .top{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+.sig .nm{font-size:11.5px; color:var(--ink-2); font-weight:500; line-height:1.35}
+.sig .v{font-family:var(--mono); font-size:17px; font-weight:700; letter-spacing:-.035em; white-space:nowrap}
+.chip{
+  display:inline-block; margin-top:9px; font-size:10px; letter-spacing:.09em;
+  text-transform:uppercase; font-weight:700; padding:3px 8px; border-radius:3px;
+}
+.chip.alert{color:var(--alert); background:color-mix(in srgb, var(--alert) 13%, transparent)}
+.chip.watch{color:var(--watch); background:color-mix(in srgb, var(--watch) 15%, transparent)}
+.chip.calm{color:var(--calm); background:color-mix(in srgb, var(--calm) 13%, transparent)}
+.sig .note{font-size:12px; line-height:1.55; color:var(--ink-2); margin-top:9px}
+.sig .inp{font-family:var(--mono); font-size:10.5px; color:var(--ink-3); margin-top:7px; line-height:1.45}
+
+/* ══ Chuỗi suy luận ══ */
+.chains{padding:34px 0 4px}
+.chain{
+  background:var(--card); border:1px solid var(--rule); border-radius:8px;
+  padding:20px 22px; margin-bottom:14px;
+}
+.chain .sig-t{
+  font-family:var(--mono); font-size:12px; font-weight:700; color:var(--accent);
+  letter-spacing:-.01em; line-height:1.4;
+}
+.chain .hid{
+  font-family:var(--serif); font-size:17.5px; line-height:1.5; color:var(--ink);
+  margin:9px 0 0; letter-spacing:-.006em;
+}
+.chain .hid::before{
+  content:"Ẩn ý"; display:block; font-family:var(--sans); font-size:9.5px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);
+  font-weight:600; margin-bottom:5px;
+}
+ol.steps{list-style:none; margin:18px 0 0; padding:0; position:relative}
+ol.steps::before{
+  content:""; position:absolute; left:10px; top:9px; bottom:12px;
+  width:1px; background:var(--rule);
+}
+ol.steps li{position:relative; padding:0 0 13px 34px; font-size:13.5px; line-height:1.6; color:var(--ink-2)}
+ol.steps li:last-child{padding-bottom:2px}
+ol.steps li::before{
+  content:counter(s); counter-increment:s;
+  position:absolute; left:0; top:0; width:21px; height:21px; border-radius:50%;
+  background:var(--bg-3); border:1px solid var(--rule); color:var(--accent);
+  font-family:var(--mono); font-size:10.5px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+}
+ol.steps{counter-reset:s}
+.chain .ev{display:flex; flex-wrap:wrap; gap:6px; margin-top:14px}
+.chain .ev span{
+  font-family:var(--mono); font-size:11px; color:var(--ink-2);
+  background:var(--bg-3); border:1px solid var(--rule-2);
+  padding:4px 8px; border-radius:4px; line-height:1.4;
+}
+.chain .inv{
+  margin-top:15px; padding-top:12px; border-top:1px dashed var(--rule);
+  font-size:12.5px; line-height:1.55; color:var(--ink-2);
+}
+.chain .inv b{
+  color:var(--down); font-size:9.5px; letter-spacing:.13em; text-transform:uppercase;
+  font-weight:700; display:block; margin-bottom:4px;
+}
+
+/* ══ Bị bỏ qua / Lịch / Bảng: khối 2 cột ══ */
+.two{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 38px}
+.pad{padding-top:32px}
+.item{padding:11px 0; border-bottom:1px solid var(--rule-2)}
+.item:last-child{border-bottom:0}
+.item .h{display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:3px}
+.item .h::before{content:"◆"; color:var(--accent); font-size:8px; margin-right:8px; vertical-align:2px}
+.item .x{display:block; font-size:12.5px; line-height:1.6; color:var(--ink-2)}
+
+.ev-row{display:flex; gap:13px; padding:10px 0; border-bottom:1px solid var(--rule-2)}
+.ev-row:last-child{border-bottom:0}
+.ev-row .t{font-family:var(--mono); font-size:11.5px; color:var(--accent); flex:0 0 44px; padding-top:2px; font-weight:500}
+.ev-row .b{flex:1; min-width:0}
+.ev-row .n{display:block; font-size:13px; color:var(--ink); line-height:1.4}
+.ev-row .n b{font-family:var(--mono); font-size:12px; font-weight:700; margin-right:8px; color:var(--accent)}
+.ev-row .d{display:block; font-size:11.5px; color:var(--ink-3); line-height:1.5; margin-top:2px}
+.ev-row .d em{font-style:italic}
+
+.row{display:flex; align-items:baseline; gap:10px; padding:7px 0; border-bottom:1px solid var(--rule-2); font-size:13px}
+.row:last-child{border-bottom:0}
+.row .nm{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink-2)}
+.row .pv{font-family:var(--mono); font-size:12.5px; color:var(--ink)}
+.row .pc{font-family:var(--mono); font-size:12px; font-weight:500; min-width:64px; text-align:right}
+
+/* ══ Tin ══ */
+main{padding-bottom:20px}
+section.cat{padding-top:34px}
+article.story{padding:20px 0; border-bottom:1px solid var(--rule-2)}
+article.story.high{padding-left:18px; margin-left:-20px; border-left:2px solid var(--accent)}
+.story h3{font-family:var(--serif); font-size:21px; line-height:1.32; font-weight:600; margin:0 0 8px; letter-spacing:-.012em}
+article.story.high h3{font-size:23px}
+.story h3 a{text-decoration:none}
+.story h3 a:hover{text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:4px}
+.story p.sum{margin:0 0 10px; font-size:14.5px; line-height:1.62; color:var(--ink-2)}
 .story .imp{
-  margin:9px 0 10px; padding:9px 0 0; border-top:1px dashed var(--rule);
+  margin:10px 0 11px; padding:11px 14px; border-radius:6px;
+  background:var(--bg-3); border-left:2px solid var(--accent-dim);
   font-size:13.5px; line-height:1.6; color:var(--ink-2);
 }
 .story .imp b{
-  display:block; font-size:10px; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--accent); font-weight:600; margin-bottom:3px;
+  display:block; font-size:9.5px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--accent); font-weight:700; margin-bottom:4px;
 }
-
-/* ---------- Lịch phiên tới ---------- */
-.cal{padding-top:32px}
-.cal-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 34px}
-.ev{display:flex; gap:12px; padding:9px 0; border-bottom:1px solid var(--rule-2)}
-.ev:last-child{border-bottom:0}
-.ev .t{
-  font-family:var(--mono); font-size:12px; color:var(--ink-3);
-  flex:0 0 42px; padding-top:2px; letter-spacing:-.02em;
-}
-.ev .b{flex:1; min-width:0}
-.blk .ev:not(:has(.t)) .b{padding-left:2px}
-.ev .n{display:block; font-size:13.5px; color:var(--ink); line-height:1.4}
-.ev .n b{font-family:var(--mono); font-size:12.5px; font-weight:600; margin-right:7px}
-.ev .d{display:block; font-size:11.5px; color:var(--ink-3); line-height:1.5; margin-top:1px}
-.ev .d em{font-style:italic}
-
-/* ---------- Tin ---------- */
-main{padding-bottom:64px}
-section.cat{padding-top:34px}
-h2{
-  font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
-  color:var(--accent); margin:0 0 4px; padding-bottom:10px; border-bottom:1px solid var(--rule);
-  display:flex; justify-content:space-between; align-items:baseline;
-}
-h2 .n{font-family:var(--mono); color:var(--ink-3); letter-spacing:0; font-weight:400}
-
-article.story{padding:20px 0; border-bottom:1px solid var(--rule-2); position:relative}
-article.story.high{
-  padding-left:16px; margin-left:-18px;
-  border-left:2px solid var(--hi-line);
-}
-article.story.high h3{font-size:22px}
-.story h3{
-  font-family:var(--serif); font-size:20px; line-height:1.32; font-weight:600;
-  margin:0 0 7px; letter-spacing:-.01em;
-}
-.story h3 a{text-decoration:none}
-.story h3 a:hover{text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:3px}
-.story p.sum{margin:0 0 9px; font-size:14.5px; line-height:1.62; color:var(--ink-2)}
-.story .orig{
-  margin:0 0 9px; font-size:12.5px; line-height:1.5; color:var(--ink-3);
-  font-style:italic;
-}
+.story .orig{margin:0 0 9px; font-size:12.5px; line-height:1.5; color:var(--ink-3); font-style:italic}
 .story .foot{display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-size:11.5px; color:var(--ink-3)}
-.src{
-  font-weight:600; color:var(--ink-2); letter-spacing:.02em;
-}
+.src{font-weight:600; color:var(--ink-2)}
 .dot{color:var(--rule)}
-.badge{
-  font-size:10px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
-  padding:2.5px 7px; border-radius:3px; border:1px solid currentColor;
-}
-.badge.high{color:var(--paper); background:var(--accent); border-color:var(--accent)}
+.badge{font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:700; padding:3px 7px; border-radius:3px; border:1px solid currentColor}
+.badge.high{color:var(--bg); background:var(--accent); border-color:var(--accent)}
 .badge.medium{color:var(--ink-2)}
 .badge.low{color:var(--ink-3)}
-.corr{font-family:var(--mono); font-size:11px}
 
-/* ---------- Bảng thị trường chi tiết ---------- */
-.board{padding-top:38px}
-.board > h2{color:var(--ink-3)}
-.board-grid{
-  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:0 34px; margin-top:6px;
-}
-.blk{padding:16px 0 4px}
-.blk h4{
-  margin:0 0 8px; font-size:10.5px; letter-spacing:.11em; text-transform:uppercase;
-  color:var(--ink-3); font-weight:600;
-}
-.row{
-  display:flex; align-items:baseline; gap:10px;
-  padding:6px 0; border-bottom:1px solid var(--rule-2); font-size:13.5px;
-}
-.row:last-child{border-bottom:0}
-.row .nm{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--ink-2)}
-.row .pv{font-family:var(--mono); font-size:13px; color:var(--ink); letter-spacing:-.02em}
-.row .pc{font-family:var(--mono); font-size:12.5px; font-weight:500; min-width:62px; text-align:right}
-
-/* ---------- Chân trang / trạng thái ---------- */
-footer{border-top:1px solid var(--rule); padding:22px 0 40px; font-size:12px; color:var(--ink-3); line-height:1.7}
-footer code{font-family:var(--mono); font-size:11px}
-.state{padding:70px 0; text-align:center; color:var(--ink-3); font-size:14px}
+/* ══ Chân trang ══ */
+footer{border-top:1px solid var(--rule); margin-top:40px; padding:24px 0 48px; font-size:11.5px; color:var(--ink-3); line-height:1.75}
+footer code{font-family:var(--mono); font-size:11px; color:var(--ink-2)}
+.state{padding:80px 0; text-align:center; color:var(--ink-3); font-size:14px}
 .state.err{color:var(--down)}
 
-@media (max-width:720px){
+@media (max-width:860px){
+  .sig-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .two{grid-template-columns:1fr; gap:0}
+}
+@media (max-width:640px){
   .wrap{padding:0 18px}
-  h1{font-size:26px}
-  .mast-in{flex-direction:column; align-items:flex-start; gap:14px; padding:22px 0 16px}
-  .mast-meta{text-align:left; white-space:normal}
+  h1{font-size:29px}
+  .mast-in{flex-direction:column; align-items:flex-start; gap:16px; padding:24px 0 18px}
+  .mast-meta{text-align:left}
   .controls{justify-content:flex-start}
-  /* Trên mobile 10 ô xếp lưới sẽ chiếm trọn màn hình -> chuyển thành dải ngang vuốt được. */
   .tape .wrap{padding:0}
-  .tape-grid{
-    display:flex; overflow-x:auto; border-left:0;
-    scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch;
-  }
+  .tape-grid{display:flex; overflow-x:auto; scroll-snap-type:x proximity; scrollbar-width:none}
   .tape-grid::-webkit-scrollbar{display:none}
-  .tape-grid{scrollbar-width:none}
-  .tick{flex:0 0 auto; min-width:126px; scroll-snap-align:start; padding:11px 14px; border-top:0}
+  .tick{flex:0 0 auto; min-width:130px; scroll-snap-align:start; border-top:0}
   .tick:first-child{padding-left:18px}
   .tick:last-child{padding-right:18px; border-right:0}
-  .tick .val{font-size:15px}
-  .overview p{font-size:18px}
-  .board-grid,.cal-grid,.an-grid{grid-template-columns:1fr; gap:0}
-  .story h3{font-size:17.5px}
-  article.story.high h3{font-size:19px}
-  article.story.high{margin-left:-12px; padding-left:10px}
+  .sig-grid{grid-template-columns:1fr}
+  .verdict .q{font-size:21px; padding-left:16px}
+  .chain{padding:17px 16px}
+  .chain .hid{font-size:16px}
+  .story h3,article.story.high h3{font-size:18px}
+  article.story.high{margin-left:-12px; padding-left:11px}
 }
-@media print{
-  body{background:#fff}
-  .controls,footer{display:none}
-  article.story.high{border-left-color:#999}
-}
+@media print{ .controls{display:none} body{background:#fff} }
 </style>
 </head>
 <body>
 
 <header class="mast">
   <div class="wrap mast-in">
-    <div class="brand">
-      <div class="kicker">Tổng hợp hằng ngày</div>
-      <h1>Bản tin Thị trường Mỹ</h1>
+    <div>
+      <div class="eyebrow">Tổng hợp &amp; phân tích hằng ngày</div>
+      <h1>Thị trường <span>Mỹ</span></h1>
     </div>
     <div class="mast-meta">
-      <b id="session">—</b>
-      <span id="generated">Đang tải…</span>
+      <div class="s" id="session">—</div>
+      <div class="g" id="generated">Đang tải…</div>
       <div class="controls">
-        <select id="archive" aria-label="Chọn ngày"><option>—</option></select>
+        <select id="archive" aria-label="Chọn phiên"><option>—</option></select>
         <button class="ghost" id="theme" aria-label="Đổi giao diện sáng tối">◐</button>
       </div>
     </div>
@@ -255,26 +277,29 @@ footer code{font-family:var(--mono); font-size:11px}
 <div class="tape"><div class="wrap"><div class="tape-grid" id="tape"></div></div></div>
 
 <div class="wrap">
-  <div id="overview"></div>
-  <div id="analysis"></div>
+  <div id="verdict"></div>
+  <div id="signals"></div>
+  <div id="chains"></div>
+  <div id="overlooked"></div>
   <div id="calendar"></div>
   <main id="main"><div class="state">Đang tải bản tin…</div></main>
   <div id="board"></div>
   <footer>
     <div id="stats"></div>
-    <div>Nguồn: Federal Reserve, Reuters, CNBC, MarketWatch, WSJ, Yahoo Finance, Investing.com · Giá: CNBC / Yahoo Finance.</div>
+    <div>Nguồn tin: Federal Reserve, SEC, Reuters, Bloomberg, WSJ, FT, CNBC, MarketWatch, Barron's, Nasdaq, Yahoo Finance, Investing.com, Business Insider, Seeking Alpha · Giá: CNBC / Yahoo Finance · Lịch: Nasdaq.</div>
+    <div>Các tín hiệu suy ra được tính bằng công thức cố định và có ghi kèm dữ liệu đầu vào để kiểm tra lại. Phần chuỗi suy luận do mô hình ngôn ngữ soạn từ dữ liệu trên trang.</div>
     <div>Bản tin tự động, chỉ mang tính tham khảo — không phải khuyến nghị đầu tư.</div>
   </footer>
 </div>
 
 <script>
-const TAIPEI = "Asia/Taipei";
+const TZ = "Asia/Taipei";
 const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 
-/* ---- theme ---- */
-const themeBtn = $("#theme");
+/* ── giao diện sáng/tối ── */
 try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
-themeBtn.onclick = () => {
+$("#theme").onclick = () => {
   const cur = document.documentElement.dataset.theme
     || (matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light");
   const next = cur === "dark" ? "light" : "dark";
@@ -282,8 +307,11 @@ themeBtn.onclick = () => {
   try { localStorage.setItem("theme", next); } catch {}
 };
 
-/* ---- format ---- */
-const nf = (min, max) => new Intl.NumberFormat("vi-VN", { minimumFractionDigits: min, maximumFractionDigits: max });
+/* ── định dạng ── */
+const nf = (a, b) => new Intl.NumberFormat("vi-VN", { minimumFractionDigits: a, maximumFractionDigits: b });
+const dtf = o => new Intl.DateTimeFormat("vi-VN", { timeZone: TZ, ...o });
+const WD = ["Chủ nhật","Thứ hai","Thứ ba","Thứ tư","Thứ năm","Thứ sáu","Thứ bảy"];
+
 function fmtPrice(kind, v) {
   if (v == null) return "—";
   if (kind === "yield") return nf(3, 3).format(v) + "%";
@@ -291,8 +319,6 @@ function fmtPrice(kind, v) {
   return nf(2, 2).format(v);
 }
 function fmtChange(kind, chg, pct) {
-  // Lợi suất đọc theo điểm cơ bản mới đúng nghĩa, và phải lấy dấu từ chg —
-  // % tương đối của lợi suất vừa khó hiểu vừa có nguồn trả sai dấu.
   if (kind === "yield") {
     if (chg == null) return { text: "—", cls: "flat" };
     const bp = Math.round(chg * 100);
@@ -300,16 +326,11 @@ function fmtChange(kind, chg, pct) {
   }
   const v = pct ?? chg;
   if (v == null) return { text: "—", cls: "flat" };
-  return {
-    text: `${v > 0 ? "+" : ""}${nf(2, 2).format(v)}%`,
-    cls: v > 0.0001 ? "up" : v < -0.0001 ? "down" : "flat",
-  };
+  return { text: `${v > 0 ? "+" : ""}${nf(2, 2).format(v)}%`, cls: v > 0.0001 ? "up" : v < -0.0001 ? "down" : "flat" };
 }
-const dtf = (o) => new Intl.DateTimeFormat("vi-VN", { timeZone: TAIPEI, ...o });
 function fmtSession(id) {
   const [y, m, d] = id.split("-").map(Number);
-  const wd = ["Chủ nhật","Thứ hai","Thứ ba","Thứ tư","Thứ năm","Thứ sáu","Thứ bảy"][new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
-  return `Phiên ${wd}, ${String(d).padStart(2,"0")}/${String(m).padStart(2,"0")}/${y}`;
+  return `${WD[new Date(Date.UTC(y, m - 1, d)).getUTCDay()]}, ${String(d).padStart(2,"0")}/${String(m).padStart(2,"0")}/${y}`;
 }
 function relTime(iso) {
   if (!iso) return "";
@@ -319,140 +340,145 @@ function relTime(iso) {
   if (h < 24) return `${Math.round(h)} giờ trước`;
   return dtf({ day: "2-digit", month: "2-digit" }).format(new Date(iso));
 }
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-
-/* ---- render ---- */
-const IMPACT = { high: "Tác động cao", medium: "Đáng chú ý", low: "Tham khảo" };
-
-// Cắt ở ranh giới từ và chỉ thêm một dấu … (nguồn thường đã có sẵn dấu lược).
 function trunc(text, max) {
-  const t = text.trim().replace(/[.…\s]+$/, "");
+  const t = String(text).trim().replace(/[.…\s]+$/, "");
   if (t.length <= max) return t + "…";
-  return t.slice(0, t.lastIndexOf(" ", max) > max * 0.6 ? t.lastIndexOf(" ", max) : max).replace(/[.,;:\s]+$/, "") + "…";
+  const cut = t.lastIndexOf(" ", max);
+  return t.slice(0, cut > max * 0.6 ? cut : max).replace(/[.,;:\s]+$/, "") + "…";
 }
 
-function renderTape(market) {
-  $("#tape").innerHTML = (market || []).map(m => {
+/* ── các mảng nội dung ── */
+const IMPACT = { high: "Tác động cao", medium: "Đáng chú ý", low: "Tham khảo" };
+
+function renderTape(rows) {
+  $("#tape").innerHTML = rows.map(m => {
     const c = fmtChange(m.kind, m.change, m.changePct);
-    return `<div class="tick">
-      <div class="lbl">${esc(m.label)}</div>
+    return `<div class="tick"><div class="lbl">${esc(m.label)}</div>
       <div class="val">${m.ok ? fmtPrice(m.kind, m.price) : "—"}</div>
-      <div class="chg ${c.cls}">${m.ok ? c.text : ""}</div>
-    </div>`;
+      <div class="chg ${c.cls}">${m.ok ? c.text : ""}</div></div>`;
   }).join("");
 }
 
-function renderStory(s) {
-  const title = s.titleVi || s.title;
-  const showOrig = s.titleVi && s.titleVi !== s.title;
-  const impact = s.impact || "medium";
-  return `<article class="story ${impact === "high" ? "high" : ""}">
-    <h3><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(title)}</a></h3>
-    ${s.summaryVi ? `<p class="sum">${esc(s.summaryVi)}</p>` : (s.summary ? `<p class="sum">${esc(trunc(s.summary, 220))}</p>` : "")}
-    ${s.implicationVi ? `<div class="imp"><b>Ý nghĩa với xu hướng</b>${esc(s.implicationVi)}</div>` : ""}
-    ${showOrig ? `<p class="orig">${esc(s.title)}</p>` : ""}
-    <div class="foot">
-      <span class="badge ${impact}">${IMPACT[impact] || IMPACT.medium}</span>
-      <span class="dot">·</span>
-      <span class="src">${esc(s.sources.join(" · "))}</span>
-      ${s.sources.length > 1 ? `<span class="dot">·</span><span class="corr">${s.sources.length} nguồn</span>` : ""}
-      ${s.date ? `<span class="dot">·</span><span>${esc(relTime(s.date))}</span>` : ""}
-    </div>
-  </article>`;
+function renderVerdict(d) {
+  if (!d.verdict) return "";
+  return `<div class="verdict"><div class="eyebrow">Kết luận phiên</div>
+    <p class="q">${esc(d.verdict)}</p></div>`;
 }
 
-function renderAnalysis(d) {
-  const pts = (list, cls) => list.map(p =>
-    `<div class="pt ${cls}"><span class="h">${esc(p.title)}</span><span class="x">${esc(p.text)}</span></div>`
-  ).join("");
-
-  const drivers = d.drivers || [];
-  const watch = d.watch || [];
-  if (!drivers.length && !watch.length) return "";
-
-  return `<section class="analysis"><h2>Phân tích phiên</h2><div class="an-grid">
-    ${drivers.length ? `<div class="blk"><h4>Động lực chính</h4>${pts(drivers, "")}</div>` : ""}
-    ${watch.length ? `<div class="blk"><h4>Cần theo dõi</h4>${pts(watch, "w")}</div>` : ""}
-  </div></section>`;
+function renderSignals(d) {
+  const list = d.signals || [];
+  if (!list.length) return "";
+  return `<section class="signals"><h2 class="sec">Tín hiệu suy ra<span class="n">tính bằng công thức cố định</span></h2>
+    <div class="sig-grid">${list.map(s => `
+      <div class="sig">
+        <div class="top"><span class="nm">${esc(s.label)}</span><span class="v ${esc(s.dir === "up" ? "up" : s.dir === "down" ? "down" : "flat")}">${esc(s.value)}</span></div>
+        <span class="chip ${esc(s.tone)}">${esc(s.state)}</span>
+        <div class="note">${esc(s.note)}</div>
+        <div class="inp">${esc(s.inputs)}</div>
+      </div>`).join("")}</div></section>`;
 }
+
+function renderChains(d) {
+  const list = d.chains || [];
+  if (!list.length) return "";
+  return `<section class="chains"><h2 class="sec">Chuỗi suy luận<span class="n">${list.length} mạch</span></h2>
+    ${list.map(c => `<div class="chain">
+      <div class="sig-t">${esc(c.signal)}</div>
+      ${c.hidden ? `<p class="hid">${esc(c.hidden)}</p>` : ""}
+      <ol class="steps">${c.steps.map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+      ${c.evidence?.length ? `<div class="ev">${c.evidence.map(e => `<span>${esc(e)}</span>`).join("")}</div>` : ""}
+      ${c.invalidate ? `<div class="inv"><b>Chuỗi này sai khi</b>${esc(c.invalidate)}</div>` : ""}
+    </div>`).join("")}</section>`;
+}
+
+function renderOverlooked(d) {
+  const list = d.overlooked || [];
+  if (!list.length) return "";
+  return `<section class="pad"><h2 class="sec">Dễ bị bỏ qua</h2>
+    <div class="two"><div>${list.slice(0, Math.ceil(list.length / 2)).map(itemHtml).join("")}</div>
+    <div>${list.slice(Math.ceil(list.length / 2)).map(itemHtml).join("")}</div></div></section>`;
+}
+const itemHtml = p => `<div class="item"><span class="h">${esc(p.title)}</span><span class="x">${esc(p.text)}</span></div>`;
 
 function renderCalendar(d) {
   const c = d.calendar;
   if (!c || (!c.economic?.length && !c.earnings?.length)) return "";
-
   const hhmm = iso => iso ? dtf({ hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(iso)) : "—";
 
   const eco = (c.economic || []).map(e => {
-    const sub = [e.name, e.consensus && `dự báo ${e.consensus}`, e.previous && `kỳ trước ${e.previous}`]
-      .filter(Boolean).map(esc);
-    return `<div class="ev"><span class="t">${esc(hhmm(e.at))}</span><span class="b">
+    const sub = [e.name, e.consensus && `dự báo ${e.consensus}`, e.previous && `kỳ trước ${e.previous}`].filter(Boolean).map(esc);
+    return `<div class="ev-row"><span class="t">${esc(hhmm(e.at))}</span><span class="b">
       <span class="n">${esc(e.nameVi || e.name)}</span>
-      <span class="d"><em>${sub[0]}</em>${sub.length > 1 ? " · " + sub.slice(1).join(" · ") : ""}</span>
-    </span></div>`;
+      <span class="d"><em>${sub[0]}</em>${sub.length > 1 ? " · " + sub.slice(1).join(" · ") : ""}</span></span></div>`;
   }).join("");
 
   const earn = (c.earnings || []).map(e => {
     const cap = e.marketCap >= 1e12 ? `${(e.marketCap / 1e12).toFixed(1)} nghìn tỷ` : `${Math.round(e.marketCap / 1e9)} tỷ`;
     const sub = [e.when, e.epsForecast && `EPS dự báo ${e.epsForecast}`, `vốn hoá ${cap} USD`].filter(Boolean).map(esc);
-    return `<div class="ev"><span class="b">
-      <span class="n"><b>${esc(e.symbol)}</b>${esc(e.name || "")}</span>
-      <span class="d">${sub.join(" · ")}</span>
-    </span></div>`;
+    return `<div class="ev-row"><span class="b"><span class="n"><b>${esc(e.symbol)}</b>${esc(e.name || "")}</span>
+      <span class="d">${sub.join(" · ")}</span></span></div>`;
   }).join("");
 
   const [y, mo, da] = c.date.split("-").map(Number);
-  const wd = ["Chủ nhật","Thứ hai","Thứ ba","Thứ tư","Thứ năm","Thứ sáu","Thứ bảy"][new Date(Date.UTC(y, mo - 1, da)).getUTCDay()];
-
-  return `<section class="cal">
-    <h2>Lịch phiên tới — ${esc(wd)}, ${String(da).padStart(2,"0")}/${String(mo).padStart(2,"0")}<span class="n">giờ Đài Bắc</span></h2>
-    <div class="cal-grid">
-      ${eco ? `<div class="blk"><h4>Số liệu &amp; sự kiện</h4>${eco}</div>` : ""}
-      ${earn ? `<div class="blk"><h4>Báo cáo lợi nhuận</h4>${earn}</div>` : ""}
+  const wd = WD[new Date(Date.UTC(y, mo - 1, da)).getUTCDay()];
+  return `<section class="pad">
+    <h2 class="sec">Lịch phiên tới — ${esc(wd)}, ${String(da).padStart(2,"0")}/${String(mo).padStart(2,"0")}<span class="n">giờ Đài Bắc</span></h2>
+    <div class="two">
+      ${eco ? `<div><h4 class="blk-h">Số liệu &amp; sự kiện</h4>${eco}</div>` : "<div></div>"}
+      ${earn ? `<div><h4 class="blk-h">Báo cáo lợi nhuận</h4>${earn}</div>` : ""}
     </div></section>`;
+}
+
+function renderStory(s) {
+  const impact = s.impact || "medium";
+  const showOrig = s.titleVi && s.titleVi !== s.title;
+  return `<article class="story ${impact === "high" ? "high" : ""}">
+    <h3><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(s.titleVi || s.title)}</a></h3>
+    ${s.summaryVi ? `<p class="sum">${esc(s.summaryVi)}</p>` : (s.summary ? `<p class="sum">${esc(trunc(s.summary, 220))}</p>` : "")}
+    ${s.implicationVi ? `<div class="imp"><b>Ẩn ý &amp; hệ quả</b>${esc(s.implicationVi)}</div>` : ""}
+    ${showOrig ? `<p class="orig">${esc(s.title)}</p>` : ""}
+    <div class="foot">
+      <span class="badge ${impact}">${IMPACT[impact] || IMPACT.medium}</span>
+      <span class="dot">·</span><span class="src">${esc(s.sources.join(" · "))}</span>
+      ${s.sources.length > 1 ? `<span class="dot">·</span><span class="mono">${s.sources.length} nguồn</span>` : ""}
+      ${s.date ? `<span class="dot">·</span><span>${esc(relTime(s.date))}</span>` : ""}
+    </div></article>`;
 }
 
 function renderBoard(d) {
   const groups = d.tickerGroups || [];
   const rows = (d.market || []).filter(m => m.ok);
-  if (!groups.length || !rows.length) return "";
-
   const blocks = groups.map(g => {
     const ids = [g.id, ...(g.merge || [])];
     let list = rows.filter(m => ids.includes(m.g));
     if (!list.length) return "";
-    // Sắp theo mức tăng giảm để mã biến động mạnh nhất nằm trên cùng.
     if (g.sortByChange) list = [...list].sort((a, b) => (b.changePct ?? 0) - (a.changePct ?? 0));
-    return `<div class="blk"><h4>${esc(g.label)}</h4>` + list.map(m => {
+    return `<div><h4 class="blk-h">${esc(g.label)}</h4>` + list.map(m => {
       const c = fmtChange(m.kind, m.change, m.changePct);
-      return `<div class="row">
-        <span class="nm">${esc(m.label)}</span>
+      return `<div class="row"><span class="nm">${esc(m.label)}</span>
         <span class="pv">${fmtPrice(m.kind, m.price)}</span>
-        <span class="pc ${c.cls}">${c.text}</span>
-      </div>`;
+        <span class="pc ${c.cls}">${c.text}</span></div>`;
     }).join("") + `</div>`;
   }).filter(Boolean);
-
-  return blocks.length
-    ? `<section class="board"><h2>Bảng thị trường<span class="n">${rows.length} mã</span></h2>
-       <div class="board-grid">${blocks.join("")}</div></section>`
-    : "";
+  if (!blocks.length) return "";
+  const shown = groups.flatMap(g => [g.id, ...(g.merge || [])]);
+  return `<section class="pad"><h2 class="sec">Bảng thị trường<span class="n">${rows.filter(m => shown.includes(m.g)).length} mã</span></h2>
+    <div class="two">${blocks.join("")}</div></section>`;
 }
 
+/* ── dựng trang ── */
 function render(d) {
-  $("#session").textContent = fmtSession(d.sessionDate);
+  $("#session").textContent = "Phiên " + fmtSession(d.sessionDate);
   const g = new Date(d.generatedAt);
-  const hhmm = dtf({ hour: "2-digit", minute: "2-digit", hour12: false }).format(g);
-  const ddmm = dtf({ day: "2-digit", month: "2-digit", year: "numeric" }).format(g);
-  $("#generated").textContent = `Tổng hợp ${hhmm} · ${ddmm} giờ Đài Bắc`;
+  $("#generated").textContent = `Tổng hợp ${dtf({ hour: "2-digit", minute: "2-digit", hour12: false }).format(g)} · ${dtf({ day: "2-digit", month: "2-digit", year: "numeric" }).format(g)} giờ Đài Bắc`;
 
   renderTape((d.market || []).filter(m => !m.g || m.g === "core"));
-
-  $("#overview").innerHTML = d.overview
-    ? `<div class="overview"><div class="eyebrow">Tổng quan phiên</div><p>${esc(d.overview)}</p></div>`
-    : "";
-
-  $("#analysis").innerHTML = renderAnalysis(d);
+  $("#verdict").innerHTML = renderVerdict(d);
+  $("#signals").innerHTML = renderSignals(d);
+  $("#chains").innerHTML = renderChains(d);
+  $("#overlooked").innerHTML = renderOverlooked(d);
   $("#calendar").innerHTML = renderCalendar(d);
+  $("#board").innerHTML = renderBoard(d);
 
   const order = (d.categories || []).map(c => c.id);
   const label = Object.fromEntries((d.categories || []).map(c => [c.id, c.label]));
@@ -462,28 +488,20 @@ function render(d) {
     groups.get(s.category).push(s);
   }
   const sorted = [...groups.entries()].sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]));
-
   $("#main").innerHTML = sorted.length
-    ? sorted.map(([cat, list]) =>
-        `<section class="cat"><h2>${esc(label[cat] || cat)}<span class="n">${list.length}</span></h2>${list.map(renderStory).join("")}</section>`
-      ).join("")
+    ? sorted.map(([cat, list]) => `<section class="cat"><h2 class="sec">${esc(label[cat] || cat)}<span class="n">${list.length}</span></h2>${list.map(renderStory).join("")}</section>`).join("")
     : `<div class="state">Không có tin đáng chú ý trong phiên này.</div>`;
-
-  $("#board").innerHTML = renderBoard(d);
 
   const m = d.meta || {};
   $("#stats").innerHTML =
-    `Quét <code>${m.scanned ?? "?"}</code> bài từ <code>${m.feeds ?? "?"}</code> nguồn · `
-    + `giữ lại <code>${m.published ?? (d.stories || []).length}</code> tin`
+    `Quét <code>${m.scanned ?? "?"}</code> bài từ <code>${m.feeds ?? "?"}</code> nguồn · giữ lại <code>${m.published ?? (d.stories || []).length}</code> tin · <code>${m.marketOk ?? "?"}</code> mã giá`
     + (m.llm ? ` · biên tập bằng <code>${esc(m.llm)}</code>` : ` · chưa bật tóm tắt tiếng Việt`)
     + (m.llmError ? `<br>LLM lỗi: <code>${esc(m.llmError)}</code>` : "");
 }
 
-/* ---- load ---- */
 async function loadDigest(id) {
-  const url = id ? `data/${id}.json` : "data/latest.json";
-  const r = await fetch(url + "?t=" + Date.now());
-  if (!r.ok) throw new Error(`Không tải được ${url} (HTTP ${r.status})`);
+  const r = await fetch(`data/${id ? id : "latest"}.json?t=${Date.now()}`);
+  if (!r.ok) throw new Error(`Không tải được dữ liệu (HTTP ${r.status})`);
   render(await r.json());
 }
 
@@ -491,11 +509,9 @@ async function loadArchive(currentId) {
   try {
     const r = await fetch("data/index.json?t=" + Date.now());
     if (!r.ok) return;
-    const list = await r.json();
     const sel = $("#archive");
-    sel.innerHTML = list.map(e =>
-      `<option value="${esc(e.id)}"${e.id === currentId ? " selected" : ""}>${esc(fmtSession(e.id))}</option>`
-    ).join("");
+    sel.innerHTML = (await r.json()).map(e =>
+      `<option value="${esc(e.id)}"${e.id === currentId ? " selected" : ""}>${esc(fmtSession(e.id))}</option>`).join("");
     sel.onchange = () => loadDigest(sel.value).catch(showError);
   } catch {}
 }

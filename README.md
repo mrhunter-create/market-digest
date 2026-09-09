@@ -12,9 +12,10 @@ GitHub Actions (23:00 UTC, T2–T6)
         ├─ Nasdaq calendar ─►  lịch số liệu vĩ mô + báo cáo lợi nhuận phiên tới
         ├─ CNBC quote API ─►  34 mã: chỉ số, lợi suất, hàng hoá, cổ phiếu lớn,
         │                     nhóm ngành, thị trường thế giới
+        ├─ tín hiệu suy ra ─►  6 chênh lệch tính bằng công thức cố định
         └─ LLM (tuỳ chọn) ─►  2 lượt gọi độc lập:
-             • phân tích: nhận định phiên, động lực chính, việc cần theo dõi
-             • tin: dịch tiêu đề, tóm tắt, ý nghĩa với xu hướng
+             • phân tích: kết luận phiên, chuỗi suy luận, thứ dễ bị bỏ qua
+             • tin: dịch tiêu đề, tóm tắt, ẩn ý & hệ quả
         │
         └─► public/data/YYYY-MM-DD.json  ──►  GitHub Pages
 ```
@@ -99,6 +100,37 @@ git checkout --ours public/data && git add public/data && git rebase --continue
 Muốn tránh hẳn: sau khi chạy `npm run build` ở máy, đừng commit thư mục
 `public/data` (chạy `git checkout -- public/data` trước khi commit) — để duy nhất
 workflow ghi vào đó.
+
+## Tín hiệu suy ra
+
+Sáu chênh lệch được tính trong `scripts/signals.mjs` bằng **công thức cố định**, không
+qua LLM — nên mọi con số và nhãn trạng thái đều tái lập được, và trang có ghi kèm dữ
+liệu đầu vào để kiểm tra lại:
+
+| Tín hiệu | Công thức | Đọc thế nào |
+|---|---|---|
+| Đường cong 2–10 năm | lợi suất 10 năm − 2 năm | âm = trái phiếu định giá tăng trưởng suy yếu |
+| Cấu trúc biến động | VIX 9 ngày − VIX 30 ngày | dương = phòng hộ dồn vào một sự kiện gần |
+| Phòng thủ vs thị trường | (XLU% + XLP%)/2 − S&P 500% | dương = dòng tiền chuyển sang thế phòng ngự |
+| Bán dẫn vs S&P 500 | SOXX% − S&P 500% | âm = nhóm dẫn dắt chu kỳ mất động lực |
+| Cổ phiếu nhỏ vs S&P 500 | IWM% − S&P 500% | âm nhiều = đà tăng dựa vào nhóm hẹp |
+| Tín dụng rủi ro cao vs hạng đầu tư | HYG% − LQD% | âm = căng thẳng tín dụng, thường đi trước cổ phiếu |
+
+Các tín hiệu này vừa hiện trên trang, vừa được nạp vào prompt làm bằng chứng cho phần
+chuỗi suy luận. Chúng không phụ thuộc LLM: không có `LLM_API_KEY` thì vẫn đủ 6 tín hiệu.
+
+## Chuỗi suy luận
+
+Phần phân tích cố tình **không phán đoán thị trường**. Mỗi mạch gồm:
+
+1. **Tín hiệu gốc** — sự kiện hoặc chênh lệch khởi đầu
+2. **Ẩn ý** — điều tiêu đề hoặc con số bề mặt không nói ra
+3. **Các bước** — 3–4 mắt suy luận tuần tự, mỗi mắt là một cơ chế truyền dẫn
+4. **Bằng chứng** — số liệu cụ thể lấy từ dữ liệu trên trang
+5. **Điều kiện phủ định** — cái gì xảy ra thì chuỗi đó sai
+
+Mạch nào không có bước hoặc không có bằng chứng số liệu thì bị loại ở
+`scripts/llm.mjs`, không hiển thị.
 
 ## Điều chỉnh
 

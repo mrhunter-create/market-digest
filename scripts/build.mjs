@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { getMarket } from "./market.mjs";
 import { getNews } from "./news.mjs";
 import { getCalendar } from "./calendar.mjs";
+import { computeSignals } from "./signals.mjs";
 import { editorialize, llmEnabled } from "./llm.mjs";
 import { CATEGORIES, FEEDS, TICKER_GROUPS } from "./sources.mjs";
 
@@ -33,6 +34,9 @@ async function main() {
   const news = await getNews(now);
   console.log(`  quét ${news.scanned} • trong cửa sổ ${news.kept} • cụm ${news.clustered} • liên quan ${news.relevant} • chọn ${news.stories.length}`);
 
+  const signals = computeSignals(market);
+  console.log(`  ${signals.length} tín hiệu suy ra`);
+
   console.log("• Lấy lịch phiên tới…");
   const calendar = await getCalendar(now).catch(e => (console.warn(`  ! lịch: ${e.message}`), null));
   console.log(calendar
@@ -40,18 +44,19 @@ async function main() {
     : "  (không có lịch)");
 
   console.log(llmEnabled() ? "• Biên tập bằng LLM…" : "• Không có LLM_API_KEY — giữ tiêu đề gốc");
-  const edited = await editorialize(market, news.stories, calendar);
+  const edited = await editorialize(market, news.stories, calendar, signals);
   if (edited.llm) console.log(`  ${edited.stories.length} tin sau biên tập (${edited.llm})`);
 
   const digest = {
     id: sessionDate,
     sessionDate,
     generatedAt: now.toISOString(),
-    overview: edited.overview,
-    drivers: edited.drivers,
-    watch: edited.watch,
+    verdict: edited.verdict,
+    chains: edited.chains,
+    overlooked: edited.overlooked,
     calendar,
     market,
+    signals,
     tickerGroups: TICKER_GROUPS,
     categories: CATEGORIES.map(({ id, label }) => ({ id, label })),
     stories: edited.stories,

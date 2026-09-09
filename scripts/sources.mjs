@@ -72,6 +72,17 @@ export const TICKERS = [
   { g: "world",  cnbc: ".GDAXI",  yahoo: "^GDAXI",   label: "DAX",           kind: "index" },
   { g: "world",  cnbc: ".FTSE",   yahoo: "^FTSE",    label: "FTSE 100",      kind: "index" },
 
+  // Nhóm tín hiệu: dùng để TÍNH các chênh lệch bên dưới, không hiện thành bảng riêng.
+  { g: "signal", cnbc: "HYG",     yahoo: "HYG",      label: "Trái phiếu lợi suất cao", kind: "usd" },
+  { g: "signal", cnbc: "LQD",     yahoo: "LQD",      label: "Trái phiếu hạng đầu tư",  kind: "usd" },
+  { g: "signal", cnbc: "TLT",     yahoo: "TLT",      label: "Kho bạc dài hạn",         kind: "usd" },
+  { g: "signal", cnbc: "SOXX",    yahoo: "SOXX",     label: "Bán dẫn",                 kind: "usd" },
+  { g: "signal", cnbc: "XLU",     yahoo: "XLU",      label: "Điện nước",               kind: "usd" },
+  { g: "signal", cnbc: "XLP",     yahoo: "XLP",      label: "Tiêu dùng thiết yếu",     kind: "usd" },
+  { g: "signal", cnbc: "IWM",     yahoo: "IWM",      label: "Cổ phiếu nhỏ",            kind: "usd" },
+  { g: "signal", cnbc: "FXI",     yahoo: "FXI",      label: "Trung Quốc",              kind: "usd" },
+  { g: "signal", cnbc: ".VIX9D",  yahoo: "^VIX9D",   label: "VIX 9 ngày",              kind: "level" },
+
   { g: "commod", cnbc: "@NG.1",   yahoo: "NG=F",     label: "Khí đốt",       kind: "usd" },
   { g: "commod", cnbc: "@HG.1",   yahoo: "HG=F",     label: "Đồng",          kind: "usd" },
 ];

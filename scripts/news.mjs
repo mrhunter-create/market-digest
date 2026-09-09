@@ -103,7 +103,9 @@ export async function getNews(now = new Date()) {
       (b.sourceWeight - a.sourceWeight) || (Date.parse(b.date || 0) - Date.parse(a.date || 0))
     )[0];
     const sources = [...new Set(c.items.map(i => i.source))];
-    const summary = redundantSummary(lead.title, lead.summary) ? "" : lead.summary;
+    // Nhiều feed nhét tiền tố hãng tin vào đầu mô tả: "(RTTNews) - ...", "NEW YORK (Reuters) - ..."
+    const rawSummary = (lead.summary || "").replace(/^\s*(?:[A-Z][A-Za-z .]{0,24}\s+)?\([A-Za-z.]{2,20}\)\s*[-–—]\s*/, "");
+    const summary = redundantSummary(lead.title, rawSummary) ? "" : rawSummary;
     const text = `${lead.title} ${lead.summary || ""}`;
     const { score: kw, hits } = keywordScore(text);
 

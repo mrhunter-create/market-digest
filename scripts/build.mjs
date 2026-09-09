@@ -3,6 +3,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { getMarket } from "./market.mjs";
 import { getNews } from "./news.mjs";
+import { getCalendar } from "./calendar.mjs";
 import { editorialize, llmEnabled } from "./llm.mjs";
 import { CATEGORIES, FEEDS, TICKER_GROUPS } from "./sources.mjs";
 
@@ -32,6 +33,12 @@ async function main() {
   const news = await getNews(now);
   console.log(`  quét ${news.scanned} • trong cửa sổ ${news.kept} • cụm ${news.clustered} • liên quan ${news.relevant} • chọn ${news.stories.length}`);
 
+  console.log("• Lấy lịch phiên tới…");
+  const calendar = await getCalendar(now).catch(e => (console.warn(`  ! lịch: ${e.message}`), null));
+  console.log(calendar
+    ? `  ${calendar.date}: ${calendar.economic.length} sự kiện vĩ mô, ${calendar.earnings.length} báo cáo lợi nhuận`
+    : "  (không có lịch)");
+
   console.log(llmEnabled() ? "• Biên tập bằng LLM…" : "• Không có LLM_API_KEY — giữ tiêu đề gốc");
   const edited = await editorialize(market, news.stories);
   if (edited.llm) console.log(`  ${edited.stories.length} tin sau biên tập (${edited.llm})`);
@@ -41,6 +48,7 @@ async function main() {
     sessionDate,
     generatedAt: now.toISOString(),
     overview: edited.overview,
+    calendar,
     market,
     tickerGroups: TICKER_GROUPS,
     categories: CATEGORIES.map(({ id, label }) => ({ id, label })),

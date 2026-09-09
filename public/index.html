@@ -95,6 +95,22 @@ select:hover,button.ghost:hover{border-color:var(--ink-3); color:var(--ink)}
   letter-spacing:-.005em;
 }
 
+/* ---------- Lịch phiên tới ---------- */
+.cal{padding-top:32px}
+.cal-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 34px}
+.ev{display:flex; gap:12px; padding:9px 0; border-bottom:1px solid var(--rule-2)}
+.ev:last-child{border-bottom:0}
+.ev .t{
+  font-family:var(--mono); font-size:12px; color:var(--ink-3);
+  flex:0 0 42px; padding-top:2px; letter-spacing:-.02em;
+}
+.ev .b{flex:1; min-width:0}
+.blk .ev:not(:has(.t)) .b{padding-left:2px}
+.ev .n{display:block; font-size:13.5px; color:var(--ink); line-height:1.4}
+.ev .n b{font-family:var(--mono); font-size:12.5px; font-weight:600; margin-right:7px}
+.ev .d{display:block; font-size:11.5px; color:var(--ink-3); line-height:1.5; margin-top:1px}
+.ev .d em{font-style:italic}
+
 /* ---------- Tin ---------- */
 main{padding-bottom:64px}
 section.cat{padding-top:34px}
@@ -182,7 +198,7 @@ footer code{font-family:var(--mono); font-size:11px}
   .tick:last-child{padding-right:18px; border-right:0}
   .tick .val{font-size:15px}
   .overview p{font-size:18px}
-  .board-grid{grid-template-columns:1fr; gap:0}
+  .board-grid,.cal-grid{grid-template-columns:1fr; gap:0}
   .story h3{font-size:17.5px}
   article.story.high h3{font-size:19px}
   article.story.high{margin-left:-12px; padding-left:10px}
@@ -217,6 +233,7 @@ footer code{font-family:var(--mono); font-size:11px}
 
 <div class="wrap">
   <div id="overview"></div>
+  <div id="calendar"></div>
   <main id="main"><div class="state">Đang tải bản tin…</div></main>
   <div id="board"></div>
   <footer>
@@ -319,6 +336,41 @@ function renderStory(s) {
   </article>`;
 }
 
+function renderCalendar(d) {
+  const c = d.calendar;
+  if (!c || (!c.economic?.length && !c.earnings?.length)) return "";
+
+  const hhmm = iso => iso ? dtf({ hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(iso)) : "—";
+
+  const eco = (c.economic || []).map(e => {
+    const sub = [e.name, e.consensus && `dự báo ${e.consensus}`, e.previous && `kỳ trước ${e.previous}`]
+      .filter(Boolean).map(esc);
+    return `<div class="ev"><span class="t">${esc(hhmm(e.at))}</span><span class="b">
+      <span class="n">${esc(e.nameVi || e.name)}</span>
+      <span class="d"><em>${sub[0]}</em>${sub.length > 1 ? " · " + sub.slice(1).join(" · ") : ""}</span>
+    </span></div>`;
+  }).join("");
+
+  const earn = (c.earnings || []).map(e => {
+    const cap = e.marketCap >= 1e12 ? `${(e.marketCap / 1e12).toFixed(1)} nghìn tỷ` : `${Math.round(e.marketCap / 1e9)} tỷ`;
+    const sub = [e.when, e.epsForecast && `EPS dự báo ${e.epsForecast}`, `vốn hoá ${cap} USD`].filter(Boolean).map(esc);
+    return `<div class="ev"><span class="b">
+      <span class="n"><b>${esc(e.symbol)}</b>${esc(e.name || "")}</span>
+      <span class="d">${sub.join(" · ")}</span>
+    </span></div>`;
+  }).join("");
+
+  const [y, mo, da] = c.date.split("-").map(Number);
+  const wd = ["Chủ nhật","Thứ hai","Thứ ba","Thứ tư","Thứ năm","Thứ sáu","Thứ bảy"][new Date(Date.UTC(y, mo - 1, da)).getUTCDay()];
+
+  return `<section class="cal">
+    <h2>Lịch phiên tới — ${esc(wd)}, ${String(da).padStart(2,"0")}/${String(mo).padStart(2,"0")}<span class="n">giờ Đài Bắc</span></h2>
+    <div class="cal-grid">
+      ${eco ? `<div class="blk"><h4>Số liệu &amp; sự kiện</h4>${eco}</div>` : ""}
+      ${earn ? `<div class="blk"><h4>Báo cáo lợi nhuận</h4>${earn}</div>` : ""}
+    </div></section>`;
+}
+
 function renderBoard(d) {
   const groups = d.tickerGroups || [];
   const rows = (d.market || []).filter(m => m.ok);
@@ -358,6 +410,8 @@ function render(d) {
   $("#overview").innerHTML = d.overview
     ? `<div class="overview"><div class="eyebrow">Tổng quan phiên</div><p>${esc(d.overview)}</p></div>`
     : "";
+
+  $("#calendar").innerHTML = renderCalendar(d);
 
   const order = (d.categories || []).map(c => c.id);
   const label = Object.fromEntries((d.categories || []).map(c => [c.id, c.label]));

@@ -9,6 +9,7 @@ kèm số liệu chốt phiên hôm trước. Chạy hoàn toàn trên hạ tầ
 GitHub Actions (23:00 UTC, T2–T6)
         │
         ├─ 24 nguồn RSS  ──►  khử trùng lặp  ──►  chấm điểm ảnh hưởng  ──►  phân nhóm
+        ├─ Nasdaq calendar ─►  lịch số liệu vĩ mô + báo cáo lợi nhuận phiên tới
         ├─ CNBC quote API ─►  34 mã: chỉ số, lợi suất, hàng hoá, cổ phiếu lớn,
         │                     nhóm ngành, thị trường thế giới
         └─ LLM (tuỳ chọn) ─►  tóm tắt tiếng Việt + loại tin không liên quan
@@ -106,6 +107,7 @@ Gần như mọi thứ đáng chỉnh nằm trong `scripts/sources.mjs`:
 | Tin nào được coi là quan trọng | `KEYWORDS` (số đầu dòng = trọng số) |
 | Nhóm hiển thị | `CATEGORIES` |
 | Chặn rác | `BLOCK_TITLE`, `BLOCK_URL` |
+| Sự kiện vĩ mô nào đáng đưa | `EVENT_RULES` trong `scripts/calendar.mjs` |
 
 Ngưỡng lọc và số tin tối đa nằm đầu `scripts/news.mjs`
 (`WINDOW_HOURS`, `MAX_STORIES`, `MAX_PER_CATEGORY`).
@@ -120,6 +122,7 @@ scripts/sources.mjs   cấu hình: nguồn, mã, từ khoá, nhóm, blocklist
 scripts/lib.mjs       fetch, parse RSS, tách từ, so trùng
 scripts/market.mjs    giá chốt phiên (CNBC chính, Yahoo dự phòng)
 scripts/news.mjs      gom tin, khử trùng lặp, chấm điểm, lọc
+scripts/calendar.mjs  lịch số liệu vĩ mô + earnings phiên tới (Nasdaq API)
 scripts/llm.mjs       biên tập tiếng Việt (tuỳ chọn)
 scripts/build.mjs     ghép lại và ghi JSON
 public/index.html     toàn bộ giao diện, không cần build

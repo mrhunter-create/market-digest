@@ -1,44 +1,65 @@
 {
   "id": "2026-09-09",
   "sessionDate": "2026-09-09",
-  "generatedAt": "2026-09-09T18:34:04.765Z",
-  "verdict": "Điều quan trọng nhất của phiên là mức tăng đồng thời của lợi suất Treasury 2‑10 năm, tạo áp lực lên chi phí vay và kéo chỉ số chính xuống.",
+  "generatedAt": "2026-09-09T23:37:44.725Z",
+  "verdict": "Oil price rise reigniting rate‑hike concerns, pushing Treasury yields higher and risk premium up, which dragged US equity indices lower.",
   "chains": [
     {
-      "signal": "Treasury yields rise ahead of buybacks & CPI",
-      "hidden": "Mặc dù chỉ số chính giảm nhẹ, mức tăng đồng thời của lợi suất 2‑10 năm cho thấy áp lực lãi suất đang lan tỏa, không chỉ ảnh hưởng tới chi phí vay mà còn làm giảm mức định giá cổ phiếu.",
+      "signal": "Oil price rise lifts yields and risk premium",
+      "hidden": "Mặc dù WTI vẫn dưới $100, mức tăng 1.15% đã đủ để làm tăng kỳ vọng lạm phát, khiến lợi suất 10 năm tăng và VIX bật lên, tạo áp lực giảm cho cổ phiếu.",
       "steps": [
-        "Bước 1: Lợi suất 10 năm tăng 3bp lên 4.837% và 2 năm tăng 3bp lên 4.425% → chi phí vay dài hạn và ngắn hạn cao hơn.",
-        "Bước 2: Chi phí vay cao hơn làm giảm lợi nhuận dự kiến và tăng tỷ suất chiết khấu cho các công ty, làm giảm giá trị định giá cổ phiếu.",
-        "Bước 3: Giá cổ phiếu các chỉ số chính giảm: S&P 500 -0.39%, Nasdaq -0.59%, Dow Jones -0.59% trong phiên."
+        "Bước 1: Giá dầu WTI tăng 1.15% → kỳ vọng lạm phát tăng",
+        "Bước 2: Kỳ vọng lạm phát cao hơn → lợi suất 10 năm tăng 1bp",
+        "Bước 3: Lợi suất tăng và lo ngại lãi suất cao hơn → VIX tăng 4.71% và chỉ số S&P 500 giảm 0.48%"
       ],
       "evidence": [
-        "10-year yield 4.837% (+3bp)",
-        "2-year yield 4.425% (+3bp)",
-        "S&P 500 7643.21 (-0.39%)",
-        "Nasdaq 26265.455 (-0.59%)"
+        "WTI 97.15 (+1.15%)",
+        "Lợi suất 10 năm 4.849% (+1bp)",
+        "VIX 16.46 (+4.71%)",
+        "S&P 500 7636.36 (-0.48%)"
       ],
-      "invalidate": "Nếu lợi suất giảm hoặc ổn định trong khi chỉ số tăng, chuỗi này sẽ không còn đúng."
+      "invalidate": "Nếu giá dầu giảm hoặc lợi suất 10 năm giảm, chuỗi này sẽ không còn đúng."
     },
     {
-      "signal": "Giá dầu WTI tăng mạnh, đẩy năng lượng lên",
-      "hidden": "Sự tăng giá dầu không chỉ nâng lợi nhuận ngành năng lượng mà còn tạo sức hỗ trợ cho thị trường chung trong bối cảnh lãi suất tăng.",
+      "signal": "Semiconductor outperformance leads market",
+      "hidden": "SOXX vượt S&P 500 +1.17 điểm dù ETF công nghệ chung đứng yên, cho thấy sức mạnh tương đối của bán dẫn đang là động lực chính.",
       "steps": [
-        "Bước 1: Giá WTI tăng 3.21% lên 96.02 USD/bàu.",
-        "Bước 2: Giá dầu cao hơn tăng doanh thu và lợi nhuận của các công ty năng lượng, dẫn đến ETF năng lượng tăng 0.90%.",
-        "Bước 3: Sự tăng của năng lượng góp phần giảm áp lực giảm tổng thể trên thị trường, dù các chỉ số chính vẫn giảm nhẹ."
+        "Bước 1: Chỉ số bán dẫn SOXX vượt S&P 500 +1.17 điểm",
+        "Bước 2: Nhà đầu tư chuyển sang bán dẫn → trọng lượng bán dẫn trong danh mục tăng",
+        "Bước 3: Sự dẫn dắt này phản ánh trong mức giảm nhẹ của S&P 500 (-0.48%) trong khi công nghệ tổng thể không thay đổi"
       ],
       "evidence": [
-        "WTI 96.02 (+3.21%)",
-        "Energy ETF 65.35 (+0.90%)"
+        "Bán dẫn vs S&P 500: +1.17 đpt",
+        "ETF Công nghệ 187.87 (0.00%)",
+        "S&P 500 7636.36 (-0.48%)"
       ],
-      "invalidate": "Nếu giá dầu giảm hoặc ETF năng lượng không tăng, mạch này sẽ không còn phù hợp."
+      "invalidate": "Nếu SOXX giảm so với S&P 500, chuỗi này sẽ sai."
+    },
+    {
+      "signal": "Meta’s 6.55% surge amid market weakness",
+      "hidden": "Meta tăng mạnh hơn 6% trong khi các cổ phiếu công nghệ lớn khác giảm, cho thấy khả năng luân chuyển sang cổ phiếu quảng cáo/tiếp cận người dùng đang hồi phục.",
+      "steps": [
+        "Bước 1: Meta tăng +6.55% trong khi các cổ phiếu công nghệ lớn giảm",
+        "Bước 2: Sự tăng mạnh của Meta hỗ trợ phần giao dịch truyền thông, giảm bớt áp lực bán trên chỉ số chung",
+        "Bước 3: Kết quả là S&P 500 chỉ giảm -0.48% dù áp lực bán chung đang mạnh"
+      ],
+      "evidence": [
+        "Meta 653.69 (+6.55%)",
+        "Nvidia 223.67 (-0.91%)",
+        "Apple 315.34 (-0.28%)",
+        "S&P 500 7636.36 (-0.48%)"
+      ],
+      "invalidate": "Nếu Meta giảm thay vì tăng, chuỗi này sẽ không còn hợp lý."
     }
   ],
   "overlooked": [
     {
-      "title": "USD chỉ số giảm nhẹ",
-      "text": "Chỉ số USD giảm 0.02% trong khi các chỉ số chứng khoán toàn cầu giảm mạnh, cho thấy đồng USD không đang hỗ trợ thị trường nội địa như thường lệ."
+      "title": "Yield curve flattening +42bp",
+      "text": "Khoảng cách 2‑10 năm tăng 42 điểm cơ bản, cho thấy thị trường kỳ vọng lãi suất ngắn hạn sẽ cao hơn, một tín hiệu thường bị bỏ qua khi chỉ nhìn vào mức tăng 1bp của lợi suất 10 năm."
+    },
+    {
+      "title": "Energy ETF up 0.83% vs market down",
+      "text": "ETF năng lượng tăng trong khi hầu hết các chỉ số giảm, phản ánh sức mạnh của giá dầu và có thể dẫn dắt các cổ phiếu năng lượng trong các phiên tới."
     }
   ],
   "calendar": {
@@ -120,11 +141,11 @@
       "label": "S&P 500",
       "kind": "index",
       "symbol": ".SPX",
-      "price": 7643.21,
+      "price": 7636.36,
       "prev": 7673.52,
-      "change": -30.3100000000004,
-      "changePct": -0.39499473514111383,
-      "asOf": "2026-09-09T14:34:05.000-0400",
+      "change": -37.160000000000764,
+      "changePct": -0.4842627633732728,
+      "asOf": "2026-09-09T16:43:19.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -133,11 +154,11 @@
       "label": "Nasdaq",
       "kind": "index",
       "symbol": ".IXIC",
-      "price": 26265.455,
+      "price": 26253.34,
       "prev": 26421.413,
-      "change": -155.95799999999872,
-      "changePct": -0.5902712318981529,
-      "asOf": "2026-09-09T14:34:05.000-0400",
+      "change": -168.07300000000032,
+      "changePct": -0.6361241921467271,
+      "asOf": "2026-09-09T17:15:59.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -146,11 +167,11 @@
       "label": "Dow Jones",
       "kind": "index",
       "symbol": ".DJI",
-      "price": 52472.43,
+      "price": 52380.66,
       "prev": 52786.07,
-      "change": -313.6399999999994,
-      "changePct": -0.59417190936927,
-      "asOf": "2026-09-09T14:34:05.000-0400",
+      "change": -405.4099999999962,
+      "changePct": -0.7680245943674083,
+      "asOf": "2026-09-09T16:43:19.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -159,11 +180,11 @@
       "label": "Russell 2000",
       "kind": "index",
       "symbol": ".RUT",
-      "price": 2926.122,
+      "price": 2921.235,
       "prev": 2960.204,
-      "change": -34.082000000000335,
-      "changePct": -1.1513395698404683,
-      "asOf": "2026-09-09T14:19:00.000-0400",
+      "change": -38.96900000000005,
+      "changePct": -1.31642954336931,
+      "asOf": "2026-09-09T16:30:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -172,11 +193,11 @@
       "label": "VIX",
       "kind": "level",
       "symbol": ".VIX",
-      "price": 16.21,
+      "price": 16.46,
       "prev": 15.72,
-      "change": 0.4900000000000002,
-      "changePct": 3.117048346055981,
-      "asOf": "2026-09-09T14:34:01.000-0400",
+      "change": 0.7400000000000002,
+      "changePct": 4.707379134860052,
+      "asOf": "2026-09-09T16:15:01.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -185,11 +206,11 @@
       "label": "Lợi suất 10 năm",
       "kind": "yield",
       "symbol": "US10Y",
-      "price": 4.837,
-      "prev": 4.804,
-      "change": 0.032999999999999474,
-      "changePct": 0.6869275603663504,
-      "asOf": "2026-09-09T14:33:44.000-0400",
+      "price": 4.849,
+      "prev": 4.837,
+      "change": 0.012000000000000455,
+      "changePct": 0.2480876576390419,
+      "asOf": "2026-09-09T19:37:14.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -198,11 +219,11 @@
       "label": "Chỉ số USD",
       "kind": "level",
       "symbol": ".DXY",
-      "price": 98.766,
-      "prev": 98.787,
-      "change": -0.021000000000000796,
-      "changePct": -0.021257857815300388,
-      "asOf": "2026-09-09T14:34:05.000-0400",
+      "price": 98.817,
+      "prev": 98.817,
+      "change": 0,
+      "changePct": 0,
+      "asOf": "2026-09-09",
       "src": "cnbc",
       "ok": true
     },
@@ -211,11 +232,11 @@
       "label": "Dầu WTI",
       "kind": "usd",
       "symbol": "@CL.1",
-      "price": 96.02,
-      "prev": 93.03,
-      "change": 2.989999999999995,
-      "changePct": 3.2140169837686714,
-      "asOf": "2026-09-09T14:24:03.000-0400",
+      "price": 97.15,
+      "prev": 96.05,
+      "change": 1.1000000000000085,
+      "changePct": 1.1452368558042774,
+      "asOf": "2026-09-09T19:27:23.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -224,11 +245,11 @@
       "label": "Vàng",
       "kind": "usd",
       "symbol": "@GC.1",
-      "price": 4462.4,
-      "prev": 4439,
-      "change": 23.399999999999636,
-      "changePct": 0.5271457535480882,
-      "asOf": "2026-09-09T14:24:01.000-0400",
+      "price": 4441.8,
+      "prev": 4460.7,
+      "change": -18.899999999999636,
+      "changePct": -0.4237003160938784,
+      "asOf": "2026-09-09T19:27:39.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -237,11 +258,11 @@
       "label": "Bitcoin",
       "kind": "usd",
       "symbol": "BTC.CM=",
-      "price": 78614.3,
+      "price": 78227.07,
       "prev": 78399.45,
-      "change": 214.85000000000582,
-      "changePct": 0.274045289858546,
-      "asOf": "2026-09-09T14:34:01.000-0400",
+      "change": -172.3799999999901,
+      "changePct": -0.21987399146293768,
+      "asOf": "2026-09-09T19:37:41.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -250,11 +271,11 @@
       "label": "Lợi suất 2 năm",
       "kind": "yield",
       "symbol": "US2Y",
-      "price": 4.425,
-      "prev": 4.398,
-      "change": 0.027000000000000135,
-      "changePct": 0.6139154160982296,
-      "asOf": "2026-09-09T14:33:59.000-0400",
+      "price": 4.43,
+      "prev": 4.427,
+      "change": 0.0030000000000001137,
+      "changePct": 0.06776598147730098,
+      "asOf": "2026-09-09T19:36:55.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -263,11 +284,11 @@
       "label": "Lợi suất 30 năm",
       "kind": "yield",
       "symbol": "US30Y",
-      "price": 5.287,
-      "prev": 5.264,
-      "change": 0.022999999999999687,
-      "changePct": 0.43693009118540443,
-      "asOf": "2026-09-09T14:33:44.000-0400",
+      "price": 5.301,
+      "prev": 5.286,
+      "change": 0.015000000000000568,
+      "changePct": 0.2837684449489325,
+      "asOf": "2026-09-09T19:37:14.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -276,11 +297,11 @@
       "label": "Nvidia",
       "kind": "usd",
       "symbol": "NVDA",
-      "price": 224.19,
+      "price": 223.67,
       "prev": 225.73,
-      "change": -1.539999999999992,
-      "changePct": -0.6822309839188376,
-      "asOf": "2026-09-09T14:34:05.126-0400",
+      "change": -2.0600000000000023,
+      "changePct": -0.9125946927745546,
+      "asOf": "2026-09-09T16:00:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -289,11 +310,11 @@
       "label": "Apple",
       "kind": "usd",
       "symbol": "AAPL",
-      "price": 312.51,
+      "price": 315.34,
       "prev": 316.22,
-      "change": -3.7100000000000364,
-      "changePct": -1.1732338245525382,
-      "asOf": "2026-09-09T14:34:05.160-0400",
+      "change": -0.8800000000000523,
+      "changePct": -0.2782872683574892,
+      "asOf": "2026-09-09T16:00:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -302,11 +323,11 @@
       "label": "Microsoft",
       "kind": "usd",
       "symbol": "MSFT",
-      "price": 491.96,
+      "price": 491.65,
       "prev": 493.95,
-      "change": -1.990000000000009,
-      "changePct": -0.4028747848972587,
-      "asOf": "2026-09-09T14:34:03.590-0400",
+      "change": -2.3000000000000114,
+      "changePct": -0.46563417349934433,
+      "asOf": "2026-09-09T16:00:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -315,11 +336,11 @@
       "label": "Alphabet",
       "kind": "usd",
       "symbol": "GOOGL",
-      "price": 330.03,
+      "price": 330.65,
       "prev": 338.36,
-      "change": -8.330000000000041,
-      "changePct": -2.46187492611421,
-      "asOf": "2026-09-09T14:34:03.475-0400",
+      "change": -7.710000000000036,
+      "changePct": -2.278638136895625,
+      "asOf": "2026-09-09T16:00:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -328,11 +349,11 @@
       "label": "Amazon",
       "kind": "usd",
       "symbol": "AMZN",
-      "price": 252.31,
+      "price": 252.4,
       "prev": 256.97,
-      "change": -4.660000000000025,
-      "changePct": -1.8134412577343755,
-      "asOf": "2026-09-09T14:34:03.208-0400",
+      "change": -4.570000000000022,
+      "changePct": -1.7784177141300623,
+      "asOf": "2026-09-09T16:00:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -341,11 +362,11 @@
       "label": "Meta",
       "kind": "usd",
       "symbol": "META",
-      "price": 653.21,
+      "price": 653.69,
       "prev": 613.48,
-      "change": 39.73000000000002,
-      "changePct": 6.476168742257289,
-      "asOf": "2026-09-09T14:34:05.350-0400",
+      "change": 40.210000000000036,
+      "changePct": 6.554410901740894,
+      "asOf": "2026-09-09T16:00:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -354,11 +375,11 @@
       "label": "Tesla",
       "kind": "usd",
       "symbol": "TSLA",
-      "price": 369.82,
-      "prev": 368.17,
-      "change": 1.6499999999999773,
-      "changePct": 0.44816253361218383,
-      "asOf": "2026-09-09T14:34:04.829-0400",
+      "price": 367.81,
+      "prev": 368.16,
+      "change": -0.35000000000002274,
+      "changePct": -0.09506736201652072,
+      "asOf": "2026-09-09T16:00:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -367,11 +388,11 @@
       "label": "Broadcom",
       "kind": "usd",
       "symbol": "AVGO",
-      "price": 363.88,
-      "prev": 368.57,
-      "change": -4.689999999999998,
-      "changePct": -1.272485552269582,
-      "asOf": "2026-09-09T14:34:04.485-0400",
+      "price": 364.38,
+      "prev": 368.56,
+      "change": -4.180000000000007,
+      "changePct": -1.1341436943781222,
+      "asOf": "2026-09-09T16:00:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -380,11 +401,11 @@
       "label": "Công nghệ",
       "kind": "usd",
       "symbol": "XLK",
-      "price": 187.91,
+      "price": 187.87,
       "prev": 187.87,
-      "change": 0.03999999999999204,
-      "changePct": 0.0212913184648917,
-      "asOf": "2026-09-09T14:34:00.421-0400",
+      "change": 0,
+      "changePct": 0,
+      "asOf": "2026-09-09T16:10:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -393,11 +414,11 @@
       "label": "Tài chính",
       "kind": "usd",
       "symbol": "XLF",
-      "price": 57.18,
-      "prev": 57.31,
-      "change": -0.13000000000000256,
-      "changePct": -0.2268365032280624,
-      "asOf": "2026-09-09T14:34:04.831-0400",
+      "price": 57.06,
+      "prev": 57.3,
+      "change": -0.23999999999999488,
+      "changePct": -0.41884816753925813,
+      "asOf": "2026-09-09T16:10:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -406,11 +427,11 @@
       "label": "Năng lượng",
       "kind": "usd",
       "symbol": "XLE",
-      "price": 65.35,
+      "price": 65.31,
       "prev": 64.77,
-      "change": 0.5799999999999983,
-      "changePct": 0.8954763007565205,
-      "asOf": "2026-09-09T14:33:55.078-0400",
+      "change": 0.5400000000000063,
+      "changePct": 0.8337193144974622,
+      "asOf": "2026-09-09T16:10:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -419,11 +440,11 @@
       "label": "Y tế",
       "kind": "usd",
       "symbol": "XLV",
-      "price": 166.69,
+      "price": 166.58,
       "prev": 167.13,
-      "change": -0.4399999999999977,
-      "changePct": -0.26326811464129585,
-      "asOf": "2026-09-09T14:34:02.905-0400",
+      "change": -0.549999999999983,
+      "changePct": -0.3290851433016113,
+      "asOf": "2026-09-09T16:10:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -432,11 +453,11 @@
       "label": "Tiêu dùng",
       "kind": "usd",
       "symbol": "XLY",
-      "price": 112.86,
+      "price": 112.46,
       "prev": 113.99,
-      "change": -1.1299999999999955,
-      "changePct": -0.991315027633999,
-      "asOf": "2026-09-09T14:34:00.126-0400",
+      "change": -1.5300000000000011,
+      "changePct": -1.342223002017722,
+      "asOf": "2026-09-09T16:10:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -445,11 +466,11 @@
       "label": "Công nghiệp",
       "kind": "usd",
       "symbol": "XLI",
-      "price": 172.15,
+      "price": 171.79,
       "prev": 174.42,
-      "change": -2.269999999999982,
-      "changePct": -1.3014562550166162,
-      "asOf": "2026-09-09T14:34:02.485-0400",
+      "change": -2.6299999999999955,
+      "changePct": -1.5078546038298335,
+      "asOf": "2026-09-09T16:10:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -459,10 +480,10 @@
       "kind": "index",
       "symbol": ".N225",
       "price": 65142.78,
-      "prev": 65269.33,
-      "change": -126.55000000000291,
-      "changePct": -0.1938889214888569,
-      "asOf": "2026-09-09T15:45:02.000+0900",
+      "prev": 65142.78,
+      "change": 0,
+      "changePct": 0,
+      "asOf": "2026-09-09",
       "src": "cnbc",
       "ok": true
     },
@@ -472,10 +493,10 @@
       "kind": "index",
       "symbol": ".HSI",
       "price": 25274.96,
-      "prev": 25317.18,
-      "change": -42.220000000001164,
-      "changePct": -0.16676422887541648,
-      "asOf": "2026-09-09T16:08:28.000+0800",
+      "prev": 25274.96,
+      "change": 0,
+      "changePct": 0,
+      "asOf": "2026-09-09",
       "src": "cnbc",
       "ok": true
     },
@@ -485,10 +506,10 @@
       "kind": "index",
       "symbol": ".TWII",
       "price": 47183.36,
-      "prev": 47105.78,
-      "change": 77.58000000000175,
-      "changePct": 0.1646931650425951,
-      "asOf": "2026-09-09T13:33:25.000+0800",
+      "prev": 47183.36,
+      "change": 0,
+      "changePct": 0,
+      "asOf": "2026-09-09",
       "src": "cnbc",
       "ok": true
     },
@@ -498,10 +519,10 @@
       "kind": "index",
       "symbol": ".KS11",
       "price": 7051.64,
-      "prev": 6954.52,
-      "change": 97.11999999999989,
-      "changePct": 1.3965018434054381,
-      "asOf": "2026-09-09T18:05:40.000+0900",
+      "prev": 7051.64,
+      "change": 0,
+      "changePct": 0,
+      "asOf": "2026-09-09",
       "src": "cnbc",
       "ok": true
     },
@@ -536,11 +557,11 @@
       "label": "Trái phiếu lợi suất cao",
       "kind": "usd",
       "symbol": "HYG",
-      "price": 79.04,
+      "price": 78.98,
       "prev": 79.12,
-      "change": -0.0799999999999983,
-      "changePct": -0.10111223458038206,
-      "asOf": "2026-09-09T14:34:00.033-0400",
+      "change": -0.14000000000000057,
+      "changePct": -0.1769464105156731,
+      "asOf": "2026-09-09T16:10:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -553,7 +574,7 @@
       "prev": 105.48,
       "change": -0.1700000000000017,
       "changePct": -0.16116799393250067,
-      "asOf": "2026-09-09T14:33:56.265-0400",
+      "asOf": "2026-09-09T16:10:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -562,11 +583,11 @@
       "label": "Kho bạc dài hạn",
       "kind": "usd",
       "symbol": "TLT",
-      "price": 81.74,
+      "price": 81.73,
       "prev": 82.2,
-      "change": -0.46000000000000796,
-      "changePct": -0.5596107055961167,
-      "asOf": "2026-09-09T14:34:05.034-0400",
+      "change": -0.46999999999999886,
+      "changePct": -0.5717761557177602,
+      "asOf": "2026-09-09T16:15:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -575,11 +596,11 @@
       "label": "Bán dẫn",
       "kind": "usd",
       "symbol": "SOXX",
-      "price": 531.86,
+      "price": 532,
       "prev": 528.4,
-      "change": 3.4600000000000364,
-      "changePct": 0.6548069644209001,
-      "asOf": "2026-09-09T14:34:01.555-0400",
+      "change": 3.6000000000000227,
+      "changePct": 0.681302043906136,
+      "asOf": "2026-09-09T16:15:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -588,11 +609,11 @@
       "label": "Điện nước",
       "kind": "usd",
       "symbol": "XLU",
-      "price": 43.07,
+      "price": 42.94,
       "prev": 43.45,
-      "change": -0.38000000000000256,
-      "changePct": -0.8745684695051843,
-      "asOf": "2026-09-09T14:33:53.665-0400",
+      "change": -0.5100000000000051,
+      "changePct": -1.1737629459148564,
+      "asOf": "2026-09-09T16:10:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -601,11 +622,11 @@
       "label": "Tiêu dùng thiết yếu",
       "kind": "usd",
       "symbol": "XLP",
-      "price": 83.27,
+      "price": 83.05,
       "prev": 84.02,
-      "change": -0.75,
-      "changePct": -0.8926446084265651,
-      "asOf": "2026-09-09T14:34:03.232-0400",
+      "change": -0.9699999999999989,
+      "changePct": -1.1544870268983563,
+      "asOf": "2026-09-09T16:10:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -614,11 +635,11 @@
       "label": "Cổ phiếu nhỏ",
       "kind": "usd",
       "symbol": "IWM",
-      "price": 291.14,
+      "price": 290.64,
       "prev": 294.67,
-      "change": -3.5300000000000296,
-      "changePct": -1.1979502494315775,
-      "asOf": "2026-09-09T14:34:05.155-0400",
+      "change": -4.03000000000003,
+      "changePct": -1.3676315878779752,
+      "asOf": "2026-09-09T16:10:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -627,11 +648,11 @@
       "label": "Trung Quốc",
       "kind": "usd",
       "symbol": "FXI",
-      "price": 34.63,
+      "price": 34.55,
       "prev": 35,
-      "change": -0.36999999999999744,
-      "changePct": -1.0571428571428498,
-      "asOf": "2026-09-09T14:33:59.970-0400",
+      "change": -0.45000000000000284,
+      "changePct": -1.2857142857142938,
+      "asOf": "2026-09-09T16:10:00.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -640,11 +661,11 @@
       "label": "VIX 9 ngày",
       "kind": "level",
       "symbol": ".VIX9D",
-      "price": 15.27,
+      "price": 15.59,
       "prev": 14.81,
-      "change": 0.4599999999999991,
-      "changePct": 3.106009453072242,
-      "asOf": "2026-09-09T14:34:02.000-0400",
+      "change": 0.7799999999999994,
+      "changePct": 5.2667116812964165,
+      "asOf": "2026-09-09T16:15:01.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -653,11 +674,11 @@
       "label": "Khí đốt",
       "kind": "usd",
       "symbol": "@NG.1",
-      "price": 2.817,
-      "prev": 2.916,
-      "change": -0.09899999999999975,
-      "changePct": -3.3950617283950533,
-      "asOf": "2026-09-09T14:24:00.000-0400",
+      "price": 2.806,
+      "prev": 2.822,
+      "change": -0.016000000000000014,
+      "changePct": -0.5669737774627928,
+      "asOf": "2026-09-09T19:27:04.000-0400",
       "src": "cnbc",
       "ok": true
     },
@@ -666,11 +687,11 @@
       "label": "Đồng",
       "kind": "usd",
       "symbol": "@HG.1",
-      "price": 6.8835,
-      "prev": 6.8235,
-      "change": 0.05999999999999961,
-      "changePct": 0.879314134974714,
-      "asOf": "2026-09-09T14:24:00.000-0400",
+      "price": 6.8575,
+      "prev": 6.8885,
+      "change": -0.030999999999999694,
+      "changePct": -0.4500254046599361,
+      "asOf": "2026-09-09T19:26:54.000-0400",
       "src": "cnbc",
       "ok": true
     }
@@ -679,40 +700,40 @@
     {
       "id": "curve",
       "label": "Đường cong 2–10 năm",
-      "value": "+41 bp",
+      "value": "+42 bp",
       "delta": "+1 bp",
       "dir": "flat",
       "state": "phẳng",
       "tone": "watch",
-      "note": "Chênh lệch 41bp, gần như không đổi so với phiên trước.",
-      "inputs": "10 năm 4.837% − 2 năm 4.425%"
+      "note": "Chênh lệch 42bp, gần như không đổi so với phiên trước.",
+      "inputs": "10 năm 4.849% − 2 năm 4.43%"
     },
     {
       "id": "vixterm",
       "label": "Cấu trúc biến động",
-      "value": "-0.94",
+      "value": "-0.87",
       "delta": null,
       "dir": "down",
       "state": "trung tính",
       "tone": "watch",
       "note": "Không có dấu hiệu phòng hộ dồn vào ngắn hạn.",
-      "inputs": "VIX 9 ngày 15.27 − VIX 16.21"
+      "inputs": "VIX 9 ngày 15.59 − VIX 16.46"
     },
     {
       "id": "defensive",
       "label": "Phòng thủ vs thị trường",
-      "value": "-0.49 đpt",
+      "value": "-0.68 đpt",
       "delta": null,
       "dir": "down",
       "state": "chấp nhận rủi ro",
       "tone": "calm",
       "note": "Nhóm phòng thủ tụt lại — nhà đầu tư vẫn ưu tiên tài sản rủi ro.",
-      "inputs": "(Điện nước -0.87% + Thiết yếu -0.89%) / 2 − S&P 500 -0.39%"
+      "inputs": "(Điện nước -1.17% + Thiết yếu -1.15%) / 2 − S&P 500 -0.48%"
     },
     {
       "id": "semis",
       "label": "Bán dẫn vs S&P 500",
-      "value": "+1.05 đpt",
+      "value": "+1.17 đpt",
       "delta": null,
       "dir": "up",
       "state": "dẫn dắt",
@@ -723,7 +744,7 @@
     {
       "id": "breadth",
       "label": "Cổ phiếu nhỏ vs S&P 500",
-      "value": "-0.80 đpt",
+      "value": "-0.88 đpt",
       "delta": null,
       "dir": "down",
       "state": "hẹp",
@@ -734,9 +755,9 @@
     {
       "id": "credit",
       "label": "Tín dụng rủi ro cao vs hạng đầu tư",
-      "value": "+0.06 đpt",
+      "value": "-0.02 đpt",
       "delta": null,
-      "dir": "up",
+      "dir": "down",
       "state": "trung tính",
       "tone": "watch",
       "note": "Chênh lệch tín dụng không đáng kể.",
@@ -796,188 +817,109 @@
   ],
   "stories": [
     {
-      "title": "Treasury Yields Keep Rising Ahead of Buybacks, CPI",
-      "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNRVdxMTZtenBXNFFZVkp5SGxSSVAyNmhIOFpNSFNpeGtBLWVrY1VYVFRRWHhadkRVVUZLTGRXVFV0d3FOSF9sSHQ4am5haEYxOW5YV0xYbnBWZXNla0owX2gyZEJaUXIxaFlSYVBtZFhmVmVLd3NtWUdTc3p4ZUJraEdUQXcxWnI1YzNQRENVb2xjNUV0aW5YUnNMa1JiM2Z1bFVvYUtHY1M?oc=5",
-      "summary": "",
-      "date": "2026-09-08T19:57:00.000Z",
-      "source": "WSJ",
-      "sources": [
-        "WSJ"
-      ],
-      "category": "fed",
-      "keywords": [
-        "cpi",
-        "treasury yield",
-        "yields"
-      ],
-      "score": 28,
-      "impact": "high",
-      "titleVi": "Lãi suất trái phiếu Mỹ tiếp tục tăng trước mua lại cổ phiếu và CPI",
-      "summaryVi": "Lãi suất trái phiếu Kho bạc Mỹ tăng lên khi thị trường chờ công bố mua lại cổ phiếu và chỉ số CPI.",
-      "implicationVi": "Lãi suất cao làm chi phí vay tăng, có thể làm giảm sức mua cổ phiếu và ảnh hưởng đến các công ty có nợ lớn; tác động tới nhà đầu tư quan tâm tới mua lại cổ phiếu."
-    },
-    {
-      "title": "Investors worried about rising bond yields are keeping a close eye on this corner of the market",
-      "link": "https://www.marketwatch.com/story/investors-worried-about-rising-bond-yields-are-keeping-a-close-eye-on-this-corner-of-the-market-aa4096c8?mod=mw_rss_topstories",
-      "summary": "U.S. small-cap stocks have hit a pivotal point, trading below a key level as interest rates in the bond market climb ahead of the Federal Reserve’s highly anticipated policy meeting next week.",
-      "date": "2026-09-09T16:09:00.000Z",
-      "source": "MarketWatch",
-      "sources": [
-        "MarketWatch"
-      ],
-      "category": "fed",
-      "keywords": [
-        "federal reserve",
-        "bond yield",
-        "stocks"
-      ],
-      "score": 26,
-      "impact": "high",
-      "titleVi": "Cổ phiếu vốn hóa nhỏ Mỹ giảm dưới mức hỗ trợ khi lợi suất trái phiếu tăng",
-      "summaryVi": "Cổ phiếu vốn nhỏ Mỹ rơi xuống dưới mức kỹ thuật khi lãi suất trái phiếu tăng trước cuộc họp Fed tuần tới.",
-      "implicationVi": "Lãi suất tăng làm chi phí vốn cao hơn, gây áp lực lên các công ty vốn nhỏ có khả năng vay nhiều; nếu lãi suất tiếp tục leo thang, áp lực này sẽ kéo dài."
-    },
-    {
-      "title": "Dow slides 300 points as rates jump, international crude price tops $100: Live updates",
-      "link": "https://www.cnbc.com/2026/09/08/stock-market-today-live-updates.html",
-      "summary": "Stocks fell on Wednesday as rising Treasury yields and oil prices continued to rattle investors.",
-      "date": "2026-09-09T18:22:14.000Z",
+      "title": "Thursday's big stock stories: What’s likely to move the market in the next trading session",
+      "link": "https://www.cnbc.com/2026/09/09/thursdays-big-stock-stories-whats-likely-to-move-the-market.html",
+      "summary": "The Dow Industrials dropped just over 400 points in Wednesday's trading as Treasury yields rose and oil prices saw their highest settlement prices since May.",
+      "date": "2026-09-09T23:14:09.000Z",
       "source": "CNBC",
       "sources": [
-        "CNBC"
+        "CNBC",
+        "CNBC Investing"
       ],
       "category": "fed",
       "keywords": [
         "treasury yield",
         "oil price",
-        "stocks"
+        "yields"
       ],
-      "score": 25,
+      "score": 30,
       "impact": "high",
-      "titleVi": "Dow giảm 300 điểm khi lợi suất tăng và giá dầu vượt $100",
-      "summaryVi": "Chỉ số Dow Jones giảm 300 điểm trong khi lợi suất trái phiếu tăng và giá dầu thô quốc tế vượt mức $100.",
-      "implicationVi": "Lợi suất tăng làm giảm giá trị cổ phiếu do chi phí vốn cao hơn, trong khi giá dầu tăng làm tăng chi phí sản xuất cho các công ty công nghiệp, đồng thời gây lo ngại lạm phát."
+      "titleVi": "Các câu chuyện cổ phiếu lớn sẽ ảnh hưởng thị trường ngày tới",
+      "summaryVi": "Dow giảm hơn 400 điểm khi lợi suất trái phiếu tăng và giá dầu đạt mức cao nhất kể từ tháng 5.",
+      "implicationVi": "Sự tăng lợi suất và giá dầu có thể kéo dài áp lực bán trên S&P 500, Nasdaq và Dow, ảnh hưởng tới các cổ phiếu chu kỳ và năng lượng."
     },
     {
-      "title": "Investors: Sept. 16 Will Be a Critical Day for the Stock Market. Here's What You Need to Know.",
-      "link": "https://www.nasdaq.com/articles/investors-sept-16-will-be-critical-day-stock-market-heres-what-you-need-know",
-      "summary": "Key PointsThe market is awaiting the Federal Reserve's statement on Sept. 16 regarding whether it will hike or maintain interest rates.",
-      "date": "2026-09-09T17:23:48.000Z",
-      "source": "Nasdaq",
+      "title": "Treasuries Weaken as Soaring Oil Prices Revive Rate Hike Worries",
+      "link": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNUzN1ckJ5NlRxNlp4UHoyWXVKMGZVTnNuODdMVjVubk9ZN1pnQVhYZGhWTUxIQ1l4ZlA4bkZ4dG5QMnRDamE1Q0tzSTNBeWxGVXlsN1c5Q3FaMTZINFpadGhqbVRLQVJRU0dPT0hGamdHR3d2ZG9TSGhfdHJTZDQxWnpvZVpFdmNDSXhzbTJtZThBNGQ3cnA1SmJDU2RfT012RE9Mb2xlXzE0eDhleTY3SjNoeXEzdw?oc=5",
+      "summary": "",
+      "date": "2026-09-09T19:31:21.000Z",
+      "source": "Bloomberg",
       "sources": [
-        "Nasdaq"
+        "Bloomberg"
       ],
       "category": "fed",
       "keywords": [
-        "federal reserve",
-        "stock market"
+        "rate hike",
+        "oil price"
       ],
-      "score": 21,
+      "score": 26,
       "impact": "high",
-      "titleVi": "Ngày 16/9: Ngày quyết định quan trọng cho thị trường chứng khoán Mỹ",
-      "summaryVi": "Thị trường đang chờ tuyên bố của Fed vào ngày 16/9 về việc tăng hay duy trì lãi suất.",
-      "implicationVi": "Kết quả quyết định sẽ định hướng chi phí vay và kỳ vọng lãi suất, từ đó ảnh hưởng tới dòng tiền vào cổ phiếu và trái phiếu."
+      "titleVi": "Trái phiếu yếu đi khi giá dầu tăng, lo ngại tăng lãi suất",
+      "summaryVi": "Giá dầu tăng mạnh làm suy yếu trái phiếu và làm dấy lên lo ngại về việc tăng lãi suất của Fed.",
+      "implicationVi": "Áp lực lạm phát từ dầu cao có thể khiến Fed duy trì hoặc tăng lãi suất, kéo theo áp lực bán trên các cổ phiếu nhạy cảm lãi suất."
     },
     {
-      "title": "Bond Yields Rise After Treasury Reveals Buyback Details",
-      "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQVDNGMjhOMjVKTDhwaDE3NXRRbVJTckpUNUtRamZfQnhuSzB4UlhZTlJySUdXUlZ0V0hxdE1hdkRUb2dvWXFmVENYQTVmZWNza1gtLVpoNlBBdUs3OFZwTGwtLVFNUFlOQmR5OTdNc3llRWRxdzhySkY2eTNleE9MVk5OT2JfUlQyNjNHYnJiYjFiRTJDMzVkOGYxMlBNTWpJMWc?oc=5",
+      "title": "Barclays lifts S&P 500 index's year-end target to 7,950 on strong earnings",
+      "link": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQdEpJSkhqQ0dZZjZvbFZ3MU9EbGZpa0l4ZjJNazczLTZQTVVfZHlJVmxRVEx3ZFRpLWRwdEhycTRXbGtFdnplbnAwOEgzWG5VQXlYNEdkWE9pVTV0aGl0ZkdsSTBNb1M4U21LWkxPeUVBYWZLTDFZem81OWEtenIwa2E5bjlsdU1Bcmh2SzROZTR2RGFpOVQ4YTRTT21QWXpBX2k2dHV0S3hROHNkYmhR?oc=5",
       "summary": "",
-      "date": "2026-09-09T17:02:22.000Z",
-      "source": "WSJ",
-      "sources": [
-        "WSJ",
-        "Barron's"
-      ],
-      "category": "earnings",
-      "keywords": [
-        "bond yield",
-        "yields"
-      ],
-      "score": 20,
-      "impact": "high",
-      "titleVi": "Lợi suất trái phiếu tăng sau khi Kho bạc công bố chi tiết mua lại cổ phiếu",
-      "summaryVi": "Lợi suất trái phiếu Mỹ tăng lên sau khi Kho bạc công bố kế hoạch mua lại cổ phiếu.",
-      "implicationVi": "Kế hoạch mua lại có thể giảm cung cổ phiếu, nhưng thông tin về chi phí tài trợ tăng khiến nhà đầu tư lo ngại về mức độ bền vững của chương trình."
-    },
-    {
-      "title": "Wall St slides as oil tops $100, yields hit 2023 high; Apple down before Ternus' first launch event as CEO",
-      "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNZExkRWJ1dThFMjNOZWdHdkJuSFd4UENUUko1cUI2aWJNMkQzb3FtYm5kNWUza3hVRVQ2Qlk0WjFGRnlGZWRhbzVMckNacFc4NDRXbzRqTmdyWWxTdVZoQ3pYNjY2Nm9pNHJRTUo0dlhkNkFzN2NSZ3BYR2Rqb1dfYkFjWHI1eW5USFlQd200RzI1cVVYY0VsdEZMbDdNQnZrLThZ?oc=5",
-      "summary": "",
-      "date": "2026-09-09T16:31:08.000Z",
+      "date": "2026-09-09T11:45:43.000Z",
       "source": "Reuters",
       "sources": [
+        "CNBC",
         "Reuters"
       ],
       "category": "earnings",
       "keywords": [
-        "apple",
-        "yields"
-      ],
-      "score": 17,
-      "impact": "high",
-      "titleVi": "Wall St giảm khi dầu vượt $100, lợi suất đạt mức cao 2023; Apple giảm trước sự kiện CEO",
-      "summaryVi": "Wall St sụt giảm khi giá dầu vượt $100 và lợi suất trái phiếu đạt mức cao nhất năm 2023; Apple giảm trước sự kiện CEO.",
-      "implicationVi": "Giá dầu cao và lợi suất tăng làm tăng chi phí vay và áp lực lạm phát, trong khi giảm giá Apple phản ánh lo ngại về doanh thu, đồng thời kéo theo áp lực bán trên thị trường."
-    },
-    {
-      "title": "Stocks making the biggest moves midday: Meta, Centerspace, Apple, Casey's General Stores, Signet & more",
-      "link": "https://www.cnbc.com/2026/09/09/stocks-making-the-biggest-moves-midday-meta-csr-aapl-casy-sig.html",
-      "summary": "These are the stocks posting the largest moves midday.",
-      "date": "2026-09-09T17:41:29.000Z",
-      "source": "CNBC Markets",
-      "sources": [
-        "CNBC Markets"
-      ],
-      "category": "tech",
-      "keywords": [
-        "apple",
-        "stocks"
+        "s&p 500"
       ],
       "score": 16,
       "impact": "high",
-      "titleVi": "Các cổ phiếu dẫn đầu giao dịch giữa ngày: Meta, Apple, Casey’s",
-      "summaryVi": "Meta, Apple, Casey’s General Stores và các cổ phiếu khác có biến động mạnh trong giao dịch giữa ngày.",
-      "implicationVi": "Biến động lớn của các công ty công nghệ và bán lẻ phản ánh phản ứng của nhà đầu tư với tin tức thị trường, có thể kéo theo xu hướng chung của chỉ số."
+      "titleVi": "Barclays nâng dự báo cuối năm S&P 500 lên 7,950 nhờ lợi nhuận mạnh",
+      "summaryVi": "Barclays dự báo S&P 500 sẽ đạt 7,950 vào cuối năm nhờ kết quả lợi nhuận tốt.",
+      "implicationVi": "Dự báo cao hơn có thể làm tăng kỳ vọng nhà đầu tư và tạo sức mua cho các cổ phiếu có lợi nhuận tốt, ảnh hưởng tới xu hướng chung của thị trường."
     },
     {
-      "title": "U.S. Stock Futures Slip, Treasurys Weaken After Oil Tops $100",
-      "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNcjQ0dWVKb0Rhd2FmNDZkVHhSYTE0YjBSTlVVZF9selpEb2RFSFdBNG9tZ3B0dzZBVDhkeEtxOV9IRktISnFIMDN5bWU5QVBfY2FTTWFKMlNNWS1YZUR3VXlQWmVRTExncG93cmdEOXVRTmV3SnZGNWZwTjlvLVBlWm9GRndOTzRMRTdDaGlJZmJIODFEc3liVXQzdlVJUnRkM05YaVF5aVVFYjA?oc=5",
+      "title": "U.S. Treasury Yields Rise Ahead of PPI Inflation Data",
+      "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQVDNGMjhOMjVKTDhwaDE3NXRRbVJTckpUNUtRamZfQnhuSzB4UlhZTlJySUdXUlZ0V0hxdE1hdkRUb2dvWXFmVENYQTVmZWNza1gtLVpoNlBBdUs3OFZwTGwtLVFNUFlOQmR5OTdNc3llRWRxdzhySkY2eTNleE9MVk5OT2JfUlQyNjNHYnJiYjFiRTJDMzVkOGYxMlBNTWpJMWc?oc=5",
       "summary": "",
-      "date": "2026-09-09T12:11:00.000Z",
+      "date": "2026-09-09T20:01:00.000Z",
       "source": "WSJ",
       "sources": [
-        "Investing.com",
         "WSJ"
       ],
-      "category": "commod",
+      "category": "fed",
       "keywords": [
-        "futures"
+        "inflation data",
+        "treasury yield",
+        "yields"
       ],
-      "score": 16,
-      "impact": "high",
-      "titleVi": "Futures Mỹ giảm, trái phiếu yếu sau khi dầu vượt $100",
-      "summaryVi": "Futures chứng khoán Mỹ trượt, trong khi lợi suất trái phiếu giảm sau khi giá dầu vượt $100.",
-      "implicationVi": "Sự giảm giá futures phản ánh kỳ vọng lãi suất cao hơn, trong khi giảm lợi suất trái phiếu cho thấy áp lực ngược chiều từ thị trường tiền tệ."
+      "score": 30,
+      "impact": "medium",
+      "titleVi": "Lợi suất trái phiếu Mỹ tăng trước dữ liệu PPI",
+      "summaryVi": "Lợi suất trái phiếu Mỹ tăng lên trước công bố chỉ số giá sản xuất (PPI).",
+      "implicationVi": "Lãi suất cao hơn có thể làm tăng chi phí vay, gây áp lực giảm lên các cổ phiếu có đòn bẩy và tăng sức ép lên thị trường trái phiếu."
     },
     {
-      "title": "ServiceTitan, Apple, Meta, Micron, Casey’s, Jersey Mike’s, and More Stocks That Explain Today’s Market",
-      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1XeWdLd3UzbTZ1ZGF6SktCNkprZlU1SG4zdFdFdmQ3MkZTMVh4X2hIY3lka1lLbmFXQUI2dWJPaThqVWlQQTAyTG9XZ251dzE5VkZzNUZrNXdKUktkSHFuMlBNSjQ?oc=5",
+      "title": "Apple joins foldable phone race with $1,999 passport-shaped iPhone Duo",
+      "link": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPbWlNdDREU0FXTWdNYTAyajJUNHR3NFVDd3dVVV92Y2dXSGpkZ1RKVGE3RVduaWtLX3piNElOQm1BWlV5RGFrNlJpSHZYQ2lHakU3T0NrVmVFNWhsVXJSazlEakQwZkN1blVSdEFZSWVnUmZZWFFmcm5KRUZ2TXFaY3ZJT0U3ckhVLWhvQ3lIalBZWXRSMzNORXV2YnBUT2dORVZFYWw1aHJWbl9MdFBpcGoyb2hOcG10VXVzZ0k0SzM4b0h5RnhMOTJB?oc=5",
       "summary": "",
-      "date": "2026-09-09T16:58:00.000Z",
-      "source": "Barron's",
+      "date": "2026-09-09T21:04:32.000Z",
+      "source": "Reuters",
       "sources": [
+        "Investing.com",
+        "Reuters",
+        "WSJ",
         "Barron's"
       ],
       "category": "tech",
       "keywords": [
-        "apple",
-        "stocks"
+        "apple"
       ],
-      "score": 16,
-      "impact": "high",
-      "titleVi": "Các cổ phiếu như ServiceTitan, Apple, Meta giải thích xu hướng thị trường hôm nay",
-      "summaryVi": "ServiceTitan, Apple, Meta, Micron và các công ty khác giải thích động lực thị trường ngày hôm nay.",
-      "implicationVi": "Sự di chuyển của các công ty này ảnh hưởng tới chỉ số chung, cho thấy mức độ quan tâm của nhà đầu tư tới các ngành công nghệ và dịch vụ."
+      "score": 29,
+      "impact": "medium",
+      "titleVi": "Apple tham gia cuộc đua điện thoại gập với iPhone Duo 1.999 USD",
+      "summaryVi": "Apple công bố iPhone Duo gập, giá 1.999 USD, dạng hộ chiếu.",
+      "implicationVi": "Ra mắt sản phẩm mới có thể tạo động lực ngắn hạn cho cổ phiếu Apple và các nhà cung cấp chuỗi cung ứng, nhưng ảnh hưởng tổng thể tới chỉ số là hạn chế."
     },
     {
       "title": "Trump pushes Fed for lower rates, but consumers may be better off with a hike, experts say",
@@ -995,29 +937,9 @@
       ],
       "score": 23,
       "impact": "medium",
-      "titleVi": "Trump kêu gọi Fed hạ lãi suất, chuyên gia cho rằng tăng lãi có thể tốt hơn",
-      "summaryVi": "Trump thúc ép Fed giảm lãi suất, nhưng một số chuyên gia cho rằng việc tăng lãi có thể bảo vệ người tiêu dùng hơn.",
-      "implicationVi": "Áp lực chính trị có thể ảnh hưởng đến kỳ vọng thị trường về chính sách tiền tệ; nếu Fed duy trì hoặc tăng lãi, chi phí vay sẽ cao hơn, ảnh hưởng tới lợi nhuận doanh nghiệp."
-    },
-    {
-      "title": "Fed rate hike hinges on two key inflation reports in the next two days",
-      "link": "https://www.marketwatch.com/story/fed-rate-hike-hinges-on-two-key-inflation-reports-in-the-next-two-days-09d63bd9?mod=mw_rss_topstories",
-      "summary": "Consumer and wholesale prices are rising again. Just how bad does it have to get for the Fed to act?",
-      "date": "2026-09-09T16:18:00.000Z",
-      "source": "MarketWatch",
-      "sources": [
-        "MarketWatch"
-      ],
-      "category": "fed",
-      "keywords": [
-        "rate hike",
-        "fed"
-      ],
-      "score": 23,
-      "impact": "medium",
-      "titleVi": "Fed sẽ quyết định tăng lãi dựa trên hai báo cáo lạm phát sắp tới",
-      "summaryVi": "Hai báo cáo lạm phát tiêu dùng và bán buôn sẽ quyết định liệu Fed có tăng lãi suất trong thời gian tới.",
-      "implicationVi": "Nếu các chỉ số lạm phát tăng, Fed có thể nâng lãi, làm tăng chi phí vay và giảm sức mua cổ phiếu; ngược lại, dữ liệu yếu có thể giữ lãi suất ổn định."
+      "titleVi": "Trump thúc ép Fed hạ lãi, chuyên gia cho rằng người tiêu dùng có thể tốt hơn với lãi suất tăng",
+      "summaryVi": "Chính quyền Trump tăng áp lực lên Fed để giảm lãi suất, nhưng các chuyên gia cảnh báo người tiêu dùng có thể hưởng lợi hơn khi lãi suất tăng.",
+      "implicationVi": "Áp lực chính trị lên chính sách tiền tệ có thể tạo bất ổn trong kỳ vọng lãi suất, ảnh hưởng tới định giá cổ phiếu và thị trường trái phiếu."
     },
     {
       "title": "U.S. reveals import ban on slew of Canadian goods as trade war escalates",
@@ -1035,9 +957,29 @@
       ],
       "score": 22,
       "impact": "medium",
-      "titleVi": "Mỹ áp đặt lệnh cấm nhập khẩu một loạt hàng hóa Canada",
-      "summaryVi": "Mỹ công bố lệnh cấm nhập khẩu các sản phẩm như xe máy, rượu và sữa từ Canada, bắt đầu từ 29/9.",
-      "implicationVi": "Lệnh cấm có thể làm giảm doanh thu của các công ty Mỹ phụ thuộc vào nguồn cung Canada và tạo áp lực lên giá nội địa, đồng thời ảnh hưởng tới chuỗi cung ứng."
+      "titleVi": "Mỹ áp lệnh cấm nhập khẩu một loạt hàng Canada, căng thẳng thương mại leo thang",
+      "summaryVi": "Mỹ công bố lệnh cấm nhập khẩu xe máy, rượu và sữa từ Canada, có hiệu lực từ 29/9.",
+      "implicationVi": "Các lệnh cấm có thể làm giảm doanh thu của các công ty liên quan và tạo áp lực lên các ngành xuất khẩu, nhưng tác động tổng thể tới chỉ số là chưa rõ."
+    },
+    {
+      "title": "Fed Officials Signal Openness to Warsh Proposal for Fewer Policy Meetings",
+      "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQdFd0S2RwNlg5Tlotc0h6VzNFWDd3alhncTVtYnkyUmVaV1YwMlU5WlA2VjNMTHNrQ2dLTzNSakN0V0ZOZ2J5bWVXZG1rNFpTX0tMLTFnUHF0TDhyVkhFNXhza082aEMyY0tYNDVYZ2FmcXg0V3pDaHNkdk9iTHBFYUNocGg1bEswSHY4QjRMMjdaeDZ4LUxEN3V1b01WWkJxdGhDTzRXb09fV2tIaWh1Z0ZQNTFrcDJLelduSUhrNnJWQQ?oc=5",
+      "summary": "",
+      "date": "2026-09-09T10:00:00.000Z",
+      "source": "Bloomberg",
+      "sources": [
+        "Bloomberg"
+      ],
+      "category": "fed",
+      "keywords": [
+        "fed official",
+        "fed"
+      ],
+      "score": 22,
+      "impact": "medium",
+      "titleVi": "Các quan chức Fed mở cửa đề xuất Warsh giảm số cuộc họp chính sách",
+      "summaryVi": "Một số quan chức Fed cho biết sẵn sàng xem xét đề xuất của Warsh về việc giảm tần suất họp chính sách.",
+      "implicationVi": "Giảm số cuộc họp có thể làm giảm tần suất truyền đạt tín hiệu tiền tệ, làm tăng độ không chắc chắn về định hướng lãi suất trong ngắn hạn."
     },
     {
       "title": "Warsh might yet be a good Fed chair",
@@ -1055,77 +997,55 @@
       ],
       "score": 22,
       "impact": "medium",
-      "titleVi": "Warsh có thể trở thành Chủ tịch Fed hiệu quả",
-      "summaryVi": "Bài viết đề cập khả năng Warsh sẽ là một Chủ tịch Fed tốt.",
-      "implicationVi": "Nếu Warsh được bổ nhiệm, quan điểm tiền tệ của ông có thể thay đổi kỳ vọng lãi suất, ảnh hưởng tới định giá tài sản tài chính."
+      "titleVi": "Warsh có thể trở thành Chủ tịch Fed tốt",
+      "summaryVi": "Bài viết của FT đánh giá tiềm năng của Warsh trong vai trò Chủ tịch Fed.",
+      "implicationVi": "Nếu Warsh được bổ nhiệm, phong cách lãnh đạo và quan điểm tiền tệ của ông có thể ảnh hưởng tới kỳ vọng lãi suất và do đó tới định giá cổ phiếu."
     },
     {
-      "title": "Stocks Rise As Middle East Tensions Fray",
-      "link": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQM0s1M1JrT1cyeExIUzRmNldHeTduY19wVWRGOUNYVGtwTElHYWtKYkVVLXE3NFY2UEFSSGJCV3NyakVyek14dDRDN1BpY1RnUVBBRjJ2VVFuc3RhV0tScVNlck5LMFRKWi1QSEptSnlJcWlGQTV2QU94U2lWVk1ReEdjS21IRjVqR2pwcA?oc=5",
-      "summary": "",
-      "date": "2026-09-09T01:50:15.000Z",
-      "source": "WSJ",
+      "title": "Diesel prices hit another record high. If you’re shocked, wait until you see your grocery bill.",
+      "link": "https://www.marketwatch.com/story/diesel-prices-hit-another-record-high-if-youre-shocked-wait-until-you-see-your-grocery-bill-afee7076?mod=mw_rss_topstories",
+      "summary": "The most important price in America is one most drivers never pay — and it reaches the CPI, the Fed and the European Central Bank in the same week.",
+      "date": "2026-09-09T22:51:00.000Z",
+      "source": "MarketWatch",
       "sources": [
-        "Nasdaq",
+        "MarketWatch"
+      ],
+      "category": "fed",
+      "keywords": [
+        "cpi",
+        "fed"
+      ],
+      "score": 21,
+      "impact": "medium",
+      "titleVi": "Giá diesel kỷ lục, tác động tới CPI, Fed và ECB",
+      "summaryVi": "Giá diesel đạt mức cao kỷ lục, làm tăng áp lực lên CPI và các ngân hàng trung ương.",
+      "implicationVi": "Chi phí năng lượng tăng có thể đẩy lạm phát lên mức cao hơn dự kiến, khiến Fed duy trì hoặc tăng lãi suất, ảnh hưởng tới thị trường chứng khoán."
+    },
+    {
+      "title": "Brent settles at over $100 a barrel as Middle East conflict intensifies",
+      "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNcV81aHB4Z3dteWpsZGxOM01KRFFXZ3hhZlBUUlJUb3Y0QXVXaWpfSXJxRGx0R2Z2LXRrb25jYWJBTUNxc3llTFNVdmRoQzkxRjlLc0czRUxKczdyYU8temtJbXJRUXNOUGpuRkdXenNZTFVLX3ZhUkFQZ191cjV3amlwZ0RocHBoUHNZYzVfZy1pSlFNNGlma0NMMFVvRFIxSXNUOTRyYnNDWU1qc0JxWmpDRHMyTmVj?oc=5",
+      "summary": "",
+      "date": "2026-09-09T19:56:09.000Z",
+      "source": "Reuters",
+      "sources": [
+        "Reuters",
         "WSJ"
       ],
       "category": "policy",
       "keywords": [
-        "middle east",
-        "stocks"
-      ],
-      "score": 20,
-      "impact": "medium",
-      "titleVi": "Cổ phiếu tăng khi căng thẳng Trung Đông leo thang",
-      "summaryVi": "Thị trường chứng khoán tăng lên trong bối cảnh căng thẳng ở Trung Đông gia tăng.",
-      "implicationVi": "Căng thẳng địa chính trị thường làm tăng giá dầu, nhưng đồng thời tạo nhu cầu bảo hiểm tài sản, dẫn tới dòng vốn vào các tài sản an toàn như cổ phiếu."
-    },
-    {
-      "title": "Oil Price Hits $100 a Barrel, Sending Bond Yields Higher",
-      "link": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxOTUM4M3lOVGk3ODR3Mk0zYUlSR2UyaC0xa0xZaUstc2NSRjNXaHN3VDBHUU5PN2NVbWZNTHBnNGJ0elFDQjJodmNjMF9hYVVxVW5xbHFNelNmNkZpd3NrYVlaejd6NTdZNHlxWWhXbzl3elBMZ3dSUHM4dHFhcUppcnRTeWprbHhXWU9aX1AwUVdHaHl0NVQtdi1tbTFEV2I4ci1wRUdUTlBXU3RMNUROdlltV2lUdnJjM3hJUnRENi1qZDlSbnk0UjlzaHJlZU92SnV6UEdRWDZsQW91TFJZTmtR?oc=5",
-      "summary": "",
-      "date": "2026-09-09T09:03:00.000Z",
-      "source": "Barron's",
-      "sources": [
-        "Barron's"
-      ],
-      "category": "commod",
-      "keywords": [
-        "oil price",
-        "bond yield",
-        "yields"
-      ],
-      "score": 20,
-      "impact": "medium",
-      "titleVi": "Giá dầu đạt $100/thùng, đẩy lợi suất trái phiếu lên",
-      "summaryVi": "Giá dầu chạm mức $100 mỗi thùng, kéo theo lợi suất trái phiếu Mỹ tăng.",
-      "implicationVi": "Giá dầu cao làm tăng chi phí sản xuất và lạm phát, khiến Fed có khả năng thắt chặt chính sách tiền tệ, dẫn tới lợi suất tăng và áp lực lên cổ phiếu."
-    },
-    {
-      "title": "New Apple CEO to unveil $2,000 folding iPhone",
-      "link": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOV0ZfU202d3FreGdXMTlLaGdrd0ZfNzJYQXFUQmd2dVZtVTFnLWJwa0lHX3RTSjlTNXZJRHZTbUpSMVdhT2lYMlhOaElodUxhSl9qM2hZdGhCN2VLSkVwUE0zT3hudW51V3F4RGl2OGlSd1RsSWFNS0trbUg4MHZiRnROZ0g?oc=5",
-      "summary": "New Apple CEO to unveil $2,000 folding iPhone Financial Times",
-      "date": "2026-09-09T15:43:32.000Z",
-      "source": "Financial Times",
-      "sources": [
-        "Bloomberg",
-        "Financial Times"
-      ],
-      "category": "earnings",
-      "keywords": [
-        "apple"
+        "middle east"
       ],
       "score": 19,
       "impact": "medium",
-      "titleVi": "CEO mới của Apple chuẩn bị ra mắt iPhone gập giá $2,000",
-      "summaryVi": "CEO mới của Apple sẽ công bố iPhone gập giá $2,000.",
-      "implicationVi": "Sản phẩm cao cấp có thể tạo doanh thu mới cho Apple, ảnh hưởng tới lợi nhuận và giá cổ phiếu, đồng thời tạo xu hướng tiêu dùng cao cấp trong ngành công nghệ."
+      "titleVi": "Brent đóng cửa trên 100 USD khi xung đột Trung Đông leo thang",
+      "summaryVi": "Giá Brent vượt 100 USD một thùng do căng thẳng ở Trung Đông.",
+      "implicationVi": "Giá dầu cao làm tăng chi phí sản xuất và lạm phát, tạo áp lực giảm lên các cổ phiếu không phải năng lượng và làm tăng sức mua trái phiếu."
     },
     {
-      "title": "Apple event live updates: The foldable iPhone Duo starts at $1,999 and hits stores on Oct. 23",
+      "title": "Apple event 2026: Folding iPhone Duo, iPhone 18 Pro, added AI features and more",
       "link": "https://www.cnbc.com/2026/09/09/apple-event-today-live-updates.html",
-      "summary": "Follow Apple’s Sept. 9 event live for new product announcements, prices, release dates and the company’s first launch under CEO John Ternus.",
-      "date": "2026-09-09T18:33:35.000Z",
+      "summary": "Apple rolled out the foldable iPhone Duo, iPhone 18 Pro and Max, Watch Series 12 and many other features and updates in its first launch under CEO John Ternus.",
+      "date": "2026-09-09T21:08:55.000Z",
       "source": "CNBC",
       "sources": [
         "CNBC",
@@ -1137,9 +1057,9 @@
       ],
       "score": 18,
       "impact": "medium",
-      "titleVi": "Apple công bố iPhone gập Duo giá $1,999, bán từ 23/10",
-      "summaryVi": "Apple công bố iPhone gập Duo với mức giá $1,999, dự kiến bán ra từ 23/10.",
-      "implicationVi": "Giá cao và tính năng mới có thể thu hút người tiêu dùng có thu nhập cao, ảnh hưởng tới doanh thu Apple và các nhà cung cấp phụ trợ."
+      "titleVi": "Sự kiện Apple 2026: iPhone Duo gập, iPhone 18 Pro và tính năng AI mới",
+      "summaryVi": "Apple ra mắt iPhone Duo gập, iPhone 18 Pro và các tính năng AI trong sự kiện đầu năm 2026.",
+      "implicationVi": "Các sản phẩm mới có thể kích thích nhu cầu và tạo động lực ngắn hạn cho cổ phiếu Apple, nhưng ảnh hưởng tới toàn bộ thị trường vẫn còn hạn chế."
     },
     {
       "title": "U.S. denies claims Iran struck two American vessels in retaliation for earlier strikes",
@@ -1157,49 +1077,109 @@
       ],
       "score": 18,
       "impact": "medium",
-      "titleVi": "Mỹ phủ nhận Iran tấn công hai tàu Mỹ; giá Brent chạm $100",
-      "summaryVi": "Mỹ phủ nhận cáo buộc Iran tấn công hai tàu Mỹ, trong khi giá Brent đạt $100/thùng.",
-      "implicationVi": "Giá dầu tăng do căng thẳng địa chính trị có thể kéo theo lạm phát và áp lực lên lợi suất trái phiếu, ảnh hưởng tới chi phí vay và lợi nhuận doanh nghiệp."
+      "titleVi": "Mỹ phủ nhận cáo buộc Iran tấn công hai tàu Mỹ; Brent chạm 100 USD",
+      "summaryVi": "Mỹ phủ nhận Iran đã tấn công hai tàu Mỹ; cùng lúc giá Brent đạt 100 USD một thùng.",
+      "implicationVi": "Căng thẳng địa chính trị và giá dầu cao có thể làm tăng lo ngại rủi ro và áp lực lạm phát, ảnh hưởng tới tâm lý thị trường và lãi suất."
     },
     {
-      "title": "Apple’s Rally Pressures New CEO to Deliver on Foldable iPhone",
-      "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNdWQyelpBcjlrbF9oRDM1X1BCQ0ZEVldpQjU2Vkh2bHpNQlFlY0R1YnVqTEtmV0EtYzR6X2hOQ3VWOEh4NHFSaHJHcjhlaTgwSDRUMUpGbHptOFl1NlNqYXRPSGdSeUJzU1FmaTItMnJSbndmdm1fWlBTYjhObkJ5TTZoSnhhemJTX29XQ1RCMVZ1dFpzSGwwSlMxZU9lejdSVjhkZ1hram45RDViWko3NVRB?oc=5",
-      "summary": "Apple’s Rally Pressures New CEO to Deliver on Foldable iPhone Bloomberg.com",
-      "date": "2026-09-09T15:26:37.000Z",
-      "source": "Bloomberg",
+      "title": "Oil Price Hits $100 a Barrel, Sending Bond Yields Higher",
+      "link": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxOTUM4M3lOVGk3ODR3Mk0zYUlSR2UyaC0xa0xZaUstc2NSRjNXaHN3VDBHUU5PN2NVbWZNTHBnNGJ0elFDQjJodmNjMF9hYVVxVW5xbHFNelNmNkZpd3NrYVlaejd6NTdZNHlxWWhXbzl3elBMZ3dSUHM4dHFhcUppcnRTeWprbHhXWU9aX1AwUVdHaHl0NVQtdi1tbTFEV2I4ci1wRUdUTlBXU3RMNUROdlltV2lUdnJjM3hJUnRENi1qZDlSbnk0UjlzaHJlZU92SnV6UEdRWDZsQW91TFJZTmtR?oc=5",
+      "summary": "",
+      "date": "2026-09-09T09:03:00.000Z",
+      "source": "Barron's",
       "sources": [
-        "Bloomberg"
+        "Barron's"
       ],
-      "category": "earnings",
+      "category": "commod",
       "keywords": [
-        "apple",
-        "rally"
+        "oil price",
+        "bond yield",
+        "yields"
+      ],
+      "score": 18,
+      "impact": "medium",
+      "titleVi": "Giá dầu chạm 100 USD, đẩy lợi suất trái phiếu lên cao hơn",
+      "summaryVi": "Giá dầu đạt 100 USD mỗi thùng, khiến lợi suất trái phiếu tăng lên.",
+      "implicationVi": "Lợi suất cao hơn làm tăng chi phí vay và có thể gây áp lực giảm lên các cổ phiếu chu kỳ, đồng thời tăng sức hấp dẫn của trái phiếu."
+    },
+    {
+      "title": "Canadian dollar edges lower as trade war with US intensifies",
+      "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNb21VT3psWXJQX0NjWG03eGdsUC1xVlJnbkxtMWhRU2ZOUWw4V1ZkX3lkNVRoM1BhT0phby1hbV9WRi1obWpIYXItQmxOeFp3ZlU1NDZZSFlNcW5wNjdSb1BvT3U2VEFUdmZOOXgzQllJcmxMTnpqXzk3eDRpOHF1QTBRNVg0YVZ4MlJrSTRwZXJjUGQySnNSNlVSX0phUU1RTmwxTA?oc=5",
+      "summary": "",
+      "date": "2026-09-09T16:33:44.000Z",
+      "source": "Reuters",
+      "sources": [
+        "Reuters"
+      ],
+      "category": "policy",
+      "keywords": [
+        "trade war"
       ],
       "score": 17,
       "impact": "medium",
-      "titleVi": "Apple Rally tạo áp lực lên CEO mới để ra mắt iPhone gập",
-      "summaryVi": "Sự tăng giá cổ phiếu Apple tạo áp lực lên CEO mới phải công bố iPhone gập.",
-      "implicationVi": "Áp lực thị trường có thể thúc đẩy tốc độ ra mắt sản phẩm, ảnh hưởng tới kỳ vọng lợi nhuận và biến động giá cổ phiếu Apple."
+      "titleVi": "Đô la Canada yếu hơn khi căng thẳng thương mại Mỹ-Canada tăng",
+      "summaryVi": "Đô la Canada giảm giá trong bối cảnh căng thẳng thương mại với Mỹ leo thang.",
+      "implicationVi": "Sự suy yếu của CAD có thể ảnh hưởng tới các công ty xuất khẩu Canada và các doanh nghiệp Mỹ có quan hệ thương mại, nhưng tác động tới chỉ số Mỹ là hạn chế."
     },
     {
-      "title": "Amazon Raising at Least £3 Billion From First Sterling Bonds",
-      "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNR2pvbVRKeWU1VE1leWlINzl1MW05NEhjN2V2TFU4dnVab2VlVXdqWnN3b250RmdiamRIOVNMTkJJNzVLYXRpR1NHdmJpdEV6bFdmTUtDWmxzMEdNOWhBVy1ENlBtalVUX3pINEF2T1BVS1ZUWmc0clRTR25MTU5wTS1FWmxRR3g1bDU5UmtnUWZLYXpFZDU3REJIaTk4TVVHWm9lOWtEcTh2bDQ?oc=5",
-      "summary": "Amazon Raising at Least £3 Billion From First Sterling Bonds Bloomberg.com",
-      "date": "2026-09-09T07:17:31.000Z",
-      "source": "Bloomberg",
+      "title": "Crude Futures End Mixed With No End in Sight to U.S.-Iran Conflict",
+      "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQc21PRFBnRHZya0ZIdkxhSUtQS01nWDhKSTJSclNXVm5HemQ1cDZENXotZGZrbUpnbjRueU5nQ1FPQmJGZ2pmMWd4OEJQY3pUM19fMDN5MXFCTmlBYWdNbC1WQWNxQkE5emluNU82ZEJJV3g5UGJmYTIteGtpaTJOWFE1RUp5dDVPaWktb19HZ2F2YnNLTnotblV2ajBVZzJ5Y3Q2djQwOA?oc=5",
+      "summary": "",
+      "date": "2026-09-09T12:15:03.000Z",
+      "source": "WSJ",
       "sources": [
-        "Bloomberg"
+        "WSJ"
+      ],
+      "category": "commod",
+      "keywords": [
+        "crude",
+        "futures"
+      ],
+      "score": 17,
+      "impact": "medium",
+      "titleVi": "Hợp đồng tương lai dầu thô kết thúc hỗn loạn, xung đột Mỹ-Iran kéo dài",
+      "summaryVi": "Hợp đồng tương lai dầu thô khép lại trong trạng thái hỗn loạn khi xung đột Mỹ-Iran vẫn chưa có hồi kết.",
+      "implicationVi": "Giá dầu không ổn định làm tăng bất ổn lạm phát và áp lực lên lãi suất, có thể kéo theo áp lực giảm lên các cổ phiếu không phải năng lượng."
+    },
+    {
+      "title": "Stocks making the biggest moves midday: Meta, Centerspace, Apple, Casey's General Stores, Signet & more",
+      "link": "https://www.cnbc.com/2026/09/09/stocks-making-the-biggest-moves-midday-meta-csr-aapl-casy-sig.html",
+      "summary": "These are the stocks posting the largest moves midday.",
+      "date": "2026-09-09T17:41:29.000Z",
+      "source": "CNBC Markets",
+      "sources": [
+        "CNBC Markets"
       ],
       "category": "tech",
       "keywords": [
-        "amazon",
-        "bonds"
+        "apple",
+        "stocks"
       ],
-      "score": 17,
+      "score": 16,
       "impact": "medium",
-      "titleVi": "Amazon huy động ít nhất £3 tỷ qua trái phiếu Anh",
-      "summaryVi": "Amazon sẽ phát hành trái phiếu Anh lần đầu, huy động tối thiểu £3 tỷ.",
-      "implicationVi": "Việc phát hành trái phiếu bằng đồng bảng Anh mở rộng nguồn tài trợ cho Amazon, có thể ảnh hưởng tới chi phí vốn và kỳ vọng lợi nhuận của công ty."
+      "titleVi": "Các cổ phiếu có biến động lớn giữa ngày: Meta, Apple, Casey’s…",
+      "summaryVi": "Meta, Apple, Casey’s General Stores và các cổ phiếu khác ghi nhận biến động mạnh trong phiên giao dịch giữa ngày.",
+      "implicationVi": "Biến động này phản ánh áp lực mua bán ngắn hạn và có thể ảnh hưởng tới chỉ số tổng thể nếu các cổ phiếu trọng lượng lớn tiếp tục di chuyển mạnh."
+    },
+    {
+      "title": "Apple, ServiceTitan, Meta, Micron, Casey’s, Jersey Mike’s, and More Stocks That Explain Today’s Market",
+      "link": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1XeWdLd3UzbTZ1ZGF6SktCNkprZlU1SG4zdFdFdmQ3MkZTMVh4X2hIY3lka1lLbmFXQUI2dWJPaThqVWlQQTAyTG9XZ251dzE5VkZzNUZrNXdKUktkSHFuMlBNSjQ?oc=5",
+      "summary": "",
+      "date": "2026-09-09T20:42:00.000Z",
+      "source": "Barron's",
+      "sources": [
+        "Barron's"
+      ],
+      "category": "tech",
+      "keywords": [
+        "apple",
+        "stocks"
+      ],
+      "score": 16,
+      "impact": "medium",
+      "titleVi": "Apple, Meta, Micron và các cổ phiếu khác giải thích diễn biến thị trường hôm nay",
+      "summaryVi": "Các cổ phiếu như Apple, ServiceTitan, Meta, Micron và Jersey Mike’s đóng góp vào xu hướng thị trường hiện tại.",
+      "implicationVi": "Sự di chuyển của các công ty công nghệ và tiêu dùng này là yếu tố chính gây biến động chỉ số S&P 500 và Nasdaq trong ngày giao dịch."
     },
     {
       "title": "Astra Puts OpenAI Back in the Game. Good News for Oracle and SoftBank Stocks.",
@@ -1217,9 +1197,29 @@
       ],
       "score": 16,
       "impact": "medium",
-      "titleVi": "Astra đưa OpenAI trở lại, tin tốt cho Oracle và SoftBank",
-      "summaryVi": "Astra tái hợp tác với OpenAI, mang lại tin tích cực cho cổ phiếu Oracle và SoftBank.",
-      "implicationVi": "Mối quan hệ này có thể thúc đẩy đầu tư vào AI, ảnh hưởng tới giá cổ phiếu của các công ty công nghệ, trong đó Oracle là công ty Mỹ."
+      "titleVi": "Astra đưa OpenAI trở lại trò chơi, tin tốt cho Oracle và SoftBank",
+      "summaryVi": "Astra tái khởi động dự án OpenAI, tạo tín hiệu tích cực cho cổ phiếu Oracle và SoftBank.",
+      "implicationVi": "Sự tham gia của Oracle vào lĩnh vực AI có thể nâng cao kỳ vọng tăng trưởng công nghệ, hỗ trợ giá cổ phiếu Oracle trên thị trường Mỹ."
+    },
+    {
+      "title": "Dump these loser stocks this fall, Wolfe Research says. It could help cut next year's tax bill",
+      "link": "https://www.cnbc.com/2026/09/09/dump-these-loser-stocks-this-fall-wolfe-research-says-it-could-help-cut-next-years-tax-bill.html",
+      "summary": "Mutual funds often start ditching their biggest losers in mid-September. Wolfe Research has a list of likely candidates that could see sharp declines.",
+      "date": "2026-09-09T19:09:22.000Z",
+      "source": "CNBC",
+      "sources": [
+        "CNBC",
+        "CNBC Investing"
+      ],
+      "category": "markets",
+      "keywords": [
+        "stocks"
+      ],
+      "score": 15,
+      "impact": "medium",
+      "titleVi": "Wolfe Research khuyên loại bỏ cổ phiếu lỗ trong mùa thu này",
+      "summaryVi": "Wolfe Research đề xuất các quỹ loại bỏ các cổ phiếu lỗ trong tháng 9 để giảm thuế năm tới.",
+      "implicationVi": "Việc bán tháo các cổ phiếu kém hiệu quả có thể tạo áp lực bán ngắn hạn trên các ngành chịu ảnh hưởng, ảnh hưởng tới khối lượng giao dịch và biến động chỉ số."
     },
     {
       "title": "Apple is expected to announce foldable iPhone. What it means for the stock",
@@ -1238,57 +1238,57 @@
       "score": 15,
       "impact": "medium",
       "titleVi": "Apple dự kiến công bố iPhone gập, ảnh hưởng tới cổ phiếu",
-      "summaryVi": "Apple dự kiến công bố iPhone gập, các nhà phân tích xem xét tác động tới giá cổ phiếu.",
-      "implicationVi": "Nếu sản phẩm được đón nhận, doanh thu mới có thể cải thiện lợi nhuận, nhưng mức giá cao cũng có thể hạn chế tiêu thụ, tạo biến động cho cổ phiếu."
+      "summaryVi": "Apple sắp công bố iPhone gập, nhưng nhà đầu tư không dự đoán biến động lớn trên cổ phiếu.",
+      "implicationVi": "Mặc dù không kỳ vọng biến động mạnh, việc ra mắt sản phẩm mới vẫn có thể tạo ra một mức độ quan tâm nhất định và ảnh hưởng tới khối lượng giao dịch của Apple."
     },
     {
-      "title": "Copper Scales New Heights on U.S. Tariff Fears, Supply Challenges",
-      "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNeEp6RlN2a3RNRXNfNW9NT3NycUxmZlVmMGpMWDZVaWdzUVBjMDFTMEtBOXQ3dTdoX2o5cldUVzl0ejNaUjRsQm5Eczh1MWdPQ1FISFROQzlNRXV6cE1fRG85S1QtLXJQRXcyOHFJbV9iUl9KTWVSclJUY0Z5TGhseUdRdGZsOVk0UHhncWU4SDV0OHd4MTRJNDkteGwxcGZPdnBiYjNsSE43eURvTE9yUTV6c0V5SkxoR2p3?oc=5",
-      "summary": "",
-      "date": "2026-09-08T20:17:00.000Z",
-      "source": "WSJ",
+      "title": "Brent hits $100, Apple's big launch, Trump's energy investments and more in Morning Squawk",
+      "link": "https://www.cnbc.com/2026/09/09/5-things-to-know-before-the-stock-market-opens.html",
+      "summary": "Here are five key things investors need to know to start the trading day.",
+      "date": "2026-09-09T12:43:48.000Z",
+      "source": "CNBC Tech",
       "sources": [
-        "WSJ"
+        "CNBC Tech"
       ],
-      "category": "policy",
+      "category": "tech",
       "keywords": [
-        "tariff"
+        "apple",
+        "investor"
       ],
       "score": 15,
       "impact": "medium",
-      "titleVi": "Giá đồng đồng tăng do lo ngại thuế quan Mỹ, thách thức cung ứng",
-      "summaryVi": "Giá đồng đồng tăng lên khi lo ngại về thuế quan Mỹ và khó khăn trong chuỗi cung ứng.",
-      "implicationVi": "Giá đồng đồng cao có thể làm tăng chi phí nhập khẩu cho các công ty Mỹ, ảnh hưởng tới lợi nhuận và áp lực lên giá nguyên liệu."
+      "titleVi": "Brent chạm 100 USD, Apple ra mắt, Trump đầu tư năng lượng – 5 điểm cần biết",
+      "summaryVi": "Brent đạt 100 USD, Apple ra mắt iPhone gập, Trump thúc đẩy đầu tư năng lượng, cùng các tin quan trọng khác.",
+      "implicationVi": "Sự kết hợp giữa giá dầu cao, ra mắt sản phẩm công nghệ và chính sách năng lượng có thể đồng thời tạo áp lực lạm phát và ảnh hưởng tới kỳ vọng lãi suất, tác động tới toàn bộ thị trường chứng khoán Mỹ."
     },
     {
-      "title": "How one hedge-fund manager built his firm to be powered entirely by AI agents",
-      "link": "https://www.cnbc.com/2026/09/08/brian-kelly-bracket22-ai-agents.html",
-      "summary": "It's a stark example of a growing reality on Wall Street as firms test the benefits and limits of AI in finance and on their employees.",
-      "date": "2026-09-08T21:59:13.000Z",
-      "source": "CNBC Markets",
+      "title": "Amazon adds cybersecurity veteran Kevin Mandia to board 2 years after he left Google",
+      "link": "https://www.cnbc.com/2026/09/09/amazon-adds-cybersecurity-vet-ex-google-exec-kevin-mandia-to-board.html",
+      "summary": "Amazon said Kevin Mandia, the founder and former CEO of cybersecurity company Mandiant, is joining its board of directors.",
+      "date": "2026-09-09T21:45:34.000Z",
+      "source": "CNBC",
       "sources": [
-        "CNBC Markets",
-        "CNBC Tech",
-        "CNBC Business"
+        "CNBC",
+        "CNBC Tech"
       ],
-      "category": "markets",
+      "category": "earnings",
       "keywords": [
-        "wall street"
+        "amazon"
       ],
       "score": 18,
       "impact": "low",
-      "titleVi": "Quản lý quỹ hedge sử dụng AI cho toàn bộ hoạt động",
-      "summaryVi": "Một quản lý quỹ hedge đã xây dựng công ty vận hành hoàn toàn bằng các đại lý AI.",
+      "titleVi": "Amazon bổ sung chuyên gia an ninh mạng Kevin Mandia vào hội đồng quản trị",
+      "summaryVi": "Kevin Mandia, người sáng lập Mandiant, gia nhập hội đồng quản trị của Amazon.",
       "implicationVi": null
     }
   ],
   "meta": {
     "feeds": 24,
-    "scanned": 913,
-    "inWindow": 605,
-    "clusters": 544,
-    "relevant": 91,
-    "published": 24,
+    "scanned": 914,
+    "inWindow": 608,
+    "clusters": 548,
+    "relevant": 100,
+    "published": 23,
     "llm": "openai/gpt-oss-120b",
     "llmError": null,
     "marketOk": 43

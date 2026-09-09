@@ -2,10 +2,14 @@ name: Bản tin thị trường
 
 on:
   schedule:
-    # 23:00 UTC các ngày T2–T6 = 07:00 sáng giờ Đài Bắc T3–T7,
-    # tức khoảng 1–2 tiếng sau khi phiên Mỹ đóng cửa (16:00 ET).
-    - cron: "0 23 * * 1-5"
+    # 22:00 UTC các ngày T2–T6 = 06:00 sáng giờ Đài Bắc T3–T7, tức 2 tiếng sau khi
+    # phiên Mỹ đóng cửa (16:00 ET). GitHub thường chạy trễ 1–2 tiếng vào giờ cao
+    # điểm, nên bản tin thực tế lên khoảng 07:00–08:00 giờ Đài Bắc.
+    - cron: "0 22 * * 1-5"
   workflow_dispatch:        # chạy tay từ tab Actions
+  push:                     # sửa code là deploy lại trang ngay, không đợi tới sáng
+    branches: [main]
+    paths-ignore: ["public/data/**", "README.md"]
 
 permissions:
   contents: write           # commit file data
@@ -26,7 +30,10 @@ jobs:
         with:
           node-version: 22
 
+      # Chỉ tổng hợp tin khi chạy theo lịch hoặc chạy tay. Push code thì bỏ qua,
+      # nếu không bản tin buổi sáng sẽ bị thay bằng bản giữa phiên.
       - name: Tổng hợp bản tin
+        if: github.event_name != 'push'
         env:
           LLM_API_KEY:  ${{ secrets.LLM_API_KEY }}
           LLM_BASE_URL: ${{ vars.LLM_BASE_URL }}
@@ -34,6 +41,7 @@ jobs:
         run: node scripts/build.mjs
 
       - name: Lưu bản tin vào repo
+        if: github.event_name != 'push'
         run: |
           git config user.name  "market-digest bot"
           git config user.email "actions@github.com"

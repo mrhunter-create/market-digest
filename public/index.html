@@ -105,6 +105,26 @@ select:hover,button.ghost:hover{border-color:var(--accent-dim); color:var(--ink)
   letter-spacing:-.012em; border-left:3px solid var(--accent); padding-left:22px;
 }
 
+/* ══ Tin nóng ══ */
+.hot{padding:32px 0 4px}
+.hot-item{
+  display:flex; gap:18px; padding:19px 0; border-bottom:1px solid var(--rule-2);
+}
+.hot-item:last-child{border-bottom:0}
+.hot-item .rk{
+  flex:0 0 30px; font-family:var(--mono); font-size:20px; font-weight:700;
+  color:var(--accent-dim); line-height:1.05; padding-top:3px; text-align:right;
+}
+.hot-item.lead .rk{color:var(--accent)}
+.hot-item .bd{flex:1; min-width:0}
+.hot-item h3{
+  font-family:var(--serif); font-size:22px; line-height:1.3; font-weight:600;
+  margin:0 0 8px; letter-spacing:-.014em;
+}
+.hot-item.lead h3{font-size:27px; line-height:1.24}
+.hot-item h3 a{text-decoration:none}
+.hot-item h3 a:hover{text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:4px}
+
 /* ══ Tín hiệu ══ */
 .signals{padding:32px 0 4px}
 .sig-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
@@ -204,18 +224,18 @@ article.story.high{padding-left:18px; margin-left:-20px; border-left:2px solid v
 article.story.high h3{font-size:23px}
 .story h3 a{text-decoration:none}
 .story h3 a:hover{text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:4px}
-.story p.sum{margin:0 0 10px; font-size:14.5px; line-height:1.62; color:var(--ink-2)}
-.story .imp{
+.sum{margin:0 0 10px; font-size:14.5px; line-height:1.62; color:var(--ink-2)}
+.imp{
   margin:10px 0 11px; padding:11px 14px; border-radius:6px;
   background:var(--bg-3); border-left:2px solid var(--accent-dim);
   font-size:13.5px; line-height:1.6; color:var(--ink-2);
 }
-.story .imp b{
+.imp b{
   display:block; font-size:9.5px; letter-spacing:.13em; text-transform:uppercase;
   color:var(--accent); font-weight:700; margin-bottom:4px;
 }
-.story .orig{margin:0 0 9px; font-size:12.5px; line-height:1.5; color:var(--ink-3); font-style:italic}
-.story .foot{display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-size:11.5px; color:var(--ink-3)}
+.orig{margin:0 0 9px; font-size:12.5px; line-height:1.5; color:var(--ink-3); font-style:italic}
+.foot{display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-size:11.5px; color:var(--ink-3)}
 .src{font-weight:600; color:var(--ink-2)}
 .dot{color:var(--rule)}
 .badge{font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:700; padding:3px 7px; border-radius:3px; border:1px solid currentColor}
@@ -278,6 +298,7 @@ footer code{font-family:var(--mono); font-size:11px; color:var(--ink-2)}
 
 <div class="wrap">
   <div id="verdict"></div>
+  <div id="hot"></div>
   <div id="signals"></div>
   <div id="chains"></div>
   <div id="overlooked"></div>
@@ -363,6 +384,45 @@ function renderVerdict(d) {
   if (!d.verdict) return "";
   return `<div class="verdict"><div class="eyebrow">Kết luận phiên</div>
     <p class="q">${esc(d.verdict)}</p></div>`;
+}
+
+/**
+ * Tin nóng = tin có tác động trực tiếp mạnh nhất tới thị trường.
+ * Lấy hết tin impact "high"; nếu chưa đủ 3 thì bù bằng tin "medium" điểm cao nhất.
+ */
+function pickHot(stories) {
+  const byScore = (a, b) => (b.score ?? 0) - (a.score ?? 0);
+  const high = stories.filter(s => s.impact === "high").sort(byScore);
+  const hot = high.slice(0, 6);
+  if (hot.length < 3) {
+    for (const s of stories.filter(s => s.impact === "medium").sort(byScore)) {
+      if (hot.length >= 3) break;
+      hot.push(s);
+    }
+  }
+  return hot;
+}
+
+function renderHot(hot) {
+  if (!hot.length) return "";
+  return `<section class="hot"><h2 class="sec">Tin nóng — ảnh hưởng trực tiếp tới thị trường<span class="n">${hot.length} tin</span></h2>
+    ${hot.map((s, i) => {
+      const showOrig = s.titleVi && s.titleVi !== s.title;
+      return `<div class="hot-item ${i === 0 ? "lead" : ""}">
+        <div class="rk">${String(i + 1).padStart(2, "0")}</div>
+        <div class="bd">
+          <h3><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(s.titleVi || s.title)}</a></h3>
+          ${s.summaryVi ? `<p class="sum">${esc(s.summaryVi)}</p>` : (s.summary ? `<p class="sum">${esc(trunc(s.summary, 240))}</p>` : "")}
+          ${s.implicationVi ? `<div class="imp"><b>Ẩn ý &amp; hệ quả</b>${esc(s.implicationVi)}</div>` : ""}
+          ${showOrig ? `<p class="orig">${esc(s.title)}</p>` : ""}
+          <div class="foot">
+            <span class="badge ${esc(s.impact || "medium")}">${IMPACT[s.impact] || IMPACT.medium}</span>
+            <span class="dot">·</span><span class="src">${esc(s.sources.join(" · "))}</span>
+            ${s.sources.length > 1 ? `<span class="dot">·</span><span class="mono">${s.sources.length} nguồn</span>` : ""}
+            ${s.date ? `<span class="dot">·</span><span>${esc(relTime(s.date))}</span>` : ""}
+          </div>
+        </div></div>`;
+    }).join("")}</section>`;
 }
 
 function renderSignals(d) {
@@ -474,6 +534,10 @@ function render(d) {
 
   renderTape((d.market || []).filter(m => !m.g || m.g === "core"));
   $("#verdict").innerHTML = renderVerdict(d);
+
+  const hot = pickHot(d.stories || []);
+  const hotSet = new Set(hot.map(s => s.link));
+  $("#hot").innerHTML = renderHot(hot);
   $("#signals").innerHTML = renderSignals(d);
   $("#chains").innerHTML = renderChains(d);
   $("#overlooked").innerHTML = renderOverlooked(d);
@@ -484,13 +548,15 @@ function render(d) {
   const label = Object.fromEntries((d.categories || []).map(c => [c.id, c.label]));
   const groups = new Map();
   for (const s of d.stories || []) {
+    if (hotSet.has(s.link)) continue;          // đã nằm ở mục Tin nóng, không lặp lại
     if (!groups.has(s.category)) groups.set(s.category, []);
     groups.get(s.category).push(s);
   }
   const sorted = [...groups.entries()].sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]));
   $("#main").innerHTML = sorted.length
-    ? sorted.map(([cat, list]) => `<section class="cat"><h2 class="sec">${esc(label[cat] || cat)}<span class="n">${list.length}</span></h2>${list.map(renderStory).join("")}</section>`).join("")
-    : `<div class="state">Không có tin đáng chú ý trong phiên này.</div>`;
+    ? `<h2 class="sec" style="margin-top:34px">Các tin còn lại theo nhóm<span class="n">${(d.stories || []).length - hot.length} tin</span></h2>`
+      + sorted.map(([cat, list]) => `<section class="cat"><h4 class="blk-h">${esc(label[cat] || cat)} · ${list.length}</h4>${list.map(renderStory).join("")}</section>`).join("")
+    : (hot.length ? "" : `<div class="state">Không có tin đáng chú ý trong phiên này.</div>`);
 
   const m = d.meta || {};
   $("#stats").innerHTML =

@@ -101,6 +101,21 @@ Muốn tránh hẳn: sau khi chạy `npm run build` ở máy, đừng commit th�
 `public/data` (chạy `git checkout -- public/data` trước khi commit) — để duy nhất
 workflow ghi vào đó.
 
+## Thứ tự các mục trên trang
+
+1. **Kết luận phiên** — một câu
+2. **Tin nóng** — tin tác động trực tiếp mạnh nhất, tối đa 6, đánh số thứ hạng
+3. **Tín hiệu suy ra** — 6 chênh lệch định lượng
+4. **Chuỗi suy luận** — 2–3 mạch, có bằng chứng và điều kiện phủ định
+5. **Dễ bị bỏ qua**
+6. **Lịch phiên tới**
+7. **Các tin còn lại theo nhóm** — đã trừ những tin nằm ở mục Tin nóng
+8. **Bảng thị trường** — 34 mã chia khối
+
+Tin nóng chọn theo `impact` do LLM gán (hoặc suy từ điểm khi không bật LLM): lấy hết
+tin `high`, chưa đủ 3 thì bù bằng `medium` điểm cao nhất. Logic ở `pickHot()` trong
+`public/index.html`.
+
 ## Tín hiệu suy ra
 
 Sáu chênh lệch được tính trong `scripts/signals.mjs` bằng **công thức cố định**, không

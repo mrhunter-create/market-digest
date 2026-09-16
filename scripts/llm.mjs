@@ -19,7 +19,7 @@ const MODELS = process.env.LLM_MODEL
 export const llmEnabled = () => !!KEY;
 
 const RULES = `Nguyên tắc bắt buộc:
-- Viết tiếng Việt tự nhiên, chính xác, giọng của một nhà phân tích thị trường. Giữ nguyên tên riêng, mã cổ phiếu và số liệu bằng tiếng Anh/số.
+- Viết HOÀN TOÀN bằng tiếng Việt tự nhiên, chính xác, giọng của một nhà phân tích thị trường. Chỉ giữ tiếng Anh cho tên riêng, mã cổ phiếu và tên chỉ số (S&P 500, Nasdaq, VIX); mọi cụm mô tả như "yields hovering", "risk-off", "rate hike" đều phải dịch.
 - Chỉ dùng số liệu và sự kiện có trong dữ liệu được cung cấp. TUYỆT ĐỐI không bịa số, không nêu sự kiện không có trong input, không đoán số liệu chưa công bố.
 - Khi nêu nhận định phải viện dẫn số liệu cụ thể trong input làm căn cứ.
 - Không khuyến nghị mua/bán, không đặt giá mục tiêu, không dự đoán mức giá, không nói thị trường sẽ tăng hay giảm.

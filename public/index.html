@@ -125,6 +125,27 @@ select:hover,button.ghost:hover{border-color:var(--accent-dim); color:var(--ink)
 .hot-item h3 a{text-decoration:none}
 .hot-item h3 a:hover{text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:4px}
 
+/* ══ Danh mục theo dõi ══ */
+.watch{padding:32px 0 4px}
+.w-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+.wc{background:var(--card); border:1px solid var(--rule); border-radius:8px; padding:15px 16px 13px}
+.wc .top{display:flex; align-items:baseline; justify-content:space-between; gap:12px}
+.wc .id{min-width:0}
+.wc .sym{font-family:var(--mono); font-size:12.5px; font-weight:700; color:var(--accent); margin-right:8px}
+.wc .nm{font-size:13.5px; font-weight:600; color:var(--ink)}
+.wc .px{font-family:var(--mono); font-size:14px; white-space:nowrap; letter-spacing:-.03em}
+.wc .px b{font-weight:500; margin-right:8px; color:var(--ink)}
+.wc .note{font-size:13px; line-height:1.6; color:var(--ink-2); margin-top:10px}
+.wc .chip{margin-top:9px}
+.wc ul{list-style:none; margin:11px 0 0; padding:10px 0 0; border-top:1px solid var(--rule-2)}
+.wc li{font-size:12.5px; line-height:1.5; padding:3px 0; color:var(--ink-2)}
+.wc li a{text-decoration:none; color:var(--ink)}
+.wc li a:hover{text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:3px}
+.wc li .s{color:var(--ink-3); font-size:11px; margin-left:6px}
+.w-rest{margin-top:16px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0 28px}
+.w-rest .row .nm b{font-family:var(--mono); font-size:11.5px; color:var(--accent); margin-right:7px; font-weight:700}
+.w-rest .row .flag{font-size:10.5px; color:var(--alert); margin-left:6px}
+
 /* ══ Tín hiệu ══ */
 .signals{padding:32px 0 4px}
 .sig-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px}
@@ -250,7 +271,8 @@ footer code{font-family:var(--mono); font-size:11px; color:var(--ink-2)}
 .state.err{color:var(--down)}
 
 @media (max-width:860px){
-  .sig-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sig-grid,.w-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .w-rest{grid-template-columns:repeat(2,minmax(0,1fr))}
   .two{grid-template-columns:1fr; gap:0}
 }
 @media (max-width:640px){
@@ -265,7 +287,7 @@ footer code{font-family:var(--mono); font-size:11px; color:var(--ink-2)}
   .tick{flex:0 0 auto; min-width:130px; scroll-snap-align:start; border-top:0}
   .tick:first-child{padding-left:18px}
   .tick:last-child{padding-right:18px; border-right:0}
-  .sig-grid{grid-template-columns:1fr}
+  .sig-grid,.w-grid,.w-rest{grid-template-columns:1fr}
   .verdict .q{font-size:21px; padding-left:16px}
   .chain{padding:17px 16px}
   .chain .hid{font-size:16px}
@@ -299,6 +321,7 @@ footer code{font-family:var(--mono); font-size:11px; color:var(--ink-2)}
 <div class="wrap">
   <div id="verdict"></div>
   <div id="hot"></div>
+  <div id="watch"></div>
   <div id="signals"></div>
   <div id="chains"></div>
   <div id="overlooked"></div>
@@ -425,6 +448,44 @@ function renderHot(hot) {
     }).join("")}</section>`;
 }
 
+const TONE = { positive: ["Tích cực", "calm"], negative: ["Tiêu cực", "alert"], mixed: ["Trái chiều", "watch"], neutral: ["Trung tính", "watch"] };
+
+function renderWatch(d) {
+  const list = d.watch || [];
+  if (!list.length) return "";
+  const absChg = w => Math.abs(w.changePct ?? 0);
+  const withNews = list.filter(w => w.stories?.length).sort((a, b) => absChg(b) - absChg(a));
+  const rest = list.filter(w => !w.stories?.length).sort((a, b) => absChg(b) - absChg(a));
+
+  const px = w => {
+    if (!w.ok) return `<span class="px flat">—</span>`;
+    const c = fmtChange("usd", w.change, w.changePct);
+    return `<span class="px"><b>$${nf(2, 2).format(w.price)}</b><span class="${c.cls}">${c.text}</span></span>`;
+  };
+
+  const cards = withNews.map(w => {
+    const t = w.tone && TONE[w.tone];
+    return `<div class="wc">
+      <div class="top"><span class="id"><span class="sym">${esc(w.sym)}</span><span class="nm">${esc(w.label)}</span></span>${px(w)}</div>
+      ${t ? `<span class="chip ${t[1]}">${t[0]}</span>` : ""}
+      ${w.noteVi ? `<div class="note">${esc(w.noteVi)}</div>` : ""}
+      <ul>${w.stories.map(s => `<li><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(s.titleVi || s.title)}</a><span class="s">${esc(s.source)}</span></li>`).join("")}</ul>
+    </div>`;
+  }).join("");
+
+  const rows = rest.map(w => {
+    const c = w.ok ? fmtChange("usd", w.change, w.changePct) : { text: "—", cls: "flat" };
+    const big = w.ok && Math.abs(w.changePct) >= 3;
+    return `<div class="row"><span class="nm"><b>${esc(w.sym)}</b>${esc(w.label)}${big ? `<span class="flag">±3% không có tin</span>` : ""}</span>
+      <span class="pv">${w.ok ? "$" + nf(2, 2).format(w.price) : "—"}</span><span class="pc ${c.cls}">${c.text}</span></div>`;
+  }).join("");
+
+  return `<section class="watch"><h2 class="sec">Danh mục theo dõi<span class="n">${withNews.length} mã có tin · ${list.length} mã</span></h2>
+    ${cards ? `<div class="w-grid">${cards}</div>` : ""}
+    ${rows ? `<div class="w-rest">${rows}</div>` : ""}
+  </section>`;
+}
+
 function renderSignals(d) {
   const list = d.signals || [];
   if (!list.length) return "";
@@ -538,6 +599,7 @@ function render(d) {
   const hot = pickHot(d.stories || []);
   const hotSet = new Set(hot.map(s => s.link));
   $("#hot").innerHTML = renderHot(hot);
+  $("#watch").innerHTML = renderWatch(d);
   $("#signals").innerHTML = renderSignals(d);
   $("#chains").innerHTML = renderChains(d);
   $("#overlooked").innerHTML = renderOverlooked(d);

@@ -134,3 +134,41 @@ export const BLOCK_URL = [
   "/podcast", "/video/", "/food/", "/style/", "/books/", "/real-estate/", "/personal-finance/",
   "/investingclub/", "/pro/", "/select/", "/make-it/", "/slideshows/",
 ];
+
+// Danh mục theo dõi riêng. aliases = tên công ty để bắt tin, khớp theo biên từ.
+// Alias viết thường -> không phân biệt hoa thường. Alias VIẾT HOA chữ đầu -> phân
+// biệt, dành cho tên trùng danh từ thường ("Apple" ≠ "the apple", "Gap" ≠ "gap").
+// Mã ngắn (GS, MS...) không dùng làm từ khoá; chỉ nhận dạng "(GS)" hoặc "$GS".
+// ETF để aliases rỗng: chỉ hiện giá.
+export const WATCHLIST = [
+  { sym: "NVDA",  label: "Nvidia",            aliases: ["nvidia"] },
+  { sym: "TSLA",  label: "Tesla",             aliases: ["tesla"] },
+  { sym: "MSFT",  label: "Microsoft",         aliases: ["microsoft"] },
+  { sym: "AAPL",  label: "Apple",             aliases: ["Apple", "iPhone", "Tim Cook"] },
+  { sym: "AMZN",  label: "Amazon",            aliases: ["amazon", "aws"] },
+  { sym: "GOOGL", label: "Alphabet",          aliases: ["alphabet", "google"] },
+  { sym: "ASML",  label: "ASML",              aliases: ["asml"] },
+  { sym: "CRM",   label: "Salesforce",        aliases: ["salesforce"] },
+  { sym: "DIS",   label: "Disney",            aliases: ["disney"] },
+  { sym: "GS",    label: "Goldman Sachs",     aliases: ["goldman"] },
+  { sym: "JPM",   label: "JPMorgan",          aliases: ["jpmorgan", "jp morgan", "jamie dimon"] },
+  { sym: "MS",    label: "Morgan Stanley",    aliases: ["morgan stanley"] },
+  { sym: "BAC",   label: "Bank of America",   aliases: ["bank of america", "bofa"] },
+  { sym: "GD",    label: "General Dynamics",  aliases: ["general dynamics"] },
+  { sym: "RTX",   label: "RTX",               aliases: ["raytheon", "rtx corp"] },
+  { sym: "LMT",   label: "Lockheed Martin",   aliases: ["lockheed"] },
+  { sym: "GLW",   label: "Corning",           aliases: ["corning"] },
+  { sym: "LITE",  label: "Lumentum",          aliases: ["lumentum"] },
+  { sym: "COHR",  label: "Coherent",          aliases: ["Coherent Corp", "Coherent stock", "Coherent shares"] },
+  { sym: "ESTC",  label: "Elastic",           aliases: ["Elastic N.V", "Elasticsearch", "Elastic stock", "Elastic shares"] },
+  { sym: "FUTU",  label: "Futu",              aliases: ["futu"] },
+  { sym: "GAP",   label: "Gap",               aliases: ["Gap Inc", "Old Navy", "Gap stock"] },
+  { sym: "SFTBY", label: "SoftBank",          aliases: ["softbank"] },
+  { sym: "SPCX",  label: "SpaceX",            aliases: ["spacex", "space exploration technologies"] },
+  { sym: "SPY",   label: "S&P 500 ETF",       aliases: [] },
+  { sym: "QQQ",   label: "Nasdaq 100 ETF",    aliases: [] },
+  { sym: "SOXL",  label: "Bán dẫn 3x",        aliases: [] },
+  { sym: "XLF",   label: "Tài chính ETF",     aliases: [] },
+  { sym: "ITA",   label: "Quốc phòng ETF",    aliases: [] },
+  { sym: "USO",   label: "Dầu ETF",           aliases: [] },
+];

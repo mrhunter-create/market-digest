@@ -105,16 +105,37 @@ workflow ghi vào đó.
 
 1. **Kết luận phiên** — một câu
 2. **Tin nóng** — tin tác động trực tiếp mạnh nhất, tối đa 6, đánh số thứ hạng
-3. **Tín hiệu suy ra** — 6 chênh lệch định lượng
-4. **Chuỗi suy luận** — 2–3 mạch, có bằng chứng và điều kiện phủ định
-5. **Dễ bị bỏ qua**
-6. **Lịch phiên tới**
-7. **Các tin còn lại theo nhóm** — đã trừ những tin nằm ở mục Tin nóng
-8. **Bảng thị trường** — 34 mã chia khối
+3. **Danh mục theo dõi** — 30 mã riêng: mã có tin thì có đánh giá + tin, mã không có tin thì chỉ giá
+4. **Tín hiệu suy ra** — 6 chênh lệch định lượng
+5. **Chuỗi suy luận** — 2–3 mạch, có bằng chứng và điều kiện phủ định
+6. **Dễ bị bỏ qua**
+7. **Lịch phiên tới**
+8. **Các tin còn lại theo nhóm** — đã trừ những tin nằm ở mục Tin nóng
+9. **Bảng thị trường** — 34 mã chia khối
 
 Tin nóng chọn theo `impact` do LLM gán (hoặc suy từ điểm khi không bật LLM): lấy hết
 tin `high`, chưa đủ 3 thì bù bằng `medium` điểm cao nhất. Logic ở `pickHot()` trong
 `public/index.html`.
+
+## Danh mục theo dõi
+
+`WATCHLIST` trong `scripts/sources.mjs`. Mỗi mã có `aliases` = tên công ty để bắt tin.
+Tin được khớp trên **toàn bộ** cụm bài quét trong ngày (~600), không phải chỉ 28 tin
+đã chọn — vì tin riêng một mã (Corning nâng dự báo, Disney bổ nhiệm CTO) thường
+không lọt cổng vĩ mô.
+
+Quy tắc khớp, để không bắt nhầm:
+- Alias viết thường → không phân biệt hoa thường (`nvidia`, `softbank`)
+- Alias **viết hoa** → phân biệt, dành cho tên trùng danh từ thường: `Apple` không
+  khớp "the apple", `Gap Inc` không khớp "gap between"
+- Mã ngắn (GS, MS, DIS…) không dùng làm từ khoá; chỉ nhận `(GS)` hoặc `$GS`
+- ETF để `aliases: []` → chỉ hiện giá
+
+Mã có tin: tối đa 3 bài, LLM viết 1–2 câu đánh giá + hướng tác động (tích cực /
+tiêu cực / trái chiều / trung tính). Mã không có tin: chỉ giá; biến động ≥3% mà
+không có tin thì gắn cờ — đó cũng là một tín hiệu.
+
+Thêm/bớt mã: sửa `WATCHLIST`, không cần đụng chỗ khác.
 
 ## Tín hiệu suy ra
 

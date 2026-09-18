@@ -1,12 +1,12 @@
 import { writeFile, readFile, mkdir } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { getMarket } from "./market.mjs";
-import { getNews } from "./news.mjs";
+import { getMarket, getWatchQuotes } from "./market.mjs";
+import { getNews, matchWatchlist } from "./news.mjs";
 import { getCalendar } from "./calendar.mjs";
 import { computeSignals } from "./signals.mjs";
 import { editorialize, llmEnabled } from "./llm.mjs";
-import { CATEGORIES, FEEDS, TICKER_GROUPS } from "./sources.mjs";
+import { CATEGORIES, FEEDS, TICKER_GROUPS, WATCHLIST } from "./sources.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DATA = join(ROOT, "public", "data");
@@ -37,6 +37,12 @@ async function main() {
   const signals = computeSignals(market);
   console.log(`  ${signals.length} tín hiệu suy ra`);
 
+  console.log("• Danh mục theo dõi…");
+  const quotes = await getWatchQuotes();
+  const matched = matchWatchlist(news.allClusters, WATCHLIST);
+  const watch = matched.map(m => ({ ...m, ...(quotes.find(q => q.sym === m.sym) || {}) }));
+  console.log(`  ${quotes.filter(q => q.ok).length}/${WATCHLIST.length} mã có giá • ${watch.filter(w => w.stories.length).length} mã có tin`);
+
   console.log("• Lấy lịch phiên tới…");
   const calendar = await getCalendar(now).catch(e => (console.warn(`  ! lịch: ${e.message}`), null));
   console.log(calendar
@@ -44,7 +50,7 @@ async function main() {
     : "  (không có lịch)");
 
   console.log(llmEnabled() ? "• Biên tập bằng LLM…" : "• Không có LLM_API_KEY — giữ tiêu đề gốc");
-  const edited = await editorialize(market, news.stories, calendar, signals);
+  const edited = await editorialize(market, news.stories, calendar, signals, watch);
   if (edited.llm) console.log(`  ${edited.stories.length} tin sau biên tập (${edited.llm})`);
 
   const digest = {
@@ -60,6 +66,7 @@ async function main() {
     tickerGroups: TICKER_GROUPS,
     categories: CATEGORIES.map(({ id, label }) => ({ id, label })),
     stories: edited.stories,
+    watch: edited.watch,
     meta: {
       feeds: FEEDS.length,
       scanned: news.scanned,

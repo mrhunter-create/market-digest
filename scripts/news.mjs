@@ -158,9 +158,35 @@ export async function getNews(now = new Date()) {
 
   return {
     stories: picked.map(({ kwScore, leadWeight, ...s }) => s),
+    // Toàn bộ cụm trong cửa sổ, chưa qua cổng vĩ mô — để khớp danh mục theo dõi,
+    // vì tin riêng một mã (ví dụ Corning nâng dự báo) thường không lọt cổng chung.
+    allClusters: clusters.map(({ kwScore, leadWeight, ...s }) => s),
     scanned: all.length,
     kept: fresh.length,
     clustered: clusters.length,
     relevant: relevant.length,
   };
+}
+
+/**
+ * Khớp tin với danh mục theo dõi. Mỗi mã: tối đa `perTicker` bài, ưu tiên điểm cao.
+ * Từ khoá tên công ty khớp theo biên từ; mã cổ phiếu chỉ nhận dạng "(SYM)" hoặc
+ * "$SYM" để tránh "MS", "GAP", "DIS" khớp nhầm vào chữ thường.
+ */
+export function matchWatchlist(clusters, watchlist, perTicker = 3) {
+  const esc = t => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pat = a => `(?<![A-Za-z0-9])${esc(a)}(?:'s)?(?![A-Za-z0-9])`;
+  return watchlist.map(w => {
+    const ci = w.aliases.filter(a => a[0] === a[0].toLowerCase()).map(pat);
+    const cs = w.aliases.filter(a => a[0] !== a[0].toLowerCase()).map(pat);
+    cs.push(`\\(${esc(w.sym)}\\)`, `\\$${esc(w.sym)}(?![A-Za-z0-9])`);
+    const reCI = ci.length ? new RegExp(ci.join("|"), "i") : null;
+    const reCS = new RegExp(cs.join("|"));
+    const test = t => !!t && ((reCI && reCI.test(t)) || reCS.test(t));
+    const hits = clusters
+      .filter(c => test(c.title) || test(c.summary))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, perTicker);
+    return { sym: w.sym, label: w.label, stories: hits };
+  });
 }

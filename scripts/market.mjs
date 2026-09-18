@@ -1,5 +1,5 @@
 import { fetchText } from "./lib.mjs";
-import { TICKERS } from "./sources.mjs";
+import { TICKERS, WATCHLIST } from "./sources.mjs";
 
 const sleep = ms => new Promise(s => setTimeout(s, ms));
 const num = v => {
@@ -9,8 +9,8 @@ const num = v => {
 };
 
 /** CNBC: một request lấy hết mã, không cần khoá, không giới hạn tốc độ đáng kể. */
-async function fromCnbc() {
-  const syms = TICKERS.map(t => t.cnbc).join("|");
+async function fromCnbc(symbols) {
+  const syms = symbols.join("|");
   const url = `https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols=${encodeURIComponent(syms)}&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json`;
   const j = JSON.parse(await fetchText(url));
   const list = j?.FormattedQuoteResult?.FormattedQuote || [];
@@ -61,7 +61,7 @@ async function fromYahoo(sym) {
 
 export async function getMarket() {
   let cnbc = new Map();
-  try { cnbc = await fromCnbc(); } catch (e) { console.warn(`  ! CNBC quote lỗi: ${e.message}`); }
+  try { cnbc = await fromCnbc(TICKERS.map(t => t.cnbc)); } catch (e) { console.warn(`  ! CNBC quote lỗi: ${e.message}`); }
 
   const rows = [];
   for (const t of TICKERS) {
@@ -74,4 +74,15 @@ export async function getMarket() {
     rows.push({ g: t.g, label: t.label, kind: t.kind, symbol: t.cnbc, ...(q || {}), ok: !!q });
   }
   return rows;
+}
+
+/** Giá cho danh mục theo dõi riêng. Chỉ CNBC — thiếu mã nào thì mã đó không có giá. */
+export async function getWatchQuotes() {
+  let cnbc = new Map();
+  try { cnbc = await fromCnbc(WATCHLIST.map(w => w.sym)); }
+  catch (e) { console.warn(`  ! CNBC watchlist lỗi: ${e.message}`); }
+  return WATCHLIST.map(w => {
+    const q = cnbc.get(w.sym);
+    return { sym: w.sym, label: w.label, ...(q || {}), ok: !!q };
+  });
 }

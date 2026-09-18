@@ -143,6 +143,32 @@ Phải có đúng một mục cho mỗi id từ 0 đến ${stories.length - 1}. 
 
 }
 
+/* ---------------- Lượt 3: danh mục theo dõi ---------------- */
+
+const WATCH_SYSTEM = `Bạn là nhà phân tích cổ phiếu, viết đánh giá ngắn cho từng mã trong danh mục của một nhà đầu tư người Việt, dựa trên tin trong phiên và biến động giá.
+${RULES}`;
+
+function watchPrompt(watch) {
+  const blocks = watch.map(w => {
+    const px = w.ok ? `${w.price} (${w.changePct >= 0 ? "+" : ""}${w.changePct?.toFixed(2)}%)` : "(không có giá)";
+    const news = w.stories.map((s, i) => `  ${i + 1}. ${s.title}${s.summary ? " — " + s.summary.slice(0, 200) : ""}`).join("\n");
+    return `${w.sym} ${w.label}: ${px}\n${news}`;
+  }).join("\n\n");
+
+  return `DANH MỤC VÀ TIN TRONG PHIÊN:
+${blocks}
+
+Với MỖI mã ở trên, trả về DUY NHẤT một object JSON:
+{
+  "tickers": [
+    { "sym": "NVDA",
+      "tone": "positive" | "negative" | "neutral" | "mixed",
+      "note_vi": "1-2 câu: tin trong phiên có ý nghĩa gì với mã này — cơ chế tác động, và biến động giá có khớp với tin hay không. Nếu tin không thực sự về công ty này (chỉ nhắc thoáng qua), nói rõ là không có tin đáng kể." }
+  ]
+}
+"tone" là hướng tác động của TIN lên triển vọng mã, không phải dấu của biến động giá. Không khuyến nghị mua bán.`;
+}
+
 /* ---------------- Hạ tầng gọi ---------------- */
 
 function extractJson(text) {
@@ -204,35 +230,53 @@ function cleanList(arr, max) {
  * Trả về { overview, drivers, watch, stories, llm, llmError }.
  * Mọi lỗi đều được nuốt và ghi vào llmError — bản tin không bao giờ hỏng vì LLM.
  */
-export async function editorialize(market, stories, calendar = null, signals = []) {
-  const bare = { verdict: null, chains: [], overlooked: [], stories, llm: null, llmError: null };
+export async function editorialize(market, stories, calendar = null, signals = [], watch = []) {
+  const bare = { verdict: null, chains: [], overlooked: [], stories, watch, llm: null, llmError: null };
   if (!KEY) return bare;
 
-  const [analysis, storyRes] = await Promise.all([
+  // Bài của danh mục mà chưa nằm trong 28 tin chính -> gộp vào lượt dịch để có
+  // tiêu đề/tóm tắt tiếng Việt. Khoá theo link để không dịch hai lần.
+  const mainLinks = new Set(stories.map(s => s.link));
+  const extra = [];
+  const seen = new Set();
+  for (const w of watch) for (const st of w.stories) {
+    if (!mainLinks.has(st.link) && !seen.has(st.link)) { seen.add(st.link); extra.push(st); }
+  }
+  const toTranslate = [...stories, ...extra];
+  const withNews = watch.filter(w => w.stories.length);
+
+  const [analysis, storyRes, watchRes] = await Promise.all([
     callWithFallback("phân tích", ANALYSIS_SYSTEM, analysisPrompt(market, stories, calendar, signals), 5000),
-    callWithFallback("tin", STORY_SYSTEM, storyPrompt(market, stories), 16000),
+    callWithFallback("tin", STORY_SYSTEM, storyPrompt(market, toTranslate), 24000),
+    withNews.length
+      ? callWithFallback("danh mục", WATCH_SYSTEM, watchPrompt(withNews), 6000)
+      : Promise.resolve({ out: null, model: null, errors: [] }),
   ]);
 
-  const errors = [...analysis.errors, ...storyRes.errors];
+  const errors = [...analysis.errors, ...storyRes.errors, ...watchRes.errors];
 
   // --- ghép phần tin ---
   let merged = stories;
+  const translated = new Map();   // link -> bản dịch, dùng lại cho danh mục
   if (storyRes.out) {
     const byId = new Map((storyRes.out.stories || []).map(s => [Number(s.id), s]));
-    const out = stories
-      .map((s, i) => {
-        const e = byId.get(i);
-        if (!e || e.drop === true) return null;
-        const impact = RANK[e.impact] != null ? e.impact : "medium";
-        return {
-          ...s,
-          titleVi: str(e.title_vi),
-          summaryVi: str(e.summary_vi),
-          implicationVi: impact === "low" ? null : str(e.subtext_vi),
-          impact,
-        };
-      })
-      .filter(Boolean);
+    const enrich = (s, i) => {
+      const e = byId.get(i);
+      if (!e) return null;
+      const impact = RANK[e.impact] != null ? e.impact : "medium";
+      return {
+        ...s,
+        titleVi: str(e.title_vi),
+        summaryVi: str(e.summary_vi),
+        implicationVi: impact === "low" ? null : str(e.subtext_vi),
+        impact,
+        dropped: e.drop === true,
+      };
+    };
+    toTranslate.forEach((s, i) => { const t = enrich(s, i); if (t) translated.set(s.link, t); });
+
+    const out = stories.map((s) => translated.get(s.link)).filter(t => t && !t.dropped)
+      .map(({ dropped, ...t }) => t);
     if (out.length) {
       out.sort((a, b) => (RANK[a.impact] - RANK[b.impact]) || (b.score - a.score));
       merged = out;
@@ -240,6 +284,22 @@ export async function editorialize(market, stories, calendar = null, signals = [
       errors.push("tin: LLM loại hết");
     }
   }
+
+  // --- ghép phần danh mục ---
+  const TONES = new Set(["positive", "negative", "neutral", "mixed"]);
+  const noteBy = new Map((watchRes.out?.tickers || []).map(t => [String(t.sym || "").toUpperCase(), t]));
+  const watchOut = watch.map(w => {
+    const n = noteBy.get(w.sym);
+    return {
+      ...w,
+      stories: w.stories.map(st => {
+        const t = translated.get(st.link);
+        return t ? { ...st, titleVi: t.titleVi, summaryVi: t.summaryVi, implicationVi: t.implicationVi } : st;
+      }),
+      tone: n && TONES.has(n.tone) ? n.tone : null,
+      noteVi: n ? str(n.note_vi) : null,
+    };
+  });
 
   // Chuỗi suy luận: bỏ mạch nào không có bước hoặc không có bằng chứng số liệu.
   const chains = (Array.isArray(analysis.out?.chains) ? analysis.out.chains : [])
@@ -259,6 +319,7 @@ export async function editorialize(market, stories, calendar = null, signals = [
     chains,
     overlooked: analysis.out ? cleanList(analysis.out.overlooked, 3) : [],
     stories: merged,
+    watch: watchOut,
     llm,
     llmError: errors.length ? errors.join(" | ").slice(0, 500) : null,
   };

@@ -50,7 +50,7 @@ async function main() {
     : "  (không có lịch)");
 
   console.log(llmEnabled() ? "• Biên tập bằng LLM…" : "• Không có LLM_API_KEY — giữ tiêu đề gốc");
-  const edited = await editorialize(market, news.stories, calendar, signals, watch);
+  const edited = await editorialize({ market, stories: news.stories, calendar, signals, watch, sessionDate });
   if (edited.llm) console.log(`  ${edited.stories.length} tin sau biên tập (${edited.llm})`);
 
   const digest = {
@@ -60,6 +60,8 @@ async function main() {
     verdict: edited.verdict,
     chains: edited.chains,
     overlooked: edited.overlooked,
+    links: edited.links,
+    feature: edited.feature,
     calendar,
     market,
     signals,

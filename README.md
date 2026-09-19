@@ -101,21 +101,43 @@ Muốn tránh hẳn: sau khi chạy `npm run build` ở máy, đừng commit th�
 `public/data` (chạy `git checkout -- public/data` trước khi commit) — để duy nhất
 workflow ghi vào đó.
 
-## Thứ tự các mục trên trang
+## Các trang
 
-1. **Kết luận phiên** — một câu
-2. **Tin nóng** — tin tác động trực tiếp mạnh nhất, tối đa 6, đánh số thứ hạng
-3. **Danh mục theo dõi** — 30 mã riêng: mã có tin thì có đánh giá + tin, mã không có tin thì chỉ giá
-4. **Tín hiệu suy ra** — 6 chênh lệch định lượng
-5. **Chuỗi suy luận** — 2–3 mạch, có bằng chứng và điều kiện phủ định
-6. **Dễ bị bỏ qua**
-7. **Lịch phiên tới**
-8. **Các tin còn lại theo nhóm** — đã trừ những tin nằm ở mục Tin nóng
-9. **Bảng thị trường** — 34 mã chia khối
+| Trang | File | Nội dung |
+|---|---|---|
+| **Tổng quan** | `index.html` | Kết luận phiên, 4 thẻ dẫn (tin nóng, phân tích sâu, danh mục, tín hiệu & lịch), chuỗi suy luận |
+| **Tin** | `news.html` | Tin nóng đánh số + các tin còn lại theo nhóm |
+| **Danh mục** | `watchlist.html` | 30 mã riêng: đánh giá, tầng hai, nối vào mạch, tin kèm |
+| **Phân tích** | `analysis.html` | Bài phân tích sâu, mạch liên kết trong ngày, chuỗi suy luận, dễ bị bỏ qua, tín hiệu đủ |
+| **Thị trường** | `market.html` | Tín hiệu gọn, bảng 34 mã, lịch phiên tới đầy đủ |
 
-Tin nóng chọn theo `impact` do LLM gán (hoặc suy từ điểm khi không bật LLM): lấy hết
-tin `high`, chưa đủ 3 thì bù bằng `medium` điểm cao nhất. Logic ở `pickHot()` trong
-`public/index.html`.
+CSS và JS dùng chung ở `app.css` / `app.js`; mỗi file HTML chỉ là khung + `Page.mount("<trang>")`.
+Chọn phiên cũ ở ô chọn trên masthead → `?d=YYYY-MM-DD`, giữ nguyên khi chuyển trang.
+
+## Phân tích sâu & mạch liên kết
+
+Lượt LLM thứ ba nhận ~26 tin của ngày cùng số liệu, và làm hai việc **không cần nhớ
+gì qua ngày**:
+
+1. **Mạch liên kết** — gom tin thành 2–4 mạch, mỗi mạch là nhóm tin cùng kể một
+   chuyện lớn hơn từng tin đơn lẻ, kèm mã trong danh mục chịu ảnh hưởng
+2. **Bài phân tích sâu** cho mạch quan trọng nhất, theo tầng bắt buộc:
+   - Chuyện gì đã xảy ra — *chỉ sự kiện*
+   - Lý do bề nổi
+   - **Vì sao — suy luận gốc rễ** — động cơ các bên, ai được lợi, *đánh dấu là giả thuyết*
+   - Vì sao lúc này — nối với lịch bầu cử, chính sách, chu kỳ
+   - Bằng chứng ủng hộ **và** ngược chiều
+   - Kịch bản: "nếu ngày mai có X…" / "nếu không…", mỗi kịch bản kèm *vì sao*
+   - Chỉ báo để biết kịch bản nào đang thắng
+   - Mức tin cậy 1–5 (prompt yêu cầu suy luận chính trị hiếm khi quá 3)
+   - Bài này sai khi
+
+Mã trong danh mục được nối vào mạch: mỗi mã có "tầng hai" (nếu mạch diễn biến theo
+luận đề thì mã hưởng lợi hay chịu áp lực qua cơ chế nào) và "đổi cách nhìn khi".
+
+Bốn lượt LLM chạy **tuần tự** có giãn cách (`LLM_GAP_MS`, mặc định 15 giây) và tự
+chờ khi dính 429, vì gói Groq miễn phí chỉ 8.000 token/phút. Muốn phân tích sâu
+hơn với nhiều tin hơn, đổi `LLM_BASE_URL` sang nhà cung cấp có hạn mức lớn hơn.
 
 ## Danh mục theo dõi
 

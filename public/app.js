@@ -245,7 +245,7 @@ function watchCard(d, w) {
     ${w.whySubjective ? `<div class="why">${esc(w.whySubjective)}</div>` : (w.noteVi ? `<div class="note">${esc(w.noteVi)}</div>` : "")}
     ${w.links?.length ? `<div class="chips">${w.links.map(id => `<a class="tk dim" href="${href("analysis.html")}#link-${esc(id)}">${esc(linkTitle(d, id))}</a>`).join("")}</div>` : ""}
     ${deep}
-    ${w.stories?.length ? `<ul>${w.stories.map(s => `<li><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(s.titleVi || s.title)}</a><span class="s">${esc(s.source)}</span></li>`).join("")}</ul>` : ""}</div>`;
+    ${w.stories?.length ? `<ul>${w.stories.map(s => `<li><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(s.titleVi || s.title)}</a><span class="s">${esc(s.source)}${s.recent ? ` · ${s.ageDays === 0 ? "hôm nay" : s.ageDays + " ngày trước"}` : ""}</span></li>`).join("")}</ul>` : ""}</div>`;
 }
 function watch(d) {
   const list = d.watch || [];
@@ -263,9 +263,12 @@ function watch(d) {
           ${cell("Vì sao — khách quan (cả nhóm)", g.whyObjective, "full")}
           ${cell("Kéo dài bao lâu", g.duration)}${cell("Ai được lợi, ai mất", g.winnersLosers)}
           ${cell("Rủi ro chính & điều kiện kích hoạt", g.risk, "r full")}${cell("Sau này có thể", g.outlook, "full")}</div></div>` : "";
-    const withNews = members.filter(w => w.stories?.length).length;
-    return `<section class="wg"><h2 class="sec">${esc(def.label)}<span class="n">${members.length} mã · ${withNews} có tin</span></h2>
-      ${analysis}<div class="w-grid">${members.map(w => watchCard(d, w)).join("")}</div></section>`;
+    const withNews = members.filter(w => w.stories?.some(s => !s.recent)).length;
+    const sector = (d.groupNews?.[def.id] || []);
+    const sectorHtml = sector.length ? `<div class="ga gn"><h4 class="blk-h">Tin ngành hôm nay đẩy cả nhóm</h4><ul>${sector.map(c =>
+      `<li><a href="${esc(c.link)}" target="_blank" rel="noopener noreferrer">${esc(c.title)}</a><span class="s">${esc(c.source)}</span></li>`).join("")}</ul></div>` : "";
+    return `<section class="wg"><h2 class="sec">${esc(def.label)}<span class="n">${members.length} mã · ${withNews} có tin riêng · ${sector.length} tin ngành</span></h2>
+      ${analysis}${sectorHtml}<div class="w-grid">${members.map(w => watchCard(d, w)).join("")}</div></section>`;
   }).filter(Boolean);
   // Mã chưa được xếp nhóm (phòng khi cấu hình thiếu)
   const orphan = list.filter(w => !defs.some(def => def.id === w.grp));
@@ -381,12 +384,21 @@ async function loadArchive(currentId) {
   } catch {}
 }
 
+let rendered = false;
 async function mount(page) {
   renderNav(page);
   $("#theme").onclick = toggleTheme;
-  // Báo lỗi ra màn hình thay vì đứng im ở "Đang tải…"
-  window.addEventListener("error", ev => showError(new Error("Lỗi trang: " + (ev.message || "không rõ"))));
-  window.addEventListener("unhandledrejection", ev => showError(new Error("Lỗi tải: " + (ev.reason?.message || ev.reason || "không rõ"))));
+  // Báo lỗi ra màn hình thay vì đứng im ở "Đang tải…" — nhưng CHỈ khi trang chưa dựng xong.
+  // Tiện ích mở rộng của trình duyệt (dịch, chặn quảng cáo...) cũng ném lỗi vào trang; không
+  // được để chúng xoá trắng nội dung đã hiện. Lỗi từ file khác app.js thì bỏ qua.
+  window.addEventListener("error", ev => {
+    if (rendered || (ev.filename && !/app\.js/.test(ev.filename))) return;
+    showError(new Error("Lỗi trang: " + (ev.message || "không rõ")));
+  });
+  window.addEventListener("unhandledrejection", ev => {
+    if (rendered) return;
+    showError(new Error("Lỗi tải: " + (ev.reason?.message || ev.reason || "không rõ")));
+  });
   try {
     const url = dateParam ? `data/${encodeURIComponent(dateParam)}.json` : "data/latest.json";
     const r = await fetch(url + "?t=" + Date.now());
@@ -396,6 +408,7 @@ async function mount(page) {
     setCounts(d);
     const t = $("#tape"); if (t) t.innerHTML = tape((d.market || []).filter(m => !m.g || m.g === "core"));
     $("#main").innerHTML = RENDER[page](d);
+    rendered = true;
     stats(d);
     loadArchive(d.id);
   } catch (e) { showError(e); }

@@ -1,5 +1,5 @@
 import { fetchText, parseFeed, tokens, jaccard, cleanGoogleTitle } from "./lib.mjs";
-import { FEEDS, KEYWORDS, CATEGORIES, BLOCK_TITLE, BLOCK_URL } from "./sources.mjs";
+import { FEEDS, KEYWORDS, CATEGORIES, BLOCK_TITLE, BLOCK_URL, BLOCK_SOURCE } from "./sources.mjs";
 
 const WINDOW_HOURS = 30;   // đủ phủ trọn một phiên Mỹ kể cả tin sau giờ đóng cửa
 const MAX_STORIES  = 28;   // giữ digest gọn — đây là bản tin, không phải kho tin
@@ -189,4 +189,58 @@ export function matchWatchlist(clusters, watchlist, perTicker = 3) {
       .slice(0, perTicker);
     return { sym: w.sym, label: w.label, stories: hits };
   });
+}
+
+/**
+ * Tin gần nhất riêng cho một mã — dùng cho mã không có tin trong cửa sổ ngày, vì mã vẫn
+ * biến động và phân tích không có tin thì chỉ là đoán.
+ * Google News theo tên công ty làm chính (chịu tải tốt); Yahoo RSS theo mã dự phòng
+ * (chặn 429 nếu gọi dồn). Lọc rác như feed thường, lấy `max` bài mới nhất trong `days` ngày.
+ */
+export async function fetchTickerNews(sym, label, { days = 7, max = 3, now = new Date() } = {}) {
+  const cutoff = now.getTime() - days * 86400e3;
+  const badSource = it => BLOCK_SOURCE.some(b => (it.source || "").toLowerCase().includes(b));
+  const shape = items => {
+    const kept = [];
+    for (const it of items
+      .filter(it => it.title && it.link && it.date && Date.parse(it.date) >= cutoff)
+      .filter(it => !isJunk(it) && !badSource(it))
+      .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))) {
+      // Khử trùng lặp: cùng một hồ sơ/thông cáo được 3 trang đăng lại.
+      const tk = tokens(it.title);
+      if (kept.some(k => jaccard(k.tk, tk) >= 0.4)) continue;
+      kept.push({ ...it, tk });
+      if (kept.length >= max) break;
+    }
+    return kept
+    .map(it => ({
+      title: it.title, link: it.link, summary: it.summary || "", date: it.date,
+      source: it.source, sources: [it.source], category: "markets",
+      keywords: [], score: 0, impact: "low", recent: true,
+      ageDays: Math.max(0, Math.round((now.getTime() - Date.parse(it.date)) / 86400e3)),
+    }));
+  };
+
+  const q = encodeURIComponent(`"${label}" stock when:${days}d`);
+  try {
+    const items = parseFeed(await fetchText(`https://news.google.com/rss/search?q=${q}&hl=en-US&gl=US&ceid=US:en`, { tries: 2 }))
+      .map(it => ({ ...it, title: cleanGoogleTitle(it.title), source: (it.title.match(/ - ([^-]{2,40})$/) || [, "Google News"])[1].trim() }));
+    const out = shape(items);
+    if (out.length) return out;
+  } catch (e) { console.warn(`  ! Google News ${sym}: ${e.message}`); }
+
+  try {
+    const items = parseFeed(await fetchText(`https://feeds.finance.yahoo.com/rss/2.0/headline?s=${encodeURIComponent(sym)}&region=US&lang=en-US`, { tries: 1 }))
+      .map(it => ({ ...it, source: "Yahoo Finance" }));
+    return shape(items);
+  } catch (e) { console.warn(`  ! Yahoo ${sym}: ${e.message}`); return []; }
+}
+
+/** Tin NGÀNH cho một nhóm: khớp từ khoá chủ đề trên toàn bộ cụm trong ngày, lấy top theo điểm. */
+export function matchThemes(clusters, themes, max = 6) {
+  if (!themes?.length) return [];
+  return clusters
+    .filter(c => themes.some(k => hasTerm(c.title, k) || hasTerm(c.summary || "", k)))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, max);
 }

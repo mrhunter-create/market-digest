@@ -411,3 +411,10 @@ details.deep .dg div.w b{color:var(--calm)} details.deep .dg div.l b{color:var(-
 .wc .why::before{content:"Vì sao: "; color:var(--accent); font-weight:600}
 .wc details.deep{margin:10px 0 0}
 @media (max-width:640px){ .today .fut{grid-template-columns:repeat(2,minmax(0,1fr))} details.deep .dg,.wg .ga .dg{grid-template-columns:1fr} }
+
+.wg .ga.gn{margin-top:-8px; padding-top:12px}
+.wg .ga.gn ul{list-style:none; margin:0; padding:0}
+.wg .ga.gn li{font-size:12.5px; line-height:1.5; padding:3px 0}
+.wg .ga.gn li a{text-decoration:none; color:var(--ink)}
+.wg .ga.gn li a:hover{text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:3px}
+.wg .ga.gn li .s{color:var(--ink-3); font-size:11px; margin-left:6px}

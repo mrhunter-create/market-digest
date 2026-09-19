@@ -219,7 +219,7 @@ function fundLine(f) {
   return parts.join(", ");
 }
 
-function groupPrompt(group, tickers, market, links) {
+function groupPrompt(group, tickers, market, links, sectorNews) {
   const core = market.filter(m => m.ok && m.g === "core")
     .map(m => `${m.label} ${m.changePct >= 0 ? "+" : ""}${m.changePct?.toFixed(2)}%`).join(" | ");
   const syms = new Set(tickers.map(t => t.sym));
@@ -227,14 +227,19 @@ function groupPrompt(group, tickers, market, links) {
     .map(l => `[${l.id}] ${l.title}: ${l.thesis}`).join("\n");
   const blocks = tickers.map(w => {
     const px = w.ok ? `${w.price} (${w.changePct >= 0 ? "+" : ""}${w.changePct?.toFixed(2)}%)` : "(không có giá)";
-    const news = (w.stories || []).map((s, i) => `    ${i + 1}. ${s.title}${s.summary ? " — " + s.summary.slice(0, 160) : ""}`).join("\n");
-    return `${w.sym} ${w.label}: ${px}\n  Cơ bản: ${fundLine(w.fund) || "(không có)"}\n  Tin hôm nay:\n${news || "    (không có tin riêng)"}`;
+    const news = (w.stories || []).map((s, i) =>
+      `    ${i + 1}. ${s.recent ? `[${s.ageDays === 0 ? "hôm nay" : s.ageDays + " ngày trước"}] ` : ""}${s.title}${s.summary ? " — " + s.summary.slice(0, 160) : ""}`).join("\n");
+    const hasToday = (w.stories || []).some(s => !s.recent);
+    return `${w.sym} ${w.label}: ${px}\n  Cơ bản: ${fundLine(w.fund) || "(không có)"}\n  ${hasToday ? "Tin hôm nay" : "Không có tin hôm nay — tin gần nhất (có ghi ngày)"}:\n${news || "    (không tìm được tin nào trong 7 ngày)"}`;
   }).join("\n\n");
 
+  const sector = (sectorNews || []).map((c, i) => `  ${i + 1}. (${c.source}) ${c.title}${c.summary ? " — " + c.summary.slice(0, 140) : ""}`).join("\n");
   return `NHÓM: ${group.label} — ${group.note}
 BỐI CẢNH PHIÊN: ${core || "(không có)"}
 MẠCH LIÊN KẾT LIÊN QUAN:
 ${rel || "(không có)"}
+TIN NGÀNH / BỐI CẢNH HÔM NAY (không phải tin riêng công ty nào, nhưng đẩy cả nhóm):
+${sector || "  (không có)"}
 
 CÁC MÃ TRONG NHÓM:
 ${blocks}
@@ -243,7 +248,7 @@ Trả về DUY NHẤT một object JSON:
 {
   "group": {
     "state": "1-2 câu: nhóm hôm nay ra sao, dựa vào biến động các mã",
-    "why_objective": "2-3 câu: lý do KHÁCH QUAN — ngành, vĩ mô, chính sách, chu kỳ — đang đẩy cả nhóm theo hướng này",
+    "why_objective": "2-3 câu: lý do KHÁCH QUAN — ngành, vĩ mô, chính sách, chu kỳ — đang đẩy cả nhóm theo hướng này. Phải dùng TIN NGÀNH ở trên nếu có: ví dụ quốc phòng chạy theo tin chiến tranh dù không có tin công ty.",
     "duration": "1-2 câu: động lực này là ngắn hạn hay cấu trúc, vì sao",
     "winners_losers": "1-2 câu: trong bối cảnh này ai được lợi, ai mất — trong và ngoài nhóm",
     "risk": "1-2 câu: rủi ro chính của cả nhóm và ĐIỀU KIỆN KÍCH HOẠT cụ thể, quan sát được",
@@ -262,7 +267,7 @@ Trả về DUY NHẤT một object JSON:
       "change_view": "1 câu: sự kiện hoặc số liệu nào sẽ làm thay đổi cách nhìn về mã này" }
   ]
 }
-Phải có đúng một mục cho MỖI mã trong nhóm, kể cả mã không có tin. ETF thì "position" nói về rổ nó đại diện. Không khuyến nghị mua bán.`;
+Phải có đúng một mục cho MỖI mã trong nhóm, kể cả mã không có tin. Với mã chỉ có tin gần nhất (không phải hôm nay): "why_subjective" phải nói rõ biến động hôm nay có liên quan tới tin đó không, hay là theo nhóm. ETF thì "position" nói về rổ nó đại diện. Không khuyến nghị mua bán.`;
 }
 
 /* ---------------- Lượt 5: tin nóng, phân tích sâu ---------------- */
@@ -400,7 +405,7 @@ function cleanFeature(f, links) {
  * Trả về { verdict, chains, overlooked, stories, watch, links, feature, llm, llmError }.
  * Mọi lỗi đều được nuốt và ghi vào llmError — bản tin không bao giờ hỏng vì LLM.
  */
-export async function editorialize({ market, stories, calendar = null, signals = [], watch = [], groups = [], sessionDate }) {
+export async function editorialize({ market, stories, calendar = null, signals = [], watch = [], groups = [], groupNews = {}, sessionDate }) {
   const bare = { verdict: null, chains: [], overlooked: [], ahead: null, stories, watch, watchGroups: [], links: [], feature: null, llm: null, llmError: null };
   if (!KEY) return bare;
 
@@ -426,7 +431,7 @@ export async function editorialize({ market, stories, calendar = null, signals =
     const members = watch.filter(w => w.grp === g.id);
     if (!members.length) continue;
     await sleep(GAP);
-    const r = await callWithFallback(`danh mục · ${g.label}`, WATCH_SYSTEM, groupPrompt(g, members, market, links), 7000);
+    const r = await callWithFallback(`danh mục · ${g.label}`, WATCH_SYSTEM, groupPrompt(g, members, market, links, groupNews[g.id]), 7000);
     groupRes.push({ g, r });
   }
 

@@ -2,7 +2,7 @@ import { writeFile, readFile, mkdir } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { getMarket, getWatchQuotes } from "./market.mjs";
-import { getNews, matchWatchlist } from "./news.mjs";
+import { getNews, matchWatchlist, fetchTickerNews, matchThemes } from "./news.mjs";
 import { getCalendar } from "./calendar.mjs";
 import { computeSignals } from "./signals.mjs";
 import { editorialize, llmEnabled } from "./llm.mjs";
@@ -41,7 +41,19 @@ async function main() {
   const quotes = await getWatchQuotes();
   const matched = matchWatchlist(news.allClusters, WATCHLIST);
   const watch = matched.map(m => ({ ...m, ...(quotes.find(q => q.sym === m.sym) || {}) }));
-  console.log(`  ${quotes.filter(q => q.ok).length}/${WATCHLIST.length} mã có giá • ${watch.filter(w => w.stories.length).length} mã có tin`);
+  const noNews = watch.filter(w => !w.stories.length);
+  console.log(`  ${quotes.filter(q => q.ok).length}/${WATCHLIST.length} mã có giá • ${watch.length - noNews.length} mã có tin trong ngày • ${noNews.length} mã tìm tin gần nhất…`);
+  // Mã không có tin trong ngày: tìm tin 7 ngày gần nhất theo mã, tuần tự để không bị Yahoo chặn.
+  let filled = 0;
+  for (const w of noNews) {
+    w.stories = await fetchTickerNews(w.sym, w.label, { now });
+    if (w.stories.length) filled++;
+    await new Promise(r => setTimeout(r, 700));
+  }
+  console.log(`  ${filled}/${noNews.length} mã có tin gần nhất`);
+  // Tin NGÀNH cho từng nhóm — quốc phòng chạy theo tin chiến tranh dù không có tin công ty.
+  const groupNews = Object.fromEntries(WATCH_GROUPS.map(g => [g.id, matchThemes(news.allClusters, g.themes)]));
+  console.log(`  tin ngành: ${WATCH_GROUPS.map(g => `${g.id} ${groupNews[g.id].length}`).join(", ")}`);
 
   console.log("• Lấy lịch phiên tới…");
   const calendar = await getCalendar(now).catch(e => (console.warn(`  ! lịch: ${e.message}`), null));
@@ -50,7 +62,7 @@ async function main() {
     : "  (không có lịch)");
 
   console.log(llmEnabled() ? "• Biên tập bằng LLM…" : "• Không có LLM_API_KEY — giữ tiêu đề gốc");
-  const edited = await editorialize({ market, stories: news.stories, calendar, signals, watch, groups: WATCH_GROUPS, sessionDate });
+  const edited = await editorialize({ market, stories: news.stories, calendar, signals, watch, groups: WATCH_GROUPS, groupNews, sessionDate });
 
   // Tin ra SAU giờ đóng cửa Mỹ (16:00 ET) chưa được phản ánh vào giá chốt phiên — đánh dấu để người đọc biết.
   const closeUtc = (() => {
@@ -73,6 +85,7 @@ async function main() {
     ahead: edited.ahead,
     watchGroups: edited.watchGroups,
     watchGroupDefs: WATCH_GROUPS.map(({ id, label }) => ({ id, label })),
+    groupNews: Object.fromEntries(Object.entries(groupNews).map(([k, v]) => [k, v.map(c => ({ title: c.title, link: c.link, source: c.source, date: c.date }))])),
     calendar,
     market,
     signals,

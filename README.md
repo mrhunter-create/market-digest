@@ -169,6 +169,15 @@ Tin được khớp trên **toàn bộ** cụm bài quét trong ngày (~600). Qu
 thường không phân biệt hoa thường; alias viết hoa phân biệt (`Apple` ≠ "the apple"); mã
 ngắn chỉ nhận `(GS)` / `$GS`; ETF `aliases: []`.
 
+**Mã không có tin trong ngày** vẫn biến động, nên tìm thêm **tin 7 ngày gần nhất theo mã**
+(Google News theo tên công ty, Yahoo RSS theo mã dự phòng), lọc rác theo tiêu đề và tên
+nguồn (`BLOCK_TITLE`, `BLOCK_SOURCE`), khử trùng lặp, lấy 3 bài mới nhất — có ghi "N ngày
+trước" để phân biệt với tin hôm nay.
+
+**Tin ngành** (`themes` trong `WATCH_GROUPS`): quốc phòng không có tin công ty nhưng có tin
+chiến tranh; bán dẫn có tin kiểm soát xuất khẩu. Mỗi nhóm lấy tối đa 6 tin ngành từ cụm
+trong ngày, nạp vào phân tích cấp nhóm và hiện dưới khối phân tích nhóm.
+
 ## Tin nóng — mổ xẻ
 
 Lượt LLM riêng cho tối đa 6 tin nóng, theo khung: vì sao (chủ quan — động cơ chủ thể /

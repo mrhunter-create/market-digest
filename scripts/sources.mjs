@@ -134,6 +134,18 @@ export const BLOCK_TITLE = [
   "should you buy", "is it too late to buy", "here's why you should", "millionaire",
   "best stocks to", "top stocks to", "stocks to buy now", "prediction:", "my top",
   "billionaire", "this dividend", "retire", "if you invested",
+  // Rác khi tìm tin theo mã: hồ sơ giao dịch nội bộ máy sinh, clickbait "3 things"
+  "director at", "director takes", "director receives", "director sells", "director buys", "insider sell", "insider buy",
+  "form 4", "history says", "things to know", "things you should", "what to know", "here's what",
+  "stock forecast", "price prediction", "is it a buy", "buy or sell", "before it's too late",
+];
+
+// Nguồn rác hay lọt qua Google News khi tìm theo mã: tổng hợp máy, clickbait, sàn crypto.
+export const BLOCK_SOURCE = [
+  "motley fool", "stockinvest", "kalkine", "ad hoc news", "okx", "marketbeat", "zacks",
+  "insider monkey", "investorplace", "simply wall st", "simplywall", "gurufocus", "24/7 wall st",
+  "sharewise", "stocktwits", "tickerreport", "americanbankingnews", "defense world",
+  "etf daily news", "coinbase", "binance", "startupfortune", "msn", "newser",
 ];
 
 export const BLOCK_URL = [
@@ -144,13 +156,21 @@ export const BLOCK_URL = [
 
 // Nhóm ngành của danh mục. Phân tích chạy theo nhóm: lý do KHÁCH QUAN (ngành, vĩ mô)
 // viết một lần cho cả nhóm, lý do CHỦ QUAN (nội tại công ty) viết riêng từng mã.
+// themes = từ khoá tin NGÀNH: mã không có tin công ty vẫn chạy theo tin ngành —
+// quốc phòng chạy theo tin chiến tranh, bán dẫn theo tin kiểm soát xuất khẩu.
 export const WATCH_GROUPS = [
-  { id: "semi",     label: "Bán dẫn & hạ tầng AI",   note: "chip, thiết bị sản xuất chip, quang học cho trung tâm dữ liệu, và SoftBank như quỹ đầu tư AI" },
-  { id: "bigtech",  label: "Big Tech & phần mềm",    note: "nền tảng, đám mây, phần mềm doanh nghiệp" },
-  { id: "finance",  label: "Tài chính",              note: "ngân hàng đầu tư, ngân hàng thương mại, môi giới" },
-  { id: "defense",  label: "Quốc phòng & vũ trụ",    note: "nhà thầu quốc phòng và SpaceX" },
-  { id: "consumer", label: "Tiêu dùng & xe điện",    note: "xe điện, giải trí, bán lẻ" },
-  { id: "index",    label: "Chỉ số & năng lượng",    note: "ETF chỉ số và dầu" },
+  { id: "semi",     label: "Bán dẫn & hạ tầng AI",   note: "chip, thiết bị sản xuất chip, quang học cho trung tâm dữ liệu, và SoftBank như quỹ đầu tư AI",
+    themes: ["semiconductor", "chip", "chipmaker", "export control", "tsmc", "micron", "memory chip", "data center", "ai spending", "ai capex", "hyperscaler", "nvidia", "openai", "gpu"] },
+  { id: "bigtech",  label: "Big Tech & phần mềm",    note: "nền tảng, đám mây, phần mềm doanh nghiệp",
+    themes: ["big tech", "cloud", "antitrust", "ftc", "doj", "app store", "advertising", "software", "saas", "artificial intelligence", "ai model", "openai", "anthropic"] },
+  { id: "finance",  label: "Tài chính",              note: "ngân hàng đầu tư, ngân hàng thương mại, môi giới",
+    themes: ["bank", "banks", "lender", "credit", "loan", "deposit", "federal reserve", "rate cut", "rate hike", "yield curve", "treasury yield", "ipo", "deal", "merger", "trading revenue", "basel"] },
+  { id: "defense",  label: "Quốc phòng & vũ trụ",    note: "nhà thầu quốc phòng và SpaceX",
+    themes: ["war", "military", "missile", "strike", "pentagon", "defense spending", "defense budget", "nato", "ukraine", "iran", "middle east", "taiwan strait", "china military", "arms", "weapons", "f-35", "nasa", "space", "satellite", "launch"] },
+  { id: "consumer", label: "Tiêu dùng & xe điện",    note: "xe điện, giải trí, bán lẻ",
+    themes: ["consumer spending", "retail sales", "consumer confidence", "tariff", "ev", "electric vehicle", "autos", "streaming", "box office", "theme park", "apparel", "holiday season", "inflation"] },
+  { id: "index",    label: "Chỉ số & năng lượng",    note: "ETF chỉ số và dầu",
+    themes: ["oil", "crude", "opec", "brent", "wti", "energy", "s&p 500", "nasdaq", "wall street", "stocks", "selloff", "rally", "fed", "cpi", "jobs report"] },
 ];
 
 // Danh mục theo dõi riêng. aliases = tên công ty để bắt tin, khớp theo biên từ.

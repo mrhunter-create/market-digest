@@ -2,10 +2,10 @@ name: Bản tin thị trường
 
 on:
   schedule:
-    # 22:00 UTC các ngày T2–T6 = 06:00 sáng giờ Đài Bắc T3–T7, tức 2 tiếng sau khi
-    # phiên Mỹ đóng cửa (16:00 ET). GitHub thường chạy trễ 1–2 tiếng vào giờ cao
-    # điểm, nên bản tin thực tế lên khoảng 07:00–08:00 giờ Đài Bắc.
-    - cron: "0 22 * * 1-5"
+    # 23:00 UTC T2–T6 = 07:00 sáng Đài Bắc T3–T7. GitHub trễ đều 1,5–2 tiếng nên
+    # bản tin thực tế lên ~08:30–09:00 — đúng lúc đọc, và đã gom được cả diễn biến
+    # sau giờ đóng cửa Mỹ, phiên châu Á đang chạy, và hợp đồng tương lai.
+    - cron: "0 23 * * 1-5"
   workflow_dispatch:        # chạy tay từ tab Actions
   push:                     # sửa code là deploy lại trang ngay, không đợi tới sáng
     branches: [main]

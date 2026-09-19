@@ -8,6 +8,27 @@ const num = v => {
   return Number.isFinite(n) ? n : null;
 };
 
+/** Số liệu cơ bản từ cùng phản hồi CNBC — dùng cho phân tích từng mã trong danh mục. */
+function fundamentals(q) {
+  const money = v => {
+    if (v == null) return null;
+    const m = /^([\d.,]+)\s*([KMBT])?$/i.exec(String(v).trim());
+    if (!m) return null;
+    const n = parseFloat(m[1].replace(/,/g, ""));
+    return Number.isFinite(n) ? n * ({ K: 1e3, M: 1e6, B: 1e9, T: 1e12 }[(m[2] || "").toUpperCase()] || 1) : null;
+  };
+  const price = num(q.last), hi = num(q.yrhiprice), lo = num(q.yrloprice);
+  return {
+    pe: num(q.pe), fpe: num(q.fpe), eps: num(q.eps), feps: num(q.feps),
+    revenueTtm: money(q.revenuettm), marketCap: money(q.mktcapView),
+    divYield: num(q.dividendyield), beta: num(q.beta),
+    volRatio: num(q.pcttendayvol),                       // khối lượng hôm nay / trung bình 10 phiên
+    yrHi: hi, yrHiDate: q.yrhidate || null, yrLo: lo, yrLoDate: q.yrlodate || null,
+    fromHiPct: price && hi ? ((price - hi) / hi) * 100 : null,
+    fromLoPct: price && lo ? ((price - lo) / lo) * 100 : null,
+  };
+}
+
 /** CNBC: một request lấy hết mã, không cần khoá, không giới hạn tốc độ đáng kể. */
 async function fromCnbc(symbols) {
   const syms = symbols.join("|");
@@ -31,6 +52,7 @@ async function fromCnbc(symbols) {
       changePct: prev ? ((price - prev) / prev) * 100 : null,
       asOf: q.last_time || null,
       src: "cnbc",
+      fund: fundamentals(q),
     });
   }
   return map;
@@ -83,6 +105,6 @@ export async function getWatchQuotes() {
   catch (e) { console.warn(`  ! CNBC watchlist lỗi: ${e.message}`); }
   return WATCHLIST.map(w => {
     const q = cnbc.get(w.sym);
-    return { sym: w.sym, label: w.label, ...(q || {}), ok: !!q };
+    return { sym: w.sym, label: w.label, grp: w.grp, ...(q || {}), ok: !!q };
   });
 }

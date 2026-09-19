@@ -114,7 +114,7 @@ function pickHot(stories) {
 }
 function storyFoot(s) {
   const impact = s.impact || "medium";
-  return `<div class="foot"><span class="badge ${impact}">${IMPACT[impact] || IMPACT.medium}</span>
+  return `<div class="foot"><span class="badge ${impact}">${IMPACT[impact] || IMPACT.medium}</span>${s.afterClose ? `<span class="badge ac">Sau giờ đóng cửa</span>` : ""}
     <span class="dot">·</span><span class="src">${esc(s.sources.join(" · "))}</span>
     ${s.sources.length > 1 ? `<span class="dot">·</span><span class="mono">${s.sources.length} nguồn</span>` : ""}
     ${s.date ? `<span class="dot">·</span><span>${esc(relTime(s.date))}</span>` : ""}</div>`;
@@ -128,7 +128,7 @@ function hot(list) {
   if (!list.length) return "";
   return `<section class="hot"><h2 class="sec">Tin nóng — ảnh hưởng trực tiếp tới thị trường<span class="n">${list.length} tin</span></h2>
     ${list.map((s, i) => `<div class="hot-item ${i === 0 ? "lead" : ""}"><div class="rk">${String(i + 1).padStart(2, "0")}</div><div class="bd">
-      <h3><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(s.titleVi || s.title)}</a></h3>${storyBody(s)}${storyFoot(s)}</div></div>`).join("")}</section>`;
+      <h3><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(s.titleVi || s.title)}</a></h3>${storyBody(s)}${deepBlock(s.deep, "Mổ xẻ tin này")}${storyFoot(s)}</div></div>`).join("")}</section>`;
 }
 function story(s) {
   return `<article class="story ${s.impact === "high" ? "high" : ""}">
@@ -218,32 +218,59 @@ const wpx = w => {
   return `<span class="px"><b>$${nf(2, 2).format(w.price)}</b><span class="${c.cls}">${c.text}</span></span>`;
 };
 const linkTitle = (d, id) => (d.links || []).find(l => l.id === id)?.title || id;
+function fundStrip(f) {
+  if (!f) return "";
+  const it = [];
+  if (f.pe != null) it.push(`P/E <b>${nf(1, 1).format(f.pe)}</b>`);
+  if (f.fpe != null) it.push(`dự phóng <b>${nf(1, 1).format(f.fpe)}</b>`);
+  if (f.fromHiPct != null) it.push(`đỉnh 52t <b class="${f.fromHiPct > -3 ? "hot" : ""}">${nf(0, 0).format(f.fromHiPct)}%</b>`);
+  if (f.fromLoPct != null) it.push(`đáy 52t <b>+${nf(0, 0).format(f.fromLoPct)}%</b>`);
+  if (f.volRatio != null) it.push(`KL <b class="${f.volRatio >= 1.5 ? "hot" : ""}">${nf(1, 1).format(f.volRatio)}×</b>`);
+  if (f.marketCap != null) it.push(`vốn hoá <b>${f.marketCap >= 1e12 ? nf(1, 1).format(f.marketCap / 1e12) + "T" : nf(0, 0).format(f.marketCap / 1e9) + "B"}</b>`);
+  return it.length ? `<div class="fund">${it.map(x => `<span>${x}</span>`).join("")}</div>` : "";
+}
 function watchCard(d, w) {
   const t = w.tone && TONE[w.tone];
+  const cell = (k, v, cls = "") => v ? `<div class="${cls}"><b>${k}</b>${esc(v)}</div>` : "";
+  const deep = (w.position || w.risk || w.outlook || w.valuation)
+    ? `<details class="deep"><summary>Phân tích đầy đủ</summary><div class="dg">
+        ${cell("Vị thế cơ bản", w.position, "full")}${cell("Định giá", w.valuation, "full")}
+        ${cell("Rủi ro riêng & điều kiện kích hoạt", w.risk, "l full")}${cell("Sau này có thể", w.outlook, "full")}
+        ${cell("Đổi cách nhìn khi", w.changeView, "full")}</div></details>` : "";
   return `<div class="wc">
     <div class="top"><span class="id"><span class="sym">${esc(w.sym)}</span><span class="nm">${esc(w.label)}</span></span>${wpx(w)}</div>
     ${t ? `<span class="chip ${t[1]}">${t[0]}</span>` : ""}
-    ${w.noteVi ? `<div class="note">${esc(w.noteVi)}</div>` : ""}
+    ${fundStrip(w.fund)}
+    ${w.state ? `<div class="st">${esc(w.state)}</div>` : ""}
+    ${w.whySubjective ? `<div class="why">${esc(w.whySubjective)}</div>` : (w.noteVi ? `<div class="note">${esc(w.noteVi)}</div>` : "")}
     ${w.links?.length ? `<div class="chips">${w.links.map(id => `<a class="tk dim" href="${href("analysis.html")}#link-${esc(id)}">${esc(linkTitle(d, id))}</a>`).join("")}</div>` : ""}
-    ${w.secondOrder ? `<div class="so"><b>Tầng hai</b>${esc(w.secondOrder)}</div>` : ""}
-    ${w.changeView ? `<div class="cv">${esc(w.changeView)}</div>` : ""}
-    <ul>${w.stories.map(s => `<li><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(s.titleVi || s.title)}</a><span class="s">${esc(s.source)}</span></li>`).join("")}</ul></div>`;
+    ${deep}
+    ${w.stories?.length ? `<ul>${w.stories.map(s => `<li><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(s.titleVi || s.title)}</a><span class="s">${esc(s.source)}</span></li>`).join("")}</ul>` : ""}</div>`;
 }
-function watch(d, full) {
+function watch(d) {
   const list = d.watch || [];
   if (!list.length) return "";
   const abs = w => Math.abs(w.changePct ?? 0);
-  const withNews = list.filter(w => w.stories?.length).sort((a, b) => abs(b) - abs(a));
-  const rest = list.filter(w => !w.stories?.length).sort((a, b) => abs(b) - abs(a));
-  const rows = rest.map(w => {
-    const c = w.ok ? fmtChange("usd", w.change, w.changePct) : { text: "—", cls: "flat" };
-    const big = w.ok && Math.abs(w.changePct) >= 3;
-    return `<div class="row"><span class="nm"><b>${esc(w.sym)}</b>${esc(w.label)}${big ? `<span class="flag">±3% không có tin</span>` : ""}</span>
-      <span class="pv">${w.ok ? "$" + nf(2, 2).format(w.price) : "—"}</span><span class="pc ${c.cls}">${c.text}</span></div>`;
-  }).join("");
-  return `<section class="watch"><h2 class="sec">Danh mục theo dõi<span class="n">${withNews.length} mã có tin · ${list.length} mã</span></h2>
-    ${withNews.length ? `<div class="w-grid">${withNews.map(w => watchCard(d, w)).join("")}</div>` : ""}
-    ${rows ? `<h4 class="blk-h" style="margin-top:22px">Không có tin trong phiên</h4><div class="w-rest">${rows}</div>` : ""}</section>`;
+  const defs = d.watchGroupDefs || [];
+  const ga = new Map((d.watchGroups || []).map(g => [g.id, g]));
+  const cell = (k, v, cls = "") => v ? `<div class="${cls}"><b>${k}</b>${esc(v)}</div>` : "";
+  const groups = defs.map(def => {
+    const members = list.filter(w => w.grp === def.id).sort((a, b) => abs(b) - abs(a));
+    if (!members.length) return "";
+    const g = ga.get(def.id);
+    const analysis = g && (g.state || g.whyObjective)
+      ? `<div class="ga">${g.state ? `<p class="st">${esc(g.state)}</p>` : ""}<div class="dg">
+          ${cell("Vì sao — khách quan (cả nhóm)", g.whyObjective, "full")}
+          ${cell("Kéo dài bao lâu", g.duration)}${cell("Ai được lợi, ai mất", g.winnersLosers)}
+          ${cell("Rủi ro chính & điều kiện kích hoạt", g.risk, "r full")}${cell("Sau này có thể", g.outlook, "full")}</div></div>` : "";
+    const withNews = members.filter(w => w.stories?.length).length;
+    return `<section class="wg"><h2 class="sec">${esc(def.label)}<span class="n">${members.length} mã · ${withNews} có tin</span></h2>
+      ${analysis}<div class="w-grid">${members.map(w => watchCard(d, w)).join("")}</div></section>`;
+  }).filter(Boolean);
+  // Mã chưa được xếp nhóm (phòng khi cấu hình thiếu)
+  const orphan = list.filter(w => !defs.some(def => def.id === w.grp));
+  if (orphan.length) groups.push(`<section class="wg"><h2 class="sec">Khác</h2><div class="w-grid">${orphan.map(w => watchCard(d, w)).join("")}</div></section>`);
+  return groups.join("");
 }
 
 /* ── phân tích sâu ── */
@@ -277,6 +304,27 @@ function links(d) {
       <ul>${l.storyLinks.map(k => byLink.get(k)).filter(Boolean).map(s => `<li><a href="${esc(s.link)}" target="_blank" rel="noopener noreferrer">${esc(s.titleVi || s.title)}</a></li>`).join("")}</ul></div>`).join("")}</div></section>`;
 }
 
+/* ── hôm nay: futures + nhận định trước giờ mở cửa ── */
+function today(d) {
+  const fut = (d.market || []).filter(m => m.g === "fut" && m.ok);
+  if (!fut.length && !d.ahead) return "";
+  return `<section class="today"><h2 class="sec">Hôm nay sẽ thế nào<span class="n">hợp đồng tương lai đang giao dịch</span></h2>
+    ${fut.length ? `<div class="fut">${tape(fut)}</div>` : ""}
+    ${d.ahead ? `<p class="ahead">${esc(d.ahead)}</p>` : ""}</section>`;
+}
+
+/* ── mổ xẻ tin nóng ── */
+function deepBlock(x, label) {
+  if (!x) return "";
+  const cell = (k, v, cls = "") => v ? `<div class="${cls}"><b>${k}</b>${esc(v)}</div>` : "";
+  return `<details class="deep"><summary>${label}</summary><div class="dg">
+    ${cell("Vì sao — chủ quan", x.whySubjective)}${cell("Vì sao — khách quan", x.whyObjective)}
+    ${cell("Kéo dài bao lâu", x.duration, "full")}
+    ${cell("Ai được lợi", x.winners, "w")}${cell("Ai mất", x.losers, "l")}
+    ${cell("Tiếp theo có thể", x.next, "full")}${cell("Dấu hiệu cần quan sát", x.watch, "full")}
+  </div></details>`;
+}
+
 /* ── tổng quan ── */
 function overview(d) {
   const hotList = pickHot(d.stories || []).slice(0, 4);
@@ -303,9 +351,9 @@ function overview(d) {
 
 /* ── trang ── */
 const RENDER = {
-  index: d => `${verdict(d)}${overview(d)}${chains(d)}`,
+  index: d => `${verdict(d)}${today(d)}${overview(d)}${chains(d)}`,
   news: d => { const h = pickHot(d.stories || []); return `${hot(h)}${categories(d, new Set(h.map(s => s.link)))}` || `<div class="state">Không có tin trong phiên này.</div>`; },
-  watchlist: d => watch(d, true) || `<div class="state">Chưa có danh mục.</div>`,
+  watchlist: d => watch(d) || `<div class="state">Chưa có danh mục.</div>`,
   analysis: d => `${verdict(d)}${feature(d)}${links(d)}${chains(d)}${overlooked(d)}${signals(d, false)}`
     || `<div class="state">Phiên này chưa có phân tích.</div>`,
   market: d => `${signals(d, true)}${board(d)}${calendar(d, false)}`,

@@ -6,7 +6,7 @@ import { getNews, matchWatchlist } from "./news.mjs";
 import { getCalendar } from "./calendar.mjs";
 import { computeSignals } from "./signals.mjs";
 import { editorialize, llmEnabled } from "./llm.mjs";
-import { CATEGORIES, FEEDS, TICKER_GROUPS, WATCHLIST } from "./sources.mjs";
+import { CATEGORIES, FEEDS, TICKER_GROUPS, WATCHLIST, WATCH_GROUPS } from "./sources.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DATA = join(ROOT, "public", "data");
@@ -50,7 +50,15 @@ async function main() {
     : "  (không có lịch)");
 
   console.log(llmEnabled() ? "• Biên tập bằng LLM…" : "• Không có LLM_API_KEY — giữ tiêu đề gốc");
-  const edited = await editorialize({ market, stories: news.stories, calendar, signals, watch, sessionDate });
+  const edited = await editorialize({ market, stories: news.stories, calendar, signals, watch, groups: WATCH_GROUPS, sessionDate });
+
+  // Tin ra SAU giờ đóng cửa Mỹ (16:00 ET) chưa được phản ánh vào giá chốt phiên — đánh dấu để người đọc biết.
+  const closeUtc = (() => {
+    const s = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", timeZoneName: "shortOffset" }).format(now);
+    const off = Number((s.match(/GMT([+-]\d+)/) || [])[1] || -5);
+    return Date.parse(`${sessionDate}T16:00:00${off < 0 ? "-" : "+"}${String(Math.abs(off)).padStart(2, "0")}:00`);
+  })();
+  for (const st of edited.stories) st.afterClose = !!(st.date && Date.parse(st.date) > closeUtc);
   if (edited.llm) console.log(`  ${edited.stories.length} tin sau biên tập (${edited.llm})`);
 
   const digest = {
@@ -62,6 +70,9 @@ async function main() {
     overlooked: edited.overlooked,
     links: edited.links,
     feature: edited.feature,
+    ahead: edited.ahead,
+    watchGroups: edited.watchGroups,
+    watchGroupDefs: WATCH_GROUPS.map(({ id, label }) => ({ id, label })),
     calendar,
     market,
     signals,

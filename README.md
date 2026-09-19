@@ -20,9 +20,10 @@ GitHub Actions (23:00 UTC, T2–T6)
         └─► public/data/YYYY-MM-DD.json  ──►  GitHub Pages
 ```
 
-**23:00 UTC = 07:00 sáng giờ Đài Bắc**, tức khoảng 1–2 tiếng sau khi phiên Mỹ đóng cửa
-(16:00 ET). Chạy T2–T6 nên bản tin ra vào sáng T3–T7, mỗi bản phủ trọn một phiên giao dịch
-kể cả tin công bố sau giờ.
+**23:00 UTC = 07:00 sáng giờ Đài Bắc.** GitHub chạy trễ đều 1,5–2 tiếng nên bản tin thực
+tế lên **~08:30–09:00** — đúng lúc đọc. Cửa sổ nhìn là từ sáng hôm trước tới lúc chạy: phiên
+Mỹ đã đóng, tin sau giờ đóng cửa (được gắn cờ), phiên châu Á đang chạy, và hợp đồng tương
+lai — đủ để trả lời "hôm nay sẽ thế nào".
 
 ## Cài đặt
 
@@ -135,29 +136,50 @@ gì qua ngày**:
 Mã trong danh mục được nối vào mạch: mỗi mã có "tầng hai" (nếu mạch diễn biến theo
 luận đề thì mã hưởng lợi hay chịu áp lực qua cơ chế nào) và "đổi cách nhìn khi".
 
-Bốn lượt LLM chạy **tuần tự** có giãn cách (`LLM_GAP_MS`, mặc định 15 giây) và tự
+Mười lượt LLM (phân tích, tin, liên kết, 6 nhóm danh mục, tin nóng sâu) chạy **tuần tự** có giãn cách (`LLM_GAP_MS`, mặc định 15 giây) và tự
 chờ khi dính 429, vì gói Groq miễn phí chỉ 8.000 token/phút. Muốn phân tích sâu
 hơn với nhiều tin hơn, đổi `LLM_BASE_URL` sang nhà cung cấp có hạn mức lớn hơn.
 
-## Danh mục theo dõi
+## Danh mục theo dõi — phân tích theo nhóm ngành
 
-`WATCHLIST` trong `scripts/sources.mjs`. Mỗi mã có `aliases` = tên công ty để bắt tin.
-Tin được khớp trên **toàn bộ** cụm bài quét trong ngày (~600), không phải chỉ 28 tin
-đã chọn — vì tin riêng một mã (Corning nâng dự báo, Disney bổ nhiệm CTO) thường
-không lọt cổng vĩ mô.
+`WATCHLIST` + `WATCH_GROUPS` trong `scripts/sources.mjs`. 30 mã chia 6 nhóm: bán dẫn &
+hạ tầng AI, Big Tech & phần mềm, tài chính, quốc phòng & vũ trụ, tiêu dùng & xe điện,
+chỉ số & năng lượng.
 
-Quy tắc khớp, để không bắt nhầm:
-- Alias viết thường → không phân biệt hoa thường (`nvidia`, `softbank`)
-- Alias **viết hoa** → phân biệt, dành cho tên trùng danh từ thường: `Apple` không
-  khớp "the apple", `Gap Inc` không khớp "gap between"
-- Mã ngắn (GS, MS, DIS…) không dùng làm từ khoá; chỉ nhận `(GS)` hoặc `$GS`
-- ETF để `aliases: []` → chỉ hiện giá
+**Cả 30 mã đều được phân tích mỗi ngày**, không chỉ mã có tin. Mỗi nhóm một lượt LLM:
 
-Mã có tin: tối đa 3 bài, LLM viết 1–2 câu đánh giá + hướng tác động (tích cực /
-tiêu cực / trái chiều / trung tính). Mã không có tin: chỉ giá; biến động ≥3% mà
-không có tin thì gắn cờ — đó cũng là một tín hiệu.
+- **Cấp nhóm** (lý do *khách quan*, viết một lần cho cả nhóm): nhóm hôm nay ra sao →
+  vì sao (ngành, vĩ mô, chính sách) → kéo dài bao lâu → ai được lợi ai mất → rủi ro
+  chính & điều kiện kích hoạt → sau này có thể
+- **Cấp mã** (lý do *chủ quan*): đang ở đâu (biến động, vị trí so với đỉnh/đáy 52 tuần,
+  khối lượng bất thường) → vì sao — nội tại công ty → vị thế cơ bản → định giá → rủi ro
+  riêng → sau này → đổi cách nhìn khi
 
-Thêm/bớt mã: sửa `WATCHLIST`, không cần đụng chỗ khác.
+Số liệu cơ bản lấy từ CNBC cùng lúc với giá: P/E hiện tại và dự phóng, EPS, doanh thu,
+vốn hoá, đỉnh/đáy 52 tuần kèm ngày, cổ tức, beta, khối lượng so với trung bình 10 phiên.
+Đây là căn cứ để nói "đắt hay rẻ" thay vì đoán.
+
+**Kiến thức nền:** LLM được dùng hiểu biết chung về ngành/công ty (cung–cầu, sức mạnh tài
+chính, lợi thế cạnh tranh) vì tin trong ngày không nói được "RAM tăng 10 lần nhưng vẫn
+không có hàng mà bán". Điều kiện: câu nào là kiến thức nền phải mở đầu bằng **(nền)**,
+không được nêu con số nào không có trong input, và tin hôm nay thắng kiến thức nền nếu
+mâu thuẫn.
+
+Tin được khớp trên **toàn bộ** cụm bài quét trong ngày (~600). Quy tắc khớp: alias viết
+thường không phân biệt hoa thường; alias viết hoa phân biệt (`Apple` ≠ "the apple"); mã
+ngắn chỉ nhận `(GS)` / `$GS`; ETF `aliases: []`.
+
+## Tin nóng — mổ xẻ
+
+Lượt LLM riêng cho tối đa 6 tin nóng, theo khung: vì sao (chủ quan — động cơ chủ thể /
+khách quan — bối cảnh) → kéo dài bao lâu → ai được lợi → ai mất → tiếp theo có thể (hai
+hướng kèm điều kiện) → dấu hiệu cần quan sát. Hiện dưới mỗi tin nóng, mở ra khi bấm.
+
+## Hôm nay sẽ thế nào
+
+Khối đầu trang Tổng quan: 4 hợp đồng tương lai (S&P, Nasdaq 100, Dow, VIX) đang giao dịch
++ đoạn nhận định trước giờ mở cửa do lượt phân tích viết từ futures, thị trường châu Á
+đang chạy, và lịch trong ngày.
 
 ## Tín hiệu suy ra
 

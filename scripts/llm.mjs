@@ -7,7 +7,10 @@
 //   1. phân tích  -> kết luận phiên, chuỗi suy luận, thứ dễ bị bỏ qua
 //   2. tin        -> dịch tiêu đề, tóm tắt, ẩn ý
 //   3. liên kết   -> nối các tin trong ngày thành mạch + bài phân tích sâu của ngày
-//   4. danh mục   -> đánh giá từng mã, nối vào mạch trong ngày
+//   4. danh mục   -> mỗi NHÓM NGÀNH một lượt: lý do khách quan chung cả nhóm,
+//                    lý do chủ quan + vị thế cơ bản + rủi ro từng mã (cả 30 mã)
+//   5. tin nóng   -> phân tích sâu từng tin nóng: vì sao (chủ quan/khách quan),
+//                    bao lâu, ai được/mất, tiếp theo
 // Không lưu gì qua ngày: mỗi sáng tự nối tin của chính ngày đó.
 
 const BASE = process.env.LLM_BASE_URL || "https://api.groq.com/openai/v1";
@@ -46,7 +49,8 @@ function marketBlock(market) {
   };
   const sec = (label, id) => { const r = g(id); return r.length ? `${label}: ${r.map(fmt).join(" | ")}` : ""; };
   return [
-    sec("CHỈ SỐ & TÀI SẢN CHÍNH", "core"),
+    sec("CHỈ SỐ & TÀI SẢN CHÍNH (chốt phiên Mỹ)", "core"),
+    sec("HỢP ĐỒNG TƯƠNG LAI (đang giao dịch, báo hiệu phiên tới)", "fut"),
     sec("LỢI SUẤT KHÁC", "rates"),
     sec("CỔ PHIẾU VỐN HOÁ LỚN", "mega"),
     sec("NHÓM NGÀNH (ETF)", "sector"),
@@ -102,9 +106,10 @@ Nhiệm vụ: tìm 2-3 mạch quan trọng nhất của phiên và trình bày m
       "evidence": ["trích số liệu CỤ THỂ từ input, mỗi mục một con số"],
       "invalidate": "1 câu: điều gì xảy ra thì chuỗi lập luận này sai" }
   ],
-  "overlooked": [ { "title": "tin/số liệu ít ai để ý, tối đa 45 ký tự", "text": "1-2 câu: vì sao nó quan trọng hơn vẻ ngoài" } ]
+  "overlooked": [ { "title": "tin/số liệu ít ai để ý, tối đa 45 ký tự", "text": "1-2 câu: vì sao nó quan trọng hơn vẻ ngoài" } ],
+  "ahead": "3-5 câu: HÔM NAY SẼ THẾ NÀO — đọc hợp đồng tương lai và thị trường châu Á/thế giới đang giao dịch để nói phiên Mỹ tối nay có thể mở cửa ra sao và vì sao; sự kiện/số liệu nào trong lịch hôm nay có thể đảo cục diện; điều gì cần quan sát trước giờ mở cửa. Chỉ dùng số trong input."
 }
-Yêu cầu: "chains" 2-3 mạch, "steps" 3-4 bước, "evidence" phải là số có thật trong input. "overlooked" 1-3 mục, có thể rỗng.`;
+Yêu cầu: "chains" 2-3 mạch, "steps" 3-4 bước, "evidence" phải là số có thật trong input. "overlooked" 1-3 mục, có thể rỗng. "ahead" bắt buộc.`;
 }
 
 /* ---------------- Lượt 2: tin ---------------- */
@@ -186,34 +191,107 @@ Trả về DUY NHẤT một object JSON:
 "scenarios" có 2-3 kịch bản, ít nhất một kịch bản là "nếu không / nếu ngược lại". Không bịa sự kiện không có trong input.`;
 }
 
-/* ---------------- Lượt 4: danh mục theo dõi ---------------- */
+// Cho phép dùng kiến thức nền — vì "RAM tăng 10 lần nhưng vẫn không có hàng mà bán"
+// là thứ tin trong ngày không nói. Nhưng phải dán nhãn và không được bịa số.
+const BACKGROUND_RULE = `Về kiến thức nền: bạn ĐƯỢC dùng hiểu biết chung về ngành và công ty (mô hình kinh doanh, cấu trúc cung–cầu, vị thế cạnh tranh, sức mạnh tài chính) để lập luận sâu. Điều kiện:
+- Câu nào dựa trên kiến thức nền thì mở đầu bằng "(nền)" để người đọc biết nó không đến từ tin hôm nay.
+- TUYỆT ĐỐI không nêu con số nào không có trong input. Con số chỉ lấy từ input.
+- Kiến thức nền có thể lỗi thời. Nếu tin hôm nay mâu thuẫn với kiến thức nền, tin hôm nay thắng.`;
 
-const WATCH_SYSTEM = `Bạn là nhà phân tích cổ phiếu, viết đánh giá cho từng mã trong danh mục của một nhà đầu tư người Việt, dựa trên tin trong phiên, biến động giá, và các mạch truyện dài hạn đang theo.
+/* ---------------- Lượt 4: danh mục theo dõi, theo nhóm ngành ---------------- */
+
+const WATCH_SYSTEM = `Bạn là nhà phân tích ngành, viết phân tích cho một NHÓM cổ phiếu trong danh mục của một nhà đầu tư người Việt nhiều kinh nghiệm.
+Người đọc không cần "giá tăng vì tin tốt". Họ cần: vì sao (tách CHỦ QUAN — nội tại công ty, và KHÁCH QUAN — ngành/vĩ mô/chính sách), kéo dài bao lâu, ai được lợi ai mất, vị thế cơ bản thật của công ty là gì, rủi ro chính và điều kiện nào kích hoạt nó, sau này có thể ra sao.
+${BACKGROUND_RULE}
 ${RULES}`;
 
-function watchPrompt(watch, links) {
-  const th = (links || []).map(t => `[${t.id}] ${t.title}: ${t.thesis} (mã: ${(t.tickers || []).join(",") || "-"})`).join("\n");
-  const blocks = watch.map(w => {
+function fundLine(f) {
+  if (!f) return "";
+  const parts = [];
+  if (f.pe != null) parts.push(`P/E ${f.pe}`);
+  if (f.fpe != null) parts.push(`P/E dự phóng ${f.fpe}`);
+  if (f.fromHiPct != null) parts.push(`cách đỉnh 52 tuần ${f.fromHiPct.toFixed(1)}% (đỉnh ${f.yrHiDate})`);
+  if (f.fromLoPct != null) parts.push(`từ đáy 52 tuần +${f.fromLoPct.toFixed(0)}% (đáy ${f.yrLoDate})`);
+  if (f.volRatio != null) parts.push(`khối lượng ${f.volRatio.toFixed(2)}× trung bình 10 phiên`);
+  if (f.marketCap != null) parts.push(`vốn hoá ${(f.marketCap / 1e9).toFixed(0)} tỷ USD`);
+  if (f.divYield != null && f.divYield > 0) parts.push(`cổ tức ${f.divYield}%`);
+  if (f.beta != null) parts.push(`beta ${f.beta}`);
+  return parts.join(", ");
+}
+
+function groupPrompt(group, tickers, market, links) {
+  const core = market.filter(m => m.ok && m.g === "core")
+    .map(m => `${m.label} ${m.changePct >= 0 ? "+" : ""}${m.changePct?.toFixed(2)}%`).join(" | ");
+  const syms = new Set(tickers.map(t => t.sym));
+  const rel = (links || []).filter(l => (l.tickers || []).some(t => syms.has(t)))
+    .map(l => `[${l.id}] ${l.title}: ${l.thesis}`).join("\n");
+  const blocks = tickers.map(w => {
     const px = w.ok ? `${w.price} (${w.changePct >= 0 ? "+" : ""}${w.changePct?.toFixed(2)}%)` : "(không có giá)";
-    const news = w.stories.map((s, i) => `  ${i + 1}. ${s.title}${s.summary ? " — " + s.summary.slice(0, 160) : ""}`).join("\n");
-    return `${w.sym} ${w.label}: ${px}\n${news}`;
+    const news = (w.stories || []).map((s, i) => `    ${i + 1}. ${s.title}${s.summary ? " — " + s.summary.slice(0, 160) : ""}`).join("\n");
+    return `${w.sym} ${w.label}: ${px}\n  Cơ bản: ${fundLine(w.fund) || "(không có)"}\n  Tin hôm nay:\n${news || "    (không có tin riêng)"}`;
   }).join("\n\n");
 
-  return `MẠCH LIÊN KẾT TRONG NGÀY:
-${th || "(không có)"}
+  return `NHÓM: ${group.label} — ${group.note}
+BỐI CẢNH PHIÊN: ${core || "(không có)"}
+MẠCH LIÊN KẾT LIÊN QUAN:
+${rel || "(không có)"}
 
-DANH MỤC VÀ TIN TRONG PHIÊN:
+CÁC MÃ TRONG NHÓM:
 ${blocks}
 
-Với MỖI mã ở trên, trả về DUY NHẤT một object JSON:
-{ "tickers": [
-  { "sym": "NVDA",
-    "tone": "positive" | "negative" | "neutral" | "mixed",
-    "note_vi": "1-2 câu: tin trong phiên có ý nghĩa gì với mã này, biến động giá có khớp với tin không. Tin chỉ nhắc thoáng qua thì nói rõ là không có tin đáng kể.",
-    "links": ["id các mạch mà mã này chịu ảnh hưởng, lấy từ danh sách trên; không có thì mảng rỗng"],
-    "second_order": "1-2 câu: TẦNG HAI — nếu mạch liên quan diễn biến theo luận đề, mã này hưởng lợi hay chịu áp lực qua cơ chế nào; để rỗng nếu không nối được vào mạch nào",
-    "change_view": "1 câu: sự kiện hoặc số liệu nào sẽ làm thay đổi cách nhìn về mã này" } ] }
-"tone" là hướng tác động của TIN lên triển vọng mã, không phải dấu của biến động giá. Không khuyến nghị mua bán.`;
+Trả về DUY NHẤT một object JSON:
+{
+  "group": {
+    "state": "1-2 câu: nhóm hôm nay ra sao, dựa vào biến động các mã",
+    "why_objective": "2-3 câu: lý do KHÁCH QUAN — ngành, vĩ mô, chính sách, chu kỳ — đang đẩy cả nhóm theo hướng này",
+    "duration": "1-2 câu: động lực này là ngắn hạn hay cấu trúc, vì sao",
+    "winners_losers": "1-2 câu: trong bối cảnh này ai được lợi, ai mất — trong và ngoài nhóm",
+    "risk": "1-2 câu: rủi ro chính của cả nhóm và ĐIỀU KIỆN KÍCH HOẠT cụ thể, quan sát được",
+    "outlook": "2 câu: sau này có thể ra sao, theo hai hướng"
+  },
+  "tickers": [
+    { "sym": "NVDA",
+      "tone": "positive" | "negative" | "neutral" | "mixed",
+      "state": "1-2 câu: mã đang ở đâu — biến động hôm nay, vị trí so với đỉnh/đáy 52 tuần, khối lượng có bất thường không. Chỉ dùng số trong input.",
+      "why_subjective": "1-2 câu: lý do CHỦ QUAN — nội tại công ty: sản phẩm, kết quả, quản trị, tin riêng hôm nay. Không có lý do riêng thì nói rõ là biến động theo nhóm.",
+      "position": "2-3 câu: vị thế cơ bản — cung/cầu sản phẩm, sức mạnh tài chính, lợi thế cạnh tranh. Câu nào là kiến thức nền thì mở đầu bằng (nền).",
+      "valuation": "1 câu: với P/E và P/E dự phóng trong input, định giá đang đắt, hợp lý, hay rẻ so với tăng trưởng kỳ vọng — hoặc nói không đánh giá được nếu thiếu số",
+      "risk": "1-2 câu: rủi ro RIÊNG của mã và điều kiện kích hoạt cụ thể",
+      "outlook": "1-2 câu: sau này có thể ra sao",
+      "links": ["id mạch liên quan từ danh sách trên, không có thì rỗng"],
+      "change_view": "1 câu: sự kiện hoặc số liệu nào sẽ làm thay đổi cách nhìn về mã này" }
+  ]
+}
+Phải có đúng một mục cho MỖI mã trong nhóm, kể cả mã không có tin. ETF thì "position" nói về rổ nó đại diện. Không khuyến nghị mua bán.`;
+}
+
+/* ---------------- Lượt 5: tin nóng, phân tích sâu ---------------- */
+
+const HOT_SYSTEM = `Bạn là nhà phân tích, mổ xẻ từng tin nóng cho một nhà đầu tư người Việt nhiều kinh nghiệm. Tin "giá điện thoại rơi" không được dừng ở "giá rơi": phải nói vì sao rơi (chủ quan và khách quan), rơi bao lâu, ai được lợi ai mất, và sau này ra sao.
+${BACKGROUND_RULE}
+${RULES}`;
+
+function hotPrompt(hotStories, market, signals) {
+  const core = market.filter(m => m.ok && m.g === "core")
+    .map(m => `${m.label} ${m.changePct >= 0 ? "+" : ""}${m.changePct?.toFixed(2)}%`).join(" | ");
+  const list = hotStories.map((s, i) => `[${i}] (${s.sources.join(", ")}) ${s.title}\n${(s.summary || "").slice(0, 300)}`).join("\n\n");
+  return `BỐI CẢNH PHIÊN: ${core || "(không có)"}
+${signalBlock(signals)}
+
+TIN NÓNG CẦN MỔ XẺ:
+${list}
+
+Với MỖI tin, trả về DUY NHẤT một object JSON:
+{ "items": [
+  { "id": 0,
+    "why_subjective": "1-2 câu: lý do từ phía CHỦ THỂ của tin (công ty, cơ quan, cá nhân) — họ quyết định vậy vì động cơ gì",
+    "why_objective": "1-2 câu: lý do từ BỐI CẢNH — ngành, vĩ mô, chính sách, thời điểm",
+    "duration": "1 câu: ảnh hưởng của tin này là vài phiên, vài quý, hay cấu trúc nhiều năm — vì sao",
+    "winners": "1 câu: ai được lợi",
+    "losers": "1 câu: ai mất",
+    "next": "2 câu: có thể diễn biến tiếp thế nào — theo hai hướng, mỗi hướng kèm điều kiện",
+    "watch": "1 câu: dấu hiệu quan sát được cho biết hướng nào đang thắng" } ] }
+Phải có đúng một mục cho mỗi id từ 0 đến ${hotStories.length - 1}.`;
 }
 
 /* ---------------- Hạ tầng gọi ---------------- */
@@ -322,8 +400,8 @@ function cleanFeature(f, links) {
  * Trả về { verdict, chains, overlooked, stories, watch, links, feature, llm, llmError }.
  * Mọi lỗi đều được nuốt và ghi vào llmError — bản tin không bao giờ hỏng vì LLM.
  */
-export async function editorialize({ market, stories, calendar = null, signals = [], watch = [], sessionDate }) {
-  const bare = { verdict: null, chains: [], overlooked: [], stories, watch, links: [], feature: null, llm: null, llmError: null };
+export async function editorialize({ market, stories, calendar = null, signals = [], watch = [], groups = [], sessionDate }) {
+  const bare = { verdict: null, chains: [], overlooked: [], ahead: null, stories, watch, watchGroups: [], links: [], feature: null, llm: null, llmError: null };
   if (!KEY) return bare;
 
   const mainLinks = new Set(stories.map(s => s.link));
@@ -341,12 +419,18 @@ export async function editorialize({ market, stories, calendar = null, signals =
   await sleep(GAP);
   const linkRes = await callWithFallback("liên kết", LINK_SYSTEM, linkPrompt(stories, market, signals, watch, sessionDate), 9000);
   const links = linkRes.out ? cleanLinks(linkRes.out.links, stories) : [];
-  await sleep(GAP);
-  const watchRes = withNews.length
-    ? await callWithFallback("danh mục", WATCH_SYSTEM, watchPrompt(withNews, links), 8000)
-    : { out: null, model: null, errors: [] };
 
-  const errors = [...analysis.errors, ...storyRes.errors, ...linkRes.errors, ...watchRes.errors];
+  // Lượt 4: mỗi nhóm ngành một lượt, tuần tự.
+  const groupRes = [];
+  for (const g of groups) {
+    const members = watch.filter(w => w.grp === g.id);
+    if (!members.length) continue;
+    await sleep(GAP);
+    const r = await callWithFallback(`danh mục · ${g.label}`, WATCH_SYSTEM, groupPrompt(g, members, market, links), 7000);
+    groupRes.push({ g, r });
+  }
+
+  const errors = [...analysis.errors, ...storyRes.errors, ...linkRes.errors, ...groupRes.flatMap(x => x.r.errors)];
 
   // --- tin ---
   let merged = stories;
@@ -365,12 +449,23 @@ export async function editorialize({ market, stories, calendar = null, signals =
     else errors.push("tin: LLM loại hết");
   }
 
-  // --- danh mục ---
+  // --- danh mục theo nhóm ---
   const TONES = new Set(["positive", "negative", "neutral", "mixed"]);
-  const noteBy = new Map((watchRes.out?.tickers || []).map(t => [String(t.sym || "").toUpperCase(), t]));
   const linkIds = new Set(links.map(t => t.id));
+  const tickerOut = new Map();
+  const watchGroups = [];
+  for (const { g, r } of groupRes) {
+    const ga = r.out?.group;
+    watchGroups.push({
+      id: g.id, label: g.label,
+      state: ga ? str(ga.state) : null, whyObjective: ga ? str(ga.why_objective) : null,
+      duration: ga ? str(ga.duration) : null, winnersLosers: ga ? str(ga.winners_losers) : null,
+      risk: ga ? str(ga.risk) : null, outlook: ga ? str(ga.outlook) : null,
+    });
+    for (const t of (r.out?.tickers || [])) tickerOut.set(String(t.sym || "").toUpperCase(), t);
+  }
   const watchOut = watch.map(w => {
-    const n = noteBy.get(w.sym);
+    const n = tickerOut.get(w.sym);
     return {
       ...w,
       stories: w.stories.map(st => {
@@ -378,12 +473,37 @@ export async function editorialize({ market, stories, calendar = null, signals =
         return t ? { ...st, titleVi: t.titleVi, summaryVi: t.summaryVi, implicationVi: t.implicationVi } : st;
       }),
       tone: n && TONES.has(n.tone) ? n.tone : null,
-      noteVi: n ? str(n.note_vi) : null,
+      state: n ? str(n.state) : null,
+      whySubjective: n ? str(n.why_subjective) : null,
+      position: n ? str(n.position) : null,
+      valuation: n ? str(n.valuation) : null,
+      risk: n ? str(n.risk) : null,
+      outlook: n ? str(n.outlook) : null,
       links: n ? strs(n.links, 4).map(x => x.toLowerCase()).filter(x => linkIds.has(x)) : [],
-      secondOrder: n ? str(n.second_order) : null,
       changeView: n ? str(n.change_view) : null,
     };
   });
+
+  // Lượt 5: mổ xẻ tin nóng (cần impact từ lượt 2 để chọn).
+  const byScore = (a, b) => (b.score ?? 0) - (a.score ?? 0);
+  let hotList = merged.filter(s => s.impact === "high").sort(byScore).slice(0, 6);
+  if (hotList.length < 3) for (const s of merged.filter(s => s.impact === "medium").sort(byScore)) { if (hotList.length >= 3) break; hotList.push(s); }
+  let hotRes = { out: null, model: null, errors: [] };
+  if (hotList.length) {
+    await sleep(GAP);
+    hotRes = await callWithFallback("tin nóng sâu", HOT_SYSTEM, hotPrompt(hotList, market, signals), 6000);
+    errors.push(...hotRes.errors);
+  }
+  if (hotRes.out) {
+    const byId = new Map((hotRes.out.items || []).map(x => [Number(x.id), x]));
+    hotList.forEach((s, i) => {
+      const x = byId.get(i);
+      if (!x) return;
+      const deep = { whySubjective: str(x.why_subjective), whyObjective: str(x.why_objective), duration: str(x.duration),
+        winners: str(x.winners), losers: str(x.losers), next: str(x.next), watch: str(x.watch) };
+      if (deep.whyObjective || deep.whySubjective) s.deep = deep;   // merged giữ cùng object nên gắn thẳng
+    });
+  }
 
   // --- chuỗi suy luận ---
   const chains = (Array.isArray(analysis.out?.chains) ? analysis.out.chains : [])
@@ -391,13 +511,15 @@ export async function editorialize({ market, stories, calendar = null, signals =
       evidence: strs(c?.evidence, 4), invalidate: str(c?.invalidate) }))
     .filter(c => c.signal && c.steps.length >= 2 && c.evidence.length).slice(0, 3);
 
-  const llm = storyRes.model || analysis.model || linkRes.model;
+  const llm = storyRes.model || analysis.model || linkRes.model || groupRes[0]?.r.model;
   return {
     verdict: analysis.out ? str(analysis.out.verdict) : null,
     chains,
     overlooked: analysis.out ? cleanList(analysis.out.overlooked, 3) : [],
+    ahead: analysis.out ? str(analysis.out.ahead) : null,
     stories: merged,
     watch: watchOut,
+    watchGroups,
     links,
     feature: linkRes.out ? cleanFeature(linkRes.out.feature, links) : null,
     llm,

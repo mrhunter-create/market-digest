@@ -46,6 +46,12 @@ export const TICKERS = [
   { g: "core",   cnbc: "@GC.1",   yahoo: "GC=F",     label: "Vàng",          kind: "usd" },
   { g: "core",   cnbc: "BTC.CM=", yahoo: "BTC-USD",  label: "Bitcoin",       kind: "usd" },
 
+  // Hợp đồng tương lai: lúc 9h sáng Đài Bắc, đây là thứ cho biết Mỹ có thể mở cửa thế nào tối nay.
+  { g: "fut",    cnbc: "@SP.1",   yahoo: "ES=F",     label: "S&P 500 tương lai",  kind: "index" },
+  { g: "fut",    cnbc: "@ND.1",   yahoo: "NQ=F",     label: "Nasdaq 100 tương lai", kind: "index" },
+  { g: "fut",    cnbc: "@DJ.1",   yahoo: "YM=F",     label: "Dow tương lai",      kind: "index" },
+  { g: "fut",    cnbc: "@VX.1",   yahoo: "VX=F",     label: "VIX tương lai",      kind: "level" },
+
   { g: "rates",  cnbc: "US2Y",    yahoo: "^IRX",     label: "Lợi suất 2 năm",  kind: "yield" },
   { g: "rates",  cnbc: "US30Y",   yahoo: "^TYX",     label: "Lợi suất 30 năm", kind: "yield" },
 
@@ -89,6 +95,7 @@ export const TICKERS = [
 
 // Tiêu đề các khối số liệu phụ, hiển thị theo đúng thứ tự này.
 export const TICKER_GROUPS = [
+  { id: "fut",    label: "Hợp đồng tương lai",   sortByChange: false },
   { id: "mega",   label: "Cổ phiếu vốn hoá lớn", sortByChange: true },
   { id: "sector", label: "Nhóm ngành",           sortByChange: true },
   { id: "world",  label: "Thị trường thế giới",  sortByChange: false },
@@ -135,40 +142,51 @@ export const BLOCK_URL = [
   "/investingclub/", "/pro/", "/select/", "/make-it/", "/slideshows/",
 ];
 
+// Nhóm ngành của danh mục. Phân tích chạy theo nhóm: lý do KHÁCH QUAN (ngành, vĩ mô)
+// viết một lần cho cả nhóm, lý do CHỦ QUAN (nội tại công ty) viết riêng từng mã.
+export const WATCH_GROUPS = [
+  { id: "semi",     label: "Bán dẫn & hạ tầng AI",   note: "chip, thiết bị sản xuất chip, quang học cho trung tâm dữ liệu, và SoftBank như quỹ đầu tư AI" },
+  { id: "bigtech",  label: "Big Tech & phần mềm",    note: "nền tảng, đám mây, phần mềm doanh nghiệp" },
+  { id: "finance",  label: "Tài chính",              note: "ngân hàng đầu tư, ngân hàng thương mại, môi giới" },
+  { id: "defense",  label: "Quốc phòng & vũ trụ",    note: "nhà thầu quốc phòng và SpaceX" },
+  { id: "consumer", label: "Tiêu dùng & xe điện",    note: "xe điện, giải trí, bán lẻ" },
+  { id: "index",    label: "Chỉ số & năng lượng",    note: "ETF chỉ số và dầu" },
+];
+
 // Danh mục theo dõi riêng. aliases = tên công ty để bắt tin, khớp theo biên từ.
 // Alias viết thường -> không phân biệt hoa thường. Alias VIẾT HOA chữ đầu -> phân
 // biệt, dành cho tên trùng danh từ thường ("Apple" ≠ "the apple", "Gap" ≠ "gap").
 // Mã ngắn (GS, MS...) không dùng làm từ khoá; chỉ nhận dạng "(GS)" hoặc "$GS".
 // ETF để aliases rỗng: chỉ hiện giá.
 export const WATCHLIST = [
-  { sym: "NVDA",  label: "Nvidia",            aliases: ["nvidia"] },
-  { sym: "TSLA",  label: "Tesla",             aliases: ["tesla"] },
-  { sym: "MSFT",  label: "Microsoft",         aliases: ["microsoft"] },
-  { sym: "AAPL",  label: "Apple",             aliases: ["Apple", "iPhone", "Tim Cook"] },
-  { sym: "AMZN",  label: "Amazon",            aliases: ["amazon", "aws"] },
-  { sym: "GOOGL", label: "Alphabet",          aliases: ["alphabet", "google"] },
-  { sym: "ASML",  label: "ASML",              aliases: ["asml"] },
-  { sym: "CRM",   label: "Salesforce",        aliases: ["salesforce"] },
-  { sym: "DIS",   label: "Disney",            aliases: ["disney"] },
-  { sym: "GS",    label: "Goldman Sachs",     aliases: ["goldman"] },
-  { sym: "JPM",   label: "JPMorgan",          aliases: ["jpmorgan", "jp morgan", "jamie dimon"] },
-  { sym: "MS",    label: "Morgan Stanley",    aliases: ["morgan stanley"] },
-  { sym: "BAC",   label: "Bank of America",   aliases: ["bank of america", "bofa"] },
-  { sym: "GD",    label: "General Dynamics",  aliases: ["general dynamics"] },
-  { sym: "RTX",   label: "RTX",               aliases: ["raytheon", "rtx corp"] },
-  { sym: "LMT",   label: "Lockheed Martin",   aliases: ["lockheed"] },
-  { sym: "GLW",   label: "Corning",           aliases: ["corning"] },
-  { sym: "LITE",  label: "Lumentum",          aliases: ["lumentum"] },
-  { sym: "COHR",  label: "Coherent",          aliases: ["Coherent Corp", "Coherent stock", "Coherent shares"] },
-  { sym: "ESTC",  label: "Elastic",           aliases: ["Elastic N.V", "Elasticsearch", "Elastic stock", "Elastic shares"] },
-  { sym: "FUTU",  label: "Futu",              aliases: ["futu"] },
-  { sym: "GAP",   label: "Gap",               aliases: ["Gap Inc", "Old Navy", "Gap stock"] },
-  { sym: "SFTBY", label: "SoftBank",          aliases: ["softbank"] },
-  { sym: "SPCX",  label: "SpaceX",            aliases: ["spacex", "space exploration technologies"] },
-  { sym: "SPY",   label: "S&P 500 ETF",       aliases: [] },
-  { sym: "QQQ",   label: "Nasdaq 100 ETF",    aliases: [] },
-  { sym: "SOXL",  label: "Bán dẫn 3x",        aliases: [] },
-  { sym: "XLF",   label: "Tài chính ETF",     aliases: [] },
-  { sym: "ITA",   label: "Quốc phòng ETF",    aliases: [] },
-  { sym: "USO",   label: "Dầu ETF",           aliases: [] },
+  { sym: "NVDA", grp: "semi",  label: "Nvidia",            aliases: ["nvidia"] },
+  { sym: "TSLA", grp: "consumer",  label: "Tesla",             aliases: ["tesla"] },
+  { sym: "MSFT", grp: "bigtech",  label: "Microsoft",         aliases: ["microsoft"] },
+  { sym: "AAPL", grp: "bigtech",  label: "Apple",             aliases: ["Apple", "iPhone", "Tim Cook"] },
+  { sym: "AMZN", grp: "bigtech",  label: "Amazon",            aliases: ["amazon", "aws"] },
+  { sym: "GOOGL", grp: "bigtech", label: "Alphabet",          aliases: ["alphabet", "google"] },
+  { sym: "ASML", grp: "semi",  label: "ASML",              aliases: ["asml"] },
+  { sym: "CRM", grp: "bigtech",   label: "Salesforce",        aliases: ["salesforce"] },
+  { sym: "DIS", grp: "consumer",   label: "Disney",            aliases: ["disney"] },
+  { sym: "GS", grp: "finance",    label: "Goldman Sachs",     aliases: ["goldman"] },
+  { sym: "JPM", grp: "finance",   label: "JPMorgan",          aliases: ["jpmorgan", "jp morgan", "jamie dimon"] },
+  { sym: "MS", grp: "finance",    label: "Morgan Stanley",    aliases: ["morgan stanley"] },
+  { sym: "BAC", grp: "finance",   label: "Bank of America",   aliases: ["bank of america", "bofa"] },
+  { sym: "GD", grp: "defense",    label: "General Dynamics",  aliases: ["general dynamics"] },
+  { sym: "RTX", grp: "defense",   label: "RTX",               aliases: ["raytheon", "rtx corp"] },
+  { sym: "LMT", grp: "defense",   label: "Lockheed Martin",   aliases: ["lockheed"] },
+  { sym: "GLW", grp: "semi",   label: "Corning",           aliases: ["corning"] },
+  { sym: "LITE", grp: "semi",  label: "Lumentum",          aliases: ["lumentum"] },
+  { sym: "COHR", grp: "semi",  label: "Coherent",          aliases: ["Coherent Corp", "Coherent stock", "Coherent shares"] },
+  { sym: "ESTC", grp: "bigtech",  label: "Elastic",           aliases: ["Elastic N.V", "Elasticsearch", "Elastic stock", "Elastic shares"] },
+  { sym: "FUTU", grp: "finance",  label: "Futu",              aliases: ["futu"] },
+  { sym: "GAP", grp: "consumer",   label: "Gap",               aliases: ["Gap Inc", "Old Navy", "Gap stock"] },
+  { sym: "SFTBY", grp: "semi", label: "SoftBank",          aliases: ["softbank"] },
+  { sym: "SPCX", grp: "defense",  label: "SpaceX",            aliases: ["spacex", "space exploration technologies"] },
+  { sym: "SPY", grp: "index",   label: "S&P 500 ETF",       aliases: [] },
+  { sym: "QQQ", grp: "index",   label: "Nasdaq 100 ETF",    aliases: [] },
+  { sym: "SOXL", grp: "semi",  label: "Bán dẫn 3x",        aliases: [] },
+  { sym: "XLF", grp: "finance",   label: "Tài chính ETF",     aliases: [] },
+  { sym: "ITA", grp: "defense",   label: "Quốc phòng ETF",    aliases: [] },
+  { sym: "USO", grp: "index",   label: "Dầu ETF",           aliases: [] },
 ];

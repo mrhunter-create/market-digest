@@ -2,10 +2,10 @@ name: Bản tin thị trường
 
 on:
   schedule:
-    # 23:00 UTC T2–T6 = 07:00 sáng Đài Bắc T3–T7. GitHub trễ đều 1,5–2 tiếng nên
-    # bản tin thực tế lên ~08:30–09:00 — đúng lúc đọc, và đã gom được cả diễn biến
-    # sau giờ đóng cửa Mỹ, phiên châu Á đang chạy, và hợp đồng tương lai.
-    - cron: "0 23 * * 1-5"
+    # 23:00 UTC HẰNG NGÀY = 07:00 sáng Đài Bắc. GitHub trễ đều 1,5–2 tiếng nên bản tin
+    # thực tế lên ~08:30–09:00. Cuối tuần vẫn chạy: tin không nghỉ, BTC giao dịch 24/7,
+    # và hợp đồng tương lai mở lại 18:00 ET Chủ nhật = đúng 23:00 UTC.
+    - cron: "0 23 * * *"
   workflow_dispatch:        # chạy tay từ tab Actions
   push:                     # sửa code là deploy lại trang ngay, không đợi tới sáng
     branches: [main]

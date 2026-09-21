@@ -20,8 +20,11 @@ GitHub Actions (23:00 UTC, T2–T6)
         └─► public/data/YYYY-MM-DD.json  ──►  GitHub Pages
 ```
 
-**23:00 UTC = 07:00 sáng giờ Đài Bắc.** GitHub chạy trễ đều 1,5–2 tiếng nên bản tin thực
-tế lên **~08:30–09:00** — đúng lúc đọc. Cửa sổ nhìn là từ sáng hôm trước tới lúc chạy: phiên
+**23:00 UTC hằng ngày = 07:00 sáng giờ Đài Bắc.** GitHub chạy trễ đều 1,5–2 tiếng nên bản
+tin thực tế lên **~08:30–09:00** — đúng lúc đọc. **Cuối tuần vẫn chạy**: tin không nghỉ,
+Bitcoin/Ether giao dịch 24/7, và hợp đồng tương lai mở lại 18:00 ET Chủ nhật — đúng
+23:00 UTC. Bản cuối tuần được gắn cờ `weekend`: giá cổ phiếu là giá chốt thứ Sáu (trang
+ghi rõ), prompt được báo để tập trung vào tin định hướng phiên thứ Hai và phản ứng của crypto. Cửa sổ nhìn là từ sáng hôm trước tới lúc chạy: phiên
 Mỹ đã đóng, tin sau giờ đóng cửa (được gắn cờ), phiên châu Á đang chạy, và hợp đồng tương
 lai — đủ để trả lời "hôm nay sẽ thế nào".
 

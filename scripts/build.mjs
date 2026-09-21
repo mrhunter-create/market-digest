@@ -22,8 +22,12 @@ async function main() {
   const now = new Date();
   // Bản tin gắn theo NGÀY PHIÊN Mỹ, không phải ngày chạy ở Đài Loan.
   const sessionDate = inZone(now, "America/New_York");
+  // Cuối tuần: không có phiên cổ phiếu, giá cổ phiếu là giá chốt thứ Sáu. Vẫn chạy vì
+  // tin không nghỉ, BTC/ETH giao dịch 24/7, và futures mở lại tối Chủ nhật giờ Mỹ.
+  const weekday = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "short" }).format(now);
+  const weekend = weekday === "Sat" || weekday === "Sun";
 
-  console.log(`Bản tin phiên ${sessionDate} — chạy lúc ${now.toISOString()}`);
+  console.log(`Bản tin ${weekend ? "cuối tuần" : "phiên"} ${sessionDate} — chạy lúc ${now.toISOString()}`);
 
   console.log("• Lấy số liệu chốt phiên…");
   const market = await getMarket();
@@ -62,7 +66,7 @@ async function main() {
     : "  (không có lịch)");
 
   console.log(llmEnabled() ? "• Biên tập bằng LLM…" : "• Không có LLM_API_KEY — giữ tiêu đề gốc");
-  const edited = await editorialize({ market, stories: news.stories, calendar, signals, watch, groups: WATCH_GROUPS, groupNews, sessionDate });
+  const edited = await editorialize({ market, stories: news.stories, calendar, signals, watch, groups: WATCH_GROUPS, groupNews, sessionDate, weekend });
 
   // Tin ra SAU giờ đóng cửa Mỹ (16:00 ET) chưa được phản ánh vào giá chốt phiên — đánh dấu để người đọc biết.
   const closeUtc = (() => {
@@ -70,12 +74,13 @@ async function main() {
     const off = Number((s.match(/GMT([+-]\d+)/) || [])[1] || -5);
     return Date.parse(`${sessionDate}T16:00:00${off < 0 ? "-" : "+"}${String(Math.abs(off)).padStart(2, "0")}:00`);
   })();
-  for (const st of edited.stories) st.afterClose = !!(st.date && Date.parse(st.date) > closeUtc);
+  for (const st of edited.stories) st.afterClose = !weekend && !!(st.date && Date.parse(st.date) > closeUtc);
   if (edited.llm) console.log(`  ${edited.stories.length} tin sau biên tập (${edited.llm})`);
 
   const digest = {
     id: sessionDate,
     sessionDate,
+    weekend,
     generatedAt: now.toISOString(),
     verdict: edited.verdict,
     chains: edited.chains,

@@ -38,7 +38,9 @@ const RULES = `Nguyên tắc bắt buộc:
 
 /* ---------------- Khối dữ liệu dùng chung ---------------- */
 
-function marketBlock(market) {
+const WEEKEND_NOTE = `LƯU Ý: HÔM NAY LÀ CUỐI TUẦN. Thị trường cổ phiếu Mỹ đóng cửa — mọi giá cổ phiếu/chỉ số dưới đây là GIÁ CHỐT PHIÊN THỨ SÁU, không phải biến động hôm nay. Chỉ crypto (Bitcoin, Ether) và hợp đồng tương lai (nếu đã mở lại tối Chủ nhật) là đang giao dịch. Trọng tâm: tin cuối tuần sẽ định hướng phiên thứ Hai ra sao, và crypto đang phản ứng thế nào với tin đó.`;
+
+function marketBlock(market, weekend = false) {
   const g = (id) => market.filter(m => m.ok && m.g === id);
   const fmt = m => {
     const p = m.kind === "yield" ? `${m.price}%` : m.price;
@@ -49,7 +51,8 @@ function marketBlock(market) {
   };
   const sec = (label, id) => { const r = g(id); return r.length ? `${label}: ${r.map(fmt).join(" | ")}` : ""; };
   return [
-    sec("CHỈ SỐ & TÀI SẢN CHÍNH (chốt phiên Mỹ)", "core"),
+    weekend ? WEEKEND_NOTE : "",
+    sec(weekend ? "CHỈ SỐ & TÀI SẢN CHÍNH (giá chốt THỨ SÁU; riêng Bitcoin là giá hiện tại)" : "CHỈ SỐ & TÀI SẢN CHÍNH (chốt phiên Mỹ)", "core"),
     sec("HỢP ĐỒNG TƯƠNG LAI (đang giao dịch, báo hiệu phiên tới)", "fut"),
     sec("LỢI SUẤT KHÁC", "rates"),
     sec("CỔ PHIẾU VỐN HOÁ LỚN", "mega"),
@@ -86,10 +89,10 @@ const ANALYSIS_SYSTEM = `Bạn là nhà phân tích thị trường viết phầ
 Người đọc KHÔNG cần ai phán đoán thị trường. Họ cần chuỗi suy luận tuần tự, có bằng chứng, và biết được điều gì sẽ làm chuỗi đó sai.
 ${RULES}`;
 
-function analysisPrompt(market, stories, calendar, signals) {
+function analysisPrompt(market, stories, calendar, signals, weekend) {
   const heads = stories.slice(0, 16).map((s, i) => `${i + 1}. ${s.title}`).join("\n");
-  return `SỐ LIỆU CHỐT PHIÊN:
-${marketBlock(market)}
+  return `SỐ LIỆU:
+${marketBlock(market, weekend)}
 ${signalBlock(signals)}
 ${calendarBlock(calendar)}
 
@@ -107,7 +110,7 @@ Nhiệm vụ: tìm 2-3 mạch quan trọng nhất của phiên và trình bày m
       "invalidate": "1 câu: điều gì xảy ra thì chuỗi lập luận này sai" }
   ],
   "overlooked": [ { "title": "tin/số liệu ít ai để ý, tối đa 45 ký tự", "text": "1-2 câu: vì sao nó quan trọng hơn vẻ ngoài" } ],
-  "ahead": "3-5 câu: HÔM NAY SẼ THẾ NÀO — đọc hợp đồng tương lai và thị trường châu Á/thế giới đang giao dịch để nói phiên Mỹ tối nay có thể mở cửa ra sao và vì sao; sự kiện/số liệu nào trong lịch hôm nay có thể đảo cục diện; điều gì cần quan sát trước giờ mở cửa. Chỉ dùng số trong input."
+  "ahead": "3-5 câu: HÔM NAY SẼ THẾ NÀO — đọc hợp đồng tương lai và thị trường châu Á/thế giới đang giao dịch để nói phiên Mỹ tối nay có thể mở cửa ra sao và vì sao; sự kiện/số liệu nào trong lịch hôm nay có thể đảo cục diện; điều gì cần quan sát trước giờ mở cửa. Cuối tuần thì nói: tin cuối tuần định hướng phiên thứ Hai ra sao, và crypto đang phản ứng thế nào. Chỉ dùng số trong input."
 }
 Yêu cầu: "chains" 2-3 mạch, "steps" 3-4 bước, "evidence" phải là số có thật trong input. "overlooked" 1-3 mục, có thể rỗng. "ahead" bắt buộc.`;
 }
@@ -144,13 +147,13 @@ Việc của bạn là NỐI các tin trong ngày lại với nhau, và với m�
 Phân biệt rạch ròi SỰ KIỆN (có trong input) với SUY LUẬN (của bạn). Suy luận về động cơ phải ghi rõ là giả thuyết, kèm bằng chứng ủng hộ VÀ bằng chứng ngược chiều. Mức tin cậy 1-5 phải thật thà: suy luận về động cơ chính trị hiếm khi quá 3/5.
 ${RULES}`;
 
-function linkPrompt(stories, market, signals, watch, sessionDate) {
+function linkPrompt(stories, market, signals, watch, sessionDate, weekend) {
   const list = stories.slice(0, 26).map((s, i) =>
     `[${i + 1}] (${s.sources[0]}) ${s.title}${s.summary ? " — " + s.summary.slice(0, 150) : ""}`).join("\n");
-  return `PHIÊN: ${sessionDate}
+  return `${weekend ? "CUỐI TUẦN" : "PHIÊN"}: ${sessionDate}
 
-SỐ LIỆU PHIÊN:
-${marketBlock(market)}
+SỐ LIỆU:
+${marketBlock(market, weekend)}
 ${signalBlock(signals)}
 ${watchMovesBlock(watch)}
 
@@ -219,7 +222,7 @@ function fundLine(f) {
   return parts.join(", ");
 }
 
-function groupPrompt(group, tickers, market, links, sectorNews) {
+function groupPrompt(group, tickers, market, links, sectorNews, weekend) {
   const core = market.filter(m => m.ok && m.g === "core")
     .map(m => `${m.label} ${m.changePct >= 0 ? "+" : ""}${m.changePct?.toFixed(2)}%`).join(" | ");
   const syms = new Set(tickers.map(t => t.sym));
@@ -235,7 +238,7 @@ function groupPrompt(group, tickers, market, links, sectorNews) {
 
   const sector = (sectorNews || []).map((c, i) => `  ${i + 1}. (${c.source}) ${c.title}${c.summary ? " — " + c.summary.slice(0, 140) : ""}`).join("\n");
   return `NHÓM: ${group.label} — ${group.note}
-BỐI CẢNH PHIÊN: ${core || "(không có)"}
+${weekend ? WEEKEND_NOTE + "\n" : ""}BỐI CẢNH PHIÊN: ${core || "(không có)"}
 MẠCH LIÊN KẾT LIÊN QUAN:
 ${rel || "(không có)"}
 TIN NGÀNH / BỐI CẢNH HÔM NAY (không phải tin riêng công ty nào, nhưng đẩy cả nhóm):
@@ -405,7 +408,7 @@ function cleanFeature(f, links) {
  * Trả về { verdict, chains, overlooked, stories, watch, links, feature, llm, llmError }.
  * Mọi lỗi đều được nuốt và ghi vào llmError — bản tin không bao giờ hỏng vì LLM.
  */
-export async function editorialize({ market, stories, calendar = null, signals = [], watch = [], groups = [], groupNews = {}, sessionDate }) {
+export async function editorialize({ market, stories, calendar = null, signals = [], watch = [], groups = [], groupNews = {}, sessionDate, weekend = false }) {
   const bare = { verdict: null, chains: [], overlooked: [], ahead: null, stories, watch, watchGroups: [], links: [], feature: null, llm: null, llmError: null };
   if (!KEY) return bare;
 
@@ -418,11 +421,11 @@ export async function editorialize({ market, stories, calendar = null, signals =
 
   // Tuần tự, có giãn cách — xem ghi chú đầu file.
   const GAP = Number(process.env.LLM_GAP_MS || 15000);
-  const analysis = await callWithFallback("phân tích", ANALYSIS_SYSTEM, analysisPrompt(market, stories, calendar, signals), 5000);
+  const analysis = await callWithFallback("phân tích", ANALYSIS_SYSTEM, analysisPrompt(market, stories, calendar, signals, weekend), 5000);
   await sleep(GAP);
   const storyRes = await callWithFallback("tin", STORY_SYSTEM, storyPrompt(market, toTranslate), 24000);
   await sleep(GAP);
-  const linkRes = await callWithFallback("liên kết", LINK_SYSTEM, linkPrompt(stories, market, signals, watch, sessionDate), 9000);
+  const linkRes = await callWithFallback("liên kết", LINK_SYSTEM, linkPrompt(stories, market, signals, watch, sessionDate, weekend), 9000);
   const links = linkRes.out ? cleanLinks(linkRes.out.links, stories) : [];
 
   // Lượt 4: mỗi nhóm ngành một lượt, tuần tự.
@@ -431,7 +434,7 @@ export async function editorialize({ market, stories, calendar = null, signals =
     const members = watch.filter(w => w.grp === g.id);
     if (!members.length) continue;
     await sleep(GAP);
-    const r = await callWithFallback(`danh mục · ${g.label}`, WATCH_SYSTEM, groupPrompt(g, members, market, links, groupNews[g.id]), 7000);
+    const r = await callWithFallback(`danh mục · ${g.label}`, WATCH_SYSTEM, groupPrompt(g, members, market, links, groupNews[g.id], weekend), 7000);
     groupRes.push({ g, r });
   }
 

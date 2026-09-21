@@ -89,6 +89,7 @@ export const TICKERS = [
   { g: "signal", cnbc: "FXI",     yahoo: "FXI",      label: "Trung Quốc",              kind: "usd" },
   { g: "signal", cnbc: ".VIX9D",  yahoo: "^VIX9D",   label: "VIX 9 ngày",              kind: "level" },
 
+  { g: "commod", cnbc: "ETH.CM=", yahoo: "ETH-USD",  label: "Ether",         kind: "usd" },
   { g: "commod", cnbc: "@NG.1",   yahoo: "NG=F",     label: "Khí đốt",       kind: "usd" },
   { g: "commod", cnbc: "@HG.1",   yahoo: "HG=F",     label: "Đồng",          kind: "usd" },
 ];

@@ -89,7 +89,7 @@ function setCounts(d) {
   document.querySelectorAll("[data-count]").forEach(el => { const v = c[el.dataset.count]; if (v) el.textContent = v; });
 }
 function renderHead(d) {
-  $("#session").textContent = "Phiên " + fmtSession(d.sessionDate);
+  $("#session").textContent = (d.weekend ? "Cuối tuần · " : "Phiên ") + fmtSession(d.sessionDate);
   const g = new Date(d.generatedAt);
   $("#generated").textContent = `Tổng hợp ${dtf({ hour: "2-digit", minute: "2-digit", hour12: false }).format(g)} · ${dtf({ day: "2-digit", month: "2-digit", year: "numeric" }).format(g)} giờ Đài Bắc`;
 }
@@ -406,7 +406,10 @@ async function mount(page) {
     const d = await r.json();
     renderHead(d);
     setCounts(d);
-    const t = $("#tape"); if (t) t.innerHTML = tape((d.market || []).filter(m => !m.g || m.g === "core"));
+    const t = $("#tape"); if (t) {
+      t.innerHTML = tape((d.market || []).filter(m => !m.g || m.g === "core"));
+      if (d.weekend) t.insertAdjacentHTML("afterend", `<div class="wrap" style="font-size:11.5px;color:var(--ink-3);padding:8px 0 0">Cuối tuần: giá cổ phiếu và chỉ số là giá chốt phiên thứ Sáu; Bitcoin, Ether và hợp đồng tương lai là giá đang giao dịch.</div>`);
+    }
     $("#main").innerHTML = RENDER[page](d);
     rendered = true;
     stats(d);

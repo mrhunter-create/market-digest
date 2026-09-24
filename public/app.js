@@ -344,17 +344,16 @@ function overview(d) {
       ${(d.links || []).length ? `<div class="more" style="padding-top:8px">${(d.links || []).map(l => `<a href="${href("analysis.html")}#link-${esc(l.id)}">${esc(l.title)}</a>`).join(" · ")}</div>` : ""}</div>`,
     `<div class="lead"><h3>Danh mục theo dõi<a href="${href("watchlist.html")}">${(d.watch || []).filter(w => w.stories?.length).length} mã có tin →</a></h3>
       ${movers.map(w => { const t = w.tone && TONE[w.tone]; return li(`<span class="sym">${esc(w.sym)}</span>${esc(w.label)}${t ? ` <span class="chip ${t[1]}" style="margin:0 0 0 8px;padding:2px 6px">${t[0]}</span>` : ""}`, pc(w)); }).join("")}</div>`,
-    `<div class="lead"><h3>Tín hiệu &amp; lịch<a href="${href("market.html")}">bảng đầy đủ →</a></h3>
-      <div class="chips" style="margin-bottom:10px">${(d.signals || []).map(s => `<span class="chip ${esc(s.tone)}" style="margin:0">${esc(s.label)}: ${esc(s.state)}</span>`).join("")}</div>
-      ${(d.calendar?.economic || []).slice(0, 3).map(e => li(`${esc(e.nameVi || e.name)}<span class="m">${e.at ? esc(dtf({ hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(e.at))) : ""}</span>`)).join("")}
-      ${(d.calendar?.earnings || []).slice(0, 3).map(e => li(`<span class="sym">${esc(e.symbol)}</span>${esc(e.name || "")}<span class="m">${esc(e.when || "")}</span>`)).join("")}</div>`,
+    `<div class="lead"><h3>Tín hiệu suy ra<a href="${href("market.html")}">bảng đầy đủ →</a></h3>
+      <div class="chips">${(d.signals || []).map(s => `<span class="chip ${esc(s.tone)}" style="margin:0">${esc(s.label)}: ${esc(s.state)}</span>`).join("")}</div>
+      ${(d.signals || []).slice(0, 2).map(s => `<div class="li" style="border:0;padding:8px 0 0;font-size:12.5px;color:var(--ink-2);line-height:1.55">${esc(s.note)}</div>`).join("")}</div>`,
   ];
   return `<div class="lead-grid">${cards.join("")}</div>`;
 }
 
 /* ── trang ── */
 const RENDER = {
-  index: d => `${verdict(d)}${today(d)}${overview(d)}${chains(d)}`,
+  index: d => `${verdict(d)}${today(d)}${overview(d)}${calendar(d, false)}${chains(d)}`,
   news: d => { const h = pickHot(d.stories || []); return `${hot(h)}${categories(d, new Set(h.map(s => s.link)))}` || `<div class="state">Không có tin trong phiên này.</div>`; },
   watchlist: d => watch(d) || `<div class="state">Chưa có danh mục.</div>`,
   analysis: d => `${verdict(d)}${feature(d)}${links(d)}${chains(d)}${overlooked(d)}${signals(d, false)}`

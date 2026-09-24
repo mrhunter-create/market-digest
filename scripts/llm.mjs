@@ -20,11 +20,17 @@ const KEY  = process.env.LLM_API_KEY  || process.env.GROQ_API_KEY || "";
 // nên thử lần lượt vài model thay vì chết cứng vào một cái.
 const MODELS = process.env.LLM_MODEL
   ? [process.env.LLM_MODEL]
-  : ["openai/gpt-oss-120b", "qwen/qwen3.6-27b", "openai/gpt-oss-20b", "llama-3.1-8b-instant"];
+  : ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b", "llama-3.1-8b-instant"];
 
 export const llmEnabled = () => !!KEY;
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+// Groq gói miễn phí: 8.000 token/PHÚT, và max_tokens (đầu ra dự trữ) ĐƯỢC TÍNH VÀO hạn
+// mức đó cùng với đầu vào. Lượt dịch cũ xin 24.000 token đầu ra nên bị 413 ngay khi gửi,
+// bất kể prompt dài bao nhiêu. Giữ (đầu vào ước tính + max_tokens) <= ~6.500 cho an toàn.
+const TPM = Number(process.env.LLM_TPM || 8000);
+const estTokens = text => Math.ceil(text.length / 3);   // tiếng Việt + Anh trộn, xấp xỉ
 
 const RULES = `Nguyên tắc bắt buộc:
 - Viết HOÀN TOÀN bằng tiếng Việt tự nhiên, chính xác, giọng của một nhà phân tích thị trường. Chỉ giữ tiếng Anh cho tên riêng, mã cổ phiếu và tên chỉ số (S&P 500, Nasdaq, VIX); mọi cụm mô tả như "yields hovering", "risk-off", "rate hike" đều phải dịch.
@@ -148,8 +154,8 @@ Phân biệt rạch ròi SỰ KIỆN (có trong input) với SUY LUẬN (của b
 ${RULES}`;
 
 function linkPrompt(stories, market, signals, watch, sessionDate, weekend) {
-  const list = stories.slice(0, 26).map((s, i) =>
-    `[${i + 1}] (${s.sources[0]}) ${s.title}${s.summary ? " — " + s.summary.slice(0, 150) : ""}`).join("\n");
+  const list = stories.slice(0, 18).map((s, i) =>
+    `[${i + 1}] (${s.sources[0]}) ${s.title}${s.summary ? " — " + s.summary.slice(0, 110) : ""}`).join("\n");
   return `${weekend ? "CUỐI TUẦN" : "PHIÊN"}: ${sessionDate}
 
 SỐ LIỆU:
@@ -231,12 +237,12 @@ function groupPrompt(group, tickers, market, links, sectorNews, weekend) {
   const blocks = tickers.map(w => {
     const px = w.ok ? `${w.price} (${w.changePct >= 0 ? "+" : ""}${w.changePct?.toFixed(2)}%)` : "(không có giá)";
     const news = (w.stories || []).map((s, i) =>
-      `    ${i + 1}. ${s.recent ? `[${s.ageDays === 0 ? "hôm nay" : s.ageDays + " ngày trước"}] ` : ""}${s.title}${s.summary ? " — " + s.summary.slice(0, 160) : ""}`).join("\n");
+      `    ${i + 1}. ${s.recent ? `[${s.ageDays === 0 ? "hôm nay" : s.ageDays + " ngày trước"}] ` : ""}${s.title}${s.summary ? " — " + s.summary.slice(0, 110) : ""}`).join("\n");
     const hasToday = (w.stories || []).some(s => !s.recent);
     return `${w.sym} ${w.label}: ${px}\n  Cơ bản: ${fundLine(w.fund) || "(không có)"}\n  ${hasToday ? "Tin hôm nay" : "Không có tin hôm nay — tin gần nhất (có ghi ngày)"}:\n${news || "    (không tìm được tin nào trong 7 ngày)"}`;
   }).join("\n\n");
 
-  const sector = (sectorNews || []).map((c, i) => `  ${i + 1}. (${c.source}) ${c.title}${c.summary ? " — " + c.summary.slice(0, 140) : ""}`).join("\n");
+  const sector = (sectorNews || []).slice(0, 4).map((c, i) => `  ${i + 1}. (${c.source}) ${c.title}`).join("\n");
   return `NHÓM: ${group.label} — ${group.note}
 ${weekend ? WEEKEND_NOTE + "\n" : ""}BỐI CẢNH PHIÊN: ${core || "(không có)"}
 MẠCH LIÊN KẾT LIÊN QUAN:
@@ -313,7 +319,10 @@ function extractJson(text) {
 }
 
 async function callModel(model, system, user, maxTokens) {
-  // Gói miễn phí giới hạn token/phút: dính 429 thì chờ rồi thử lại, tối đa 3 lần.
+  // Cắt max_tokens cho vừa hạn mức phút, chừa 1.500 token biên an toàn.
+  const room = TPM - estTokens(system) - estTokens(user) - 1500;
+  let budget = Math.max(800, Math.min(maxTokens, room));
+  // Gói miễn phí giới hạn token/phút: 429 thì chờ, 413 thì hạ ngân sách rồi thử lại.
   for (let attempt = 0; attempt < 3; attempt++) {
     const r = await fetch(`${BASE}/chat/completions`, {
       method: "POST",
@@ -321,7 +330,7 @@ async function callModel(model, system, user, maxTokens) {
       body: JSON.stringify({
         model,
         messages: [{ role: "system", content: system }, { role: "user", content: user }],
-        temperature: 0.3, max_tokens: maxTokens, response_format: { type: "json_object" },
+        temperature: 0.3, max_tokens: budget, response_format: { type: "json_object" },
       }),
       signal: AbortSignal.timeout(180000),
     });
@@ -329,6 +338,11 @@ async function callModel(model, system, user, maxTokens) {
       const wait = Number(r.headers.get("retry-after")) * 1000 || 65000;
       console.warn(`    429 — chờ ${Math.round(wait / 1000)}s rồi thử lại`);
       await sleep(wait);
+      continue;
+    }
+    if (r.status === 413 && budget > 1200) {
+      budget = Math.floor(budget / 2);
+      console.warn(`    413 — hạ ngân sách đầu ra xuống ${budget} rồi thử lại`);
       continue;
     }
     if (!r.ok) throw new Error(`HTTP ${r.status} — ${(await r.text()).slice(0, 160)}`);
@@ -418,14 +432,31 @@ export async function editorialize({ market, stories, calendar = null, signals =
     if (!mainLinks.has(st.link) && !seen.has(st.link)) { seen.add(st.link); extra.push(st); }
   const toTranslate = [...stories, ...extra];
   const withNews = watch.filter(w => w.stories.length);
+  // Gói miễn phí giới hạn 8k token/phút -> một lượt ~40 bài vượt hạn (HTTP 413).
+  // Chia thành lô nhỏ; lô nào lỗi thì chỉ mất lô đó.
+  const BATCH = Number(process.env.LLM_STORY_BATCH || 10);
 
   // Tuần tự, có giãn cách — xem ghi chú đầu file.
   const GAP = Number(process.env.LLM_GAP_MS || 15000);
-  const analysis = await callWithFallback("phân tích", ANALYSIS_SYSTEM, analysisPrompt(market, stories, calendar, signals, weekend), 5000);
+  const analysis = await callWithFallback("phân tích", ANALYSIS_SYSTEM, analysisPrompt(market, stories, calendar, signals, weekend), 3500);
+  const storyOut = new Map();          // chỉ số trong toTranslate -> bản dịch
+  const storyErrors = [];
+  let storyModel = null;
+  for (let i = 0; i < toTranslate.length; i += BATCH) {
+    const chunk = toTranslate.slice(i, i + BATCH);
+    await sleep(GAP);
+    const r = await callWithFallback(`tin ${i / BATCH + 1}/${Math.ceil(toTranslate.length / BATCH)}`,
+      STORY_SYSTEM, storyPrompt(market, chunk), 3000);
+    storyErrors.push(...r.errors);
+    if (r.model) storyModel = storyModel || r.model;
+    for (const e of (r.out?.stories || [])) {
+      const k = i + Number(e.id);
+      if (Number.isInteger(k) && k >= i && k < i + chunk.length) storyOut.set(k, e);
+    }
+  }
+  const storyRes = { out: storyOut.size ? { size: storyOut.size } : null, model: storyModel, errors: storyErrors };
   await sleep(GAP);
-  const storyRes = await callWithFallback("tin", STORY_SYSTEM, storyPrompt(market, toTranslate), 24000);
-  await sleep(GAP);
-  const linkRes = await callWithFallback("liên kết", LINK_SYSTEM, linkPrompt(stories, market, signals, watch, sessionDate, weekend), 9000);
+  const linkRes = await callWithFallback("liên kết", LINK_SYSTEM, linkPrompt(stories, market, signals, watch, sessionDate, weekend), 3500);
   const links = linkRes.out ? cleanLinks(linkRes.out.links, stories) : [];
 
   // Lượt 4: mỗi nhóm ngành một lượt, tuần tự.
@@ -434,7 +465,7 @@ export async function editorialize({ market, stories, calendar = null, signals =
     const members = watch.filter(w => w.grp === g.id);
     if (!members.length) continue;
     await sleep(GAP);
-    const r = await callWithFallback(`danh mục · ${g.label}`, WATCH_SYSTEM, groupPrompt(g, members, market, links, groupNews[g.id], weekend), 7000);
+    const r = await callWithFallback(`danh mục · ${g.label}`, WATCH_SYSTEM, groupPrompt(g, members, market, links, groupNews[g.id], weekend), 3500);
     groupRes.push({ g, r });
   }
 
@@ -444,9 +475,8 @@ export async function editorialize({ market, stories, calendar = null, signals =
   let merged = stories;
   const translated = new Map();
   if (storyRes.out) {
-    const byId = new Map((storyRes.out.stories || []).map(s => [Number(s.id), s]));
     toTranslate.forEach((s, i) => {
-      const e = byId.get(i);
+      const e = storyOut.get(i);
       if (!e) return;
       const impact = RANK[e.impact] != null ? e.impact : "medium";
       translated.set(s.link, { ...s, titleVi: str(e.title_vi), summaryVi: str(e.summary_vi),
@@ -499,7 +529,7 @@ export async function editorialize({ market, stories, calendar = null, signals =
   let hotRes = { out: null, model: null, errors: [] };
   if (hotList.length) {
     await sleep(GAP);
-    hotRes = await callWithFallback("tin nóng sâu", HOT_SYSTEM, hotPrompt(hotList, market, signals), 6000);
+    hotRes = await callWithFallback("tin nóng sâu", HOT_SYSTEM, hotPrompt(hotList, market, signals), 3000);
     errors.push(...hotRes.errors);
   }
   if (hotRes.out) {
